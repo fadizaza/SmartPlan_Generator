@@ -15,7 +15,7 @@ from models import db, User
 import os.path
 import html
 
-# Import existing modules (adapting as needed)
+# Import existing modules (adapting as needed).
 import lesson_generation as lg
 from web_utils import create_topic_directory, download_file, generate_learning_outcomes_from_topic, generate_topic_from_outcomes
 
