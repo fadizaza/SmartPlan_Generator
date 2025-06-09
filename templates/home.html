@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Your Topics - SmartPlan{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Your Topics</h4>
+                <a href="/learning_outcomes" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i> Create New Topic
+                </a>
+            </div>
+            <div class="card-body">
+                {% if folders %}
+                <div class="row">
+                    {% for folder in folders %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ folder.name }}</h5>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar"></i> {{ folder.modified }}
+                                    </small>
+                                </p>
+                                <p class="card-text">
+                                    <span class="badge bg-info">{{ folder.file_count }} files</span>
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <a href="{{ url_for('files', topic=folder.name) }}" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-folder-open"></i> Open
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> No topics found. Create your first topic to get started!
+                </div>
+                <div class="text-center mt-4">
+                    <a href="/learning_outcomes" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus-circle"></i> Create Your First Topic
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

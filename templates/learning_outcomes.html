@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}Set Learning Outcomes - SmartPlan{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h4>Learning Outcomes / Topic</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">Define your topic and learning outcomes to begin generating materials. Enter content in one field and click the generate button to auto-fill the other.</p>
+                
+                <form method="POST" action="/learning_outcomes" id="learningOutcomesForm">
+                    <div class="mb-4">
+                        <label for="topic" class="form-label fw-bold">Topic</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="topic" name="topic" placeholder="Enter a specific topic" value="{{ topic if topic else '' }}">
+                            <button class="btn btn-outline-secondary" type="button" id="generateOutcomesBtn" title="Generate Learning Outcomes from Topic">
+                                <i class="fas fa-magic"></i> Generate
+                            </button>
+                        </div>
+                        <div class="form-text">Example: Introduction to Fractions, Shakespeare's Romeo and Juliet, Programming with Python</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="learning_outcomes" class="form-label fw-bold">Learning Outcomes</label>
+                        <div class="input-group">
+                            <textarea class="form-control" id="learning_outcomes" name="learning_outcomes" rows="6" placeholder="Enter the learning outcomes or objectives for this lesson">{{ learning_outcomes if learning_outcomes else '' }}</textarea>
+                            <button class="btn btn-outline-secondary" type="button" id="generateTopicBtn" style="align-self: flex-start;" title="Generate Topic from Learning Outcomes">
+                                <i class="fas fa-magic"></i> Generate
+                            </button>
+                        </div>
+                        <div class="form-text">Example: By the end of this lesson, students will be able to identify and calculate simple fractions, understand the concept of equivalence, and convert between fractions and decimals.</div>
+                    </div>
+                    
+                    <!-- Progress spinner (hidden by default) -->
+                    <div id="generationProgress" class="text-center mb-4" style="display: none;">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2" id="progressMessage">Generating content...</p>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Save and Continue</button>
+                        <a href="/" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Tips for Effective Learning Outcomes</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>Be specific and measurable</li>
+                    <li>Use action verbs (identify, explain, analyze, create, etc.)</li>
+                    <li>Focus on what students will learn or be able to do</li>
+                    <li>Align outcomes with curriculum requirements</li>
+                    <li>Consider different levels of learning (knowledge, comprehension, application, analysis, etc.)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Form validation
+        $('form').on('submit', function(e) {
+            const topic = $('#topic').val().trim();
+            if (!topic) {
+                e.preventDefault();
+                showAlert('Please enter a topic to continue.', 'warning');
+            }
+        });
+        
+        // Generate learning outcomes from topic
+        $('#generateOutcomesBtn').on('click', function() {
+            const topic = $('#topic').val().trim();
+            if (!topic) {
+                showAlert('Please enter a topic first.', 'warning');
+                return;
+            }
+            
+            // Show progress spinner
+            $('#generationProgress').show();
+            $('#progressMessage').text('Generating learning outcomes...');
+            
+            // Disable buttons during generation
+            $('#generateOutcomesBtn, #generateTopicBtn').prop('disabled', true);
+            
+            // Make AJAX call to generate learning outcomes
+            $.ajax({
+                url: '/api/generate_outcomes',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ topic: topic }),
+                success: function(response) {
+                    if (response.status === 'success') {
+                        // Update the learning outcomes field
+                        $('#learning_outcomes').val(response.learning_outcomes);
+                        showAlert('Learning outcomes generated successfully!', 'success');
+                    } else {
+                        showAlert('Failed to generate learning outcomes.', 'danger');
+                    }
+                },
+                error: function(xhr) {
+                    let errorMsg = 'Failed to generate learning outcomes.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                    showAlert(errorMsg, 'danger');
+                },
+                complete: function() {
+                    // Hide progress spinner and re-enable buttons
+                    $('#generationProgress').hide();
+                    $('#generateOutcomesBtn, #generateTopicBtn').prop('disabled', false);
+                }
+            });
+        });
+        
+        // Generate topic from learning outcomes
+        $('#generateTopicBtn').on('click', function() {
+            const learning_outcomes = $('#learning_outcomes').val().trim();
+            if (!learning_outcomes) {
+                showAlert('Please enter learning outcomes first.', 'warning');
+                return;
+            }
+            
+            // Show progress spinner
+            $('#generationProgress').show();
+            $('#progressMessage').text('Generating topic...');
+            
+            // Disable buttons during generation
+            $('#generateOutcomesBtn, #generateTopicBtn').prop('disabled', true);
+            
+            // Make AJAX call to generate topic
+            $.ajax({
+                url: '/api/generate_topic',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ learning_outcomes: learning_outcomes }),
+                success: function(response) {
+                    if (response.status === 'success') {
+                        // Update the topic field
+                        $('#topic').val(response.topic);
+                        showAlert('Topic generated successfully!', 'success');
+                    } else {
+                        showAlert('Failed to generate topic.', 'danger');
+                    }
+                },
+                error: function(xhr) {
+                    let errorMsg = 'Failed to generate topic.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                    showAlert(errorMsg, 'danger');
+                },
+                complete: function() {
+                    // Hide progress spinner and re-enable buttons
+                    $('#generationProgress').hide();
+                    $('#generateOutcomesBtn, #generateTopicBtn').prop('disabled', false);
+                }
+            });
+        });
+        
+        // Function to show alerts
+        function showAlert(message, type) {
+            const alertHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            
+            // Insert the alert before the form
+            $('#learningOutcomesForm').before(alertHTML);
+            
+            // Auto-dismiss after 5 seconds
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 5000);
+        }
+    });
+</script>
+{% endblock %}

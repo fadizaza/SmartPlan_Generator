@@ -1,0 +1,452 @@
+{% extends "base.html" %}
+
+{% block title %}Generate Revision Materials - SmartPlan{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="mb-0">Customize Revision Materials</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">Generate revision materials about: <strong>{{ topic }}</strong></p>
+                
+                <!-- Hidden fields for JavaScript to safely access server-side variables -->
+                <input type="hidden" id="hidden-learning-outcomes" value="{{ learning_outcomes|e }}">
+                <input type="hidden" id="hidden-topic" value="{{ topic|e }}">
+                
+                <form id="revisionForm" method="POST">
+                    <!-- Subject and Level Selection -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-secondary me-2"><i class="fas fa-check"></i></span>
+                                <h5 class="mb-0">Customize Revision Settings</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject" class="form-label fw-bold text-primary">Subject:</label>
+                                    <select class="form-select" id="subject" name="subject">
+                                        <option value="Select the subject">Select the subject</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Math">Math</option>
+                                        <option value="English">English</option>
+                                        <option value="Science">Science</option>
+                                        <option value="History">History</option>
+                                        <option value="Art">Art</option>
+                                        <option value="Physical Education">Physical Education</option>
+                                        <option value="Music">Music</option>
+                                        <option value="Language">Language</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="student_level" class="form-label fw-bold text-primary">Student Level:</label>
+                                    <select class="form-select" id="student_level" name="student_level">
+                                        <option value="Select Level">Select Level</option>
+                                        <option value="Primary">Primary</option>
+                                        <option value="Secondary">Secondary</option>
+                                        <option value="High School">High School</option>
+                                        <option value="College/University">College/University</option>
+                                        <option value="Adult Education">Adult Education</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-text">Select or type custom options</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Revision Options -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-primary me-2"><i class="fas fa-cog"></i></span>
+                                <h5 class="mb-0">Revision Options:</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="difficulty" class="form-label fw-bold text-primary">Difficulty Level:</label>
+                                    <select class="form-select" id="difficulty" name="difficulty">
+                                        <option value="Basic">Basic</option>
+                                        <option value="Moderate" selected>Moderate</option>
+                                        <option value="Advanced">Advanced</option>
+                                        <option value="Mixed">Mixed</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="length" class="form-label fw-bold text-primary">Content Length:</label>
+                                    <select class="form-select" id="length" name="length">
+                                        <option value="Short">Short</option>
+                                        <option value="Medium" selected>Medium</option>
+                                        <option value="Long">Long</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <label class="form-label fw-bold text-primary">Revision Components:</label>
+                                <div class="row ms-2">
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="key_concepts" name="components" value="key_concepts" checked>
+                                            <label class="form-check-label" for="key_concepts">Key Concepts</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="summaries" name="components" value="summaries" checked>
+                                            <label class="form-check-label" for="summaries">Topic Summaries</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="examples" name="components" value="examples">
+                                            <label class="form-check-label" for="examples">Examples & Applications</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="practice_questions" name="components" value="practice_questions" checked>
+                                            <label class="form-check-label" for="practice_questions">Practice Questions</label>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <label class="form-label fw-bold text-primary">Output Formats:</label>
+                                <div class="row ms-2">
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="format_docx" name="format_docx" value="true" checked>
+                                            <label class="form-check-label" for="format_docx">DOCX</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="checkbox" id="format_html" name="format_html" value="true">
+                                            <label class="form-check-label" for="format_html">HTML</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <!-- Revised Prompt -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-accent me-2"><i class="fas fa-edit"></i></span>
+                                <h5 class="mb-0">Revised Prompt</h5>
+                            </div>
+                        </div>                        <div class="card-body">
+                            <div>
+                                <label for="generated_prompt" class="form-label fw-bold">Prompt:</label>
+                                <textarea class="form-control" id="generated_prompt" name="generated_prompt" rows="8"></textarea>
+                                <div class="form-text">
+                                    This prompt will automatically update based on your selections above. You can also modify it directly.
+                                    <button type="button" id="update-prompt-btn" class="btn btn-sm btn-outline-secondary ms-2">
+                                        <i class="fas fa-sync-alt me-1"></i> Refresh
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <!-- Action Buttons -->
+                    <div class="d-grid gap-2">
+                        <button type="button" id="generateBtn" class="btn btn-accent btn-lg">
+                            <i class="fas fa-cog me-2"></i> Generate Revision Materials
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <a href="{{ url_for('files') }}" class="btn btn-primary">
+                            <i class="fas fa-folder-open me-2"></i> View Files
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+      <div class="col-lg-4">
+       
+        
+        <!-- About Revision Materials -->
+        <div class="card">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="fas fa-info-circle text-primary me-2"></i> 
+                    Generation Status
+                </h5>
+            </div>
+            <div class="card-body">
+                <div id="results-container">
+                    <div class="text-center py-1" id="initial-message">
+                        <i class="fas fa-info-circle text-primary me-2"></i>
+                        <p class="mb-0">Click the button to generate revision materials.</p>
+                    </div>
+                    
+                    <div class="d-none" id="loading-indicator">
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Generating revision materials...</p>
+                            <div class="progress mt-3">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" id="progress-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-none" id="result-content">
+                        <div class="alert alert-success mb-4">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Revision materials generated successfully!
+                        </div>
+                        
+                        <div class="mb-3" id="download-links">
+                            <!-- Download links will be added here -->
+                        </div>
+                    </div>
+                    
+                    <div class="d-none" id="error-message">
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <span id="error-text">Error occurred while generating documents.</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger" id="retry-button">
+                            <i class="fas fa-redo me-1"></i> Try Again
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="fas fa-file-alt me-2"></i> 
+                    Tips
+                </h5>
+            </div>
+            
+        </div>
+            <div class="card-body">
+                <p>Revision materials are an effective way to reinforce learning and help students review key concepts. They can be used for:</p>
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Exam preparation</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Consolidating knowledge</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Self-directed study</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> Classroom review activities</li>
+                </ul>
+            </div>
+        </div>
+         <!-- Results Card -->
+        
+    </div>
+</div>
+
+<!-- JavaScript for Revision Materials Generation -->
+<script>
+    // Initialize elements once DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('revisionForm');
+        const generateBtn = document.getElementById('generateBtn');
+        const initialMessage = document.getElementById('initial-message');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const resultContent = document.getElementById('result-content');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        const downloadLinks = document.getElementById('download-links');
+        const retryButton = document.getElementById('retry-button');
+        const progressBar = document.getElementById('progress-bar');
+        const updatePromptBtn = document.getElementById('update-prompt-btn');
+          // Learning outcomes and topic from hidden fields
+        const learningOutcomes = document.getElementById('hidden-learning-outcomes').value;
+        const topic = document.getElementById('hidden-topic').value;
+        
+        // Add change event listeners to all form elements
+        document.getElementById('subject').addEventListener('change', generatePrompt);
+        document.getElementById('student_level').addEventListener('change', generatePrompt);
+        document.getElementById('difficulty').addEventListener('change', generatePrompt);
+        document.getElementById('length').addEventListener('change', generatePrompt);
+        
+        // Add event listeners to checkboxes
+        document.querySelectorAll('input[name="components"]').forEach(checkbox => {
+            checkbox.addEventListener('change', generatePrompt);
+        });
+        
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', generatePrompt);
+        });
+        
+        // Update the prompt when the button is clicked (keeping this for manual refresh)
+        updatePromptBtn.addEventListener('click', function() {
+            generatePrompt();
+        });
+        
+        // Generate initial prompt on page load
+        generatePrompt();
+          // Function to generate prompt text based on form selections
+        function generatePrompt() {
+            const subject = document.getElementById('subject').value;
+            const studentLevel = document.getElementById('student_level').value;
+            const difficulty = document.getElementById('difficulty').value;
+            const length = document.getElementById('length').value;
+            
+            // Get all selected components
+            const components = [];
+            document.querySelectorAll('input[name="components"]:checked').forEach(input => {
+                components.push(input.value);
+            });
+            
+            // Start building the prompt
+            let promptPrefix = "";
+            if (subject !== "Select the subject" || studentLevel !== "Select Level") {
+                if (subject !== "Select the subject") {
+                    promptPrefix += `You are an experienced ${subject} teacher `;
+                }
+                if (studentLevel !== "Select Level") {
+                    promptPrefix += `creating revision materials for ${studentLevel} students. `;
+                }
+                promptPrefix += "\n\n";
+            }
+            
+            // Build the main prompt
+            let prompt = promptPrefix + `Create ${difficulty.toLowerCase()} level revision materials for the topic: ${topic}.\n\n`;
+            
+            // Add length requirement
+            if (length === "Short") {
+                prompt += "The revision should be less than 1000 words.\n";
+            } else if (length === "Medium") {
+                prompt += "The length of the revision material should be between 1000 and 2000 words.\n";
+            } else if (length === "Long") {
+                prompt += "The revision should be more than 2000 words, comprehensive and detailed.\n";
+            }
+            
+            // Add selected components
+            const componentNames = {
+                'key_concepts': 'key concepts',
+                'summaries': 'summaries',
+                'examples': 'examples & applications',
+                'practice_questions': 'practice questions',
+                
+            };
+            
+            const selectedComponentNames = components.map(c => componentNames[c]);
+            if (selectedComponentNames.length > 0) {
+                prompt += "Include the following types of activities: " + selectedComponentNames.join(", ") + ".\n";
+            }
+            
+            // Add learning outcomes if available
+            if (learningOutcomes.trim()) {
+                prompt += `\nThe revision materials should address the following learning outcomes:\n${learningOutcomes}\n`;
+            }
+            
+            // Update the prompt text area
+            document.getElementById('generated_prompt').value = prompt;
+        }
+        
+        // Function to show loading state
+        function showLoading() {
+            initialMessage.classList.add('d-none');
+            loadingIndicator.classList.remove('d-none');
+            resultContent.classList.add('d-none');
+            errorMessage.classList.add('d-none');
+            
+            // Start progress bar animation
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 1;
+                if (progress >= 95) {
+                    clearInterval(interval);
+                } else {
+                    progressBar.style.width = `${progress}%`;
+                }
+            }, 500);
+        }        // Function to show results
+        function showResults(data) {
+            loadingIndicator.classList.add('d-none');
+            resultContent.classList.remove('d-none');
+            
+            // Clear existing links
+            downloadLinks.innerHTML = '';
+            
+            // Add download links for each available format
+            if (data.file_url) {
+                const docxLink = document.createElement('a');
+                docxLink.href = data.file_url;
+                docxLink.className = 'btn btn-primary btn-lg w-100 mb-2';
+                docxLink.innerHTML = '<i class="fas fa-download me-2"></i> Download DOCX';
+                downloadLinks.appendChild(docxLink);
+            }
+            
+            // Add HTML download link if available
+            if (data.html_url) {
+                const htmlLink = document.createElement('a');
+                htmlLink.href = data.html_url;
+                htmlLink.className = 'btn btn-info btn-lg w-100 mb-2';
+                htmlLink.innerHTML = '<i class="fas fa-code me-2"></i> Download HTML';
+                downloadLinks.appendChild(htmlLink);
+            }
+            
+            // If no links were added, show a message
+            if (downloadLinks.children.length === 0) {
+                downloadLinks.innerHTML = '<div class="alert alert-warning">No download files available</div>';
+            }
+        }
+        
+        // Function to show error
+        function showError(message) {
+            loadingIndicator.classList.add('d-none');
+            errorMessage.classList.remove('d-none');
+            errorText.textContent = message;
+        }
+          // Handler for the generate button
+        generateBtn.addEventListener('click', function() {
+            // Get the user-edited or generated prompt
+            const instructions = document.getElementById('generated_prompt').value;
+            
+            if (!instructions.trim()) {
+                alert('Please generate a prompt for the revision materials.');
+                return;
+            }
+            
+            // Show loading indicator
+            showLoading();
+            
+            // Get output formats
+            const outputFormats = {
+                docx: document.getElementById('format_docx').checked,
+                html: document.getElementById('format_html').checked
+            };
+            
+            // Send POST request to server
+            fetch('/revision', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    instructions: instructions,
+                    output_formats: outputFormats
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    showResults(data);
+                } else {
+                    showError(data.message);
+                }
+            })
+            .catch(error => {
+                showError('Network or server error occurred: ' + error.message);
+            });
+        });
+        
+        // Retry button event handler
+        retryButton.addEventListener('click', function() {
+            errorMessage.classList.add('d-none');
+            initialMessage.classList.remove('d-none');
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,722 @@
+{% extends "base.html" %}
+
+{% block title %}Generate Presentation - SmartPlan{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="mb-0">Generate Presentation</h4>
+            </div>
+            <div class="card-body">                <p class="text-muted mb-4">Generate a presentation for: <strong>{{ topic }}</strong></p>
+                  <form id="presentationForm" method="POST">
+                    <!-- Presentation Options -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-secondary me-2"><i class="fas fa-cog"></i></span>
+                                <h5 class="mb-0">Presentation Options</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Hidden fields for topic and learning outcomes -->
+                            <input type="hidden" id="topicHidden" name="topic" value="{{ topic }}">
+                            <input type="hidden" id="learningOutcomesHidden" name="learning_outcomes" value="{{ learning_outcomes }}">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject" class="form-label fw-bold text-primary">Subject:</label>   
+                                    
+                                       <select class="form-select" id="subject" name="subject">
+                                        <option value="Select the subject" selected>Select the subject</option>
+                                        <option value="Computer Science" >Computer Science</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                        <option value="Science">Science</option>
+                                        <option value="Business">Business</option>
+                                        <option value="Engineering">Engineering</option>
+                                        <option value="Humanities">Humanities</option>
+                                        <option value="Arts">Arts</option>
+                                        <option value="Medicine">Medicine</option>
+                                        <option value="Social Sciences">Social Sciences</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="audience" class="form-label fw-bold text-primary">Audience Level:</label>    
+                                        <select class="form-select" id="audience" name="audience">
+                                        <option value="Select the level" selected>Select the level</option>
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                        <option value="Professional">Professional</option>
+                                        <option value="Academic">Academic</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="numSlides" class="form-label fw-bold text-primary">Number of Slides:</label>
+                                    <select class="form-select" id="numSlides" name="numSlides">
+                                        <option value="10">10</option>
+                                        <option value="15" selected>15</option>
+                                        <option value="20">20</option>
+                                        <option value="25">25</option>
+                                        <option value="30">30</option>
+                                    </select>
+                                </div>                                <div class="col-md-4 mb-3">
+                                    <label for="contentLength" class="form-label fw-bold text-primary">Slide Content Length:</label>
+                                    <select class="form-select" id="contentLength" name="contentLength">
+                                        <option value="Minimal">Minimal</option>
+                                        <option value="Short">Short</option>
+                                        <option value="Medium" selected>Medium</option>
+                                        <option value="Detailed">Detailed</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="theme" class="form-label fw-bold text-primary">Presentation Theme:</label>
+                                    <select class="form-select" id="theme" name="theme">
+                                        <option value="Gallery">Gallery</option>
+                                        <option value="Berlin">Berlin</option>
+                                        <option value="Facet">Facet</option>
+                                        <option value="Integral">Integral</option>
+                                        <option value="Ion">Ion</option>
+                                        <option value="Ion Boardroom">Ion Boardroom</option>
+                                        <option value="Organic">Organic</option>
+                                        <option value="Retrospect">Retrospect</option>
+                                        <option value="Slice">Slice</option>
+                                        <option value="Wisp">Wisp</option>
+                                        <option value="Badge">Badge</option>                       
+                                        <option value="Celestial">Celestial</option>
+                                        <option value="Dividend">Dividend</option>
+                                        <option value="Frame">Frame</option>
+                                        <option value="Slate">Slate</option>
+                                        <option value="Savon">Savon</option>
+                                        <option value="Atlas">Atlas</option>
+                                        <option value="Banded">Banded</option>
+                                        <option value="Basis">Basis</option>
+                                        
+                                        <option value="Curcuit">Curcuit</option>
+                                        <option value="Damask">Damask</option>
+                                        <option value="Depth">Depth</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Presentation Prompt -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-secondary me-2"><i class="fas fa-edit"></i></span>
+                                <h5 class="mb-0">Presentation Prompt</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">                            <div class="mb-3">
+                                <label for="prompt" class="form-label fw-bold text-primary">Prompt (you can customize):</label>
+                                <textarea class="form-control" id="prompt" name="prompt" rows="5" placeholder="Enter specific instructions for your presentation content, structure, or requirements..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                      <!-- Preview and Generate Buttons -->
+                    <div class="d-grid gap-2">
+                        <button type="button" id="previewBtn" class="btn btn-secondary btn-lg mb-2">
+                            <i class="fas fa-eye me-2"></i>Preview AI Response
+                        </button>
+                        <button type="submit" id="generateBtn" class="btn btn-primary btn-lg">
+                            <i class="fas fa-cog me-2"></i>Generate Presentation
+                        </button>
+                    </div>
+                    
+                    <!-- Results Display - Moved here from the bottom -->
+                    <div id="resultsContainer" class="mt-4 d-none">
+                        <div class="alert alert-success">
+                            <h5><i class="fas fa-check-circle me-2"></i>Presentation Generated!</h5>
+                            <p>Your presentation is ready to download.</p>
+                            <div class="mt-3">
+                                <a id="downloadLink" href="#" class="btn btn-success">
+                                    <i class="fas fa-download me-2"></i>Download PowerPoint
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Response Editor -->
+                    <div id="aiResponseContainer" class="mt-4 d-none">
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h5 class="mb-0"><i class="fas fa-robot me-2"></i>AI Response Editor</h5>
+                                    <button type="button" class="btn btn-sm btn-outline-secondary" id="aiResponseClose">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">                                <p class="text-muted mb-3">You can modify the AI response or delete entire slides, but slide numbers must remain in sequence (1, 2, 3...).</p>
+            
+                                <div id="slideEditorContainer">
+                                    <!-- Slides will be dynamically added here -->
+                                </div>
+                                
+                                <div class="d-flex justify-content-end mt-3">
+                                    <button type="button" id="saveResponseBtn" class="btn btn-success">
+                                        <i class="fas fa-save me-2"></i>Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Status Display -->
+                    <div id="statusContainer" class="mt-4 d-none">
+                        <div class="alert alert-info">
+                            <div class="d-flex align-items-center">
+                                <div class="spinner-border spinner-border-sm me-2" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <div>
+                                    <strong>Processing...</strong>
+                                    <p class="mb-0" id="statusMessage">Generating your presentation. This may take a few moments.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Error Display -->
+                    <div id="errorContainer" class="mt-4 d-none">
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i>Error</h5>
+                            <p id="errorMessage">There was a problem generating your presentation.</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>About This Tool</h5>
+            </div>
+            <div class="card-body">
+                <p><i class="fas fa-info-circle text-primary me-2"></i> This tool generates a PowerPoint presentation based on your topic.</p>
+                <ul class="list-group list-group-flush">                    <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Generates professional slides</li>
+                    <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Appropriate content organization</li>
+                    <li class="list-group-item"><i class="fas fa-check text-success me-2"></i> Ready to use or customize further</li>
+                </ul>
+            </div>
+        </div>
+        
+       
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('presentationForm');
+        const generateBtn = document.getElementById('generateBtn');
+        const statusContainer = document.getElementById('statusContainer');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const errorContainer = document.getElementById('errorContainer');
+        const errorMessage = document.getElementById('errorMessage');
+        const downloadLink = document.getElementById('downloadLink');
+          // Form elements for dynamic prompt update
+        const subjectSelect = document.getElementById('subject');
+        const audienceSelect = document.getElementById('audience');
+        const numSlidesSelect = document.getElementById('numSlides');        const contentLengthSelect = document.getElementById('contentLength');
+        const themeSelect = document.getElementById('theme');
+        const promptTextarea = document.getElementById('prompt');
+        
+        // Function to update prompt based on form selections
+        function updatePrompt() {
+            // Use "Computer Science" as the default subject if subjectSelect doesn't exist or has no value
+            const subject = (subjectSelect && subjectSelect.value) ? subjectSelect.value : 'Computer Science';
+            const audience = audienceSelect.value || 'Beginner';
+            const numSlides = numSlidesSelect.value || '15';
+            let contentLength = contentLengthSelect.value || 'Medium';
+            
+            // Get learning outcomes from hidden field
+            let learningOutcomes = '';
+            const learningOutcomesHidden = document.getElementById('learningOutcomesHidden');
+            if (learningOutcomesHidden && learningOutcomesHidden.value) {                learningOutcomes = learningOutcomesHidden.value;
+                // Remove any HTML tags and trim
+                try {
+                    learningOutcomes = learningOutcomes.replace(/<[^>]*>/g, '').trim();
+                } catch (e) {
+                    console.log("Error processing learning outcomes:", e);
+                }
+            }
+            
+            // Format content length description
+            if (contentLength === 'Minimal') {
+                contentLength = 'minimal amount of text (1-3 bullet points per slide)';
+            } else if (contentLength === 'Short') {
+                contentLength = 'short amount of text (3-5 bullet points per slide)';
+            } else if (contentLength === 'Medium') {
+                contentLength = 'medium amount of text (5-8 bullet points per slide)';
+            } else if (contentLength === 'Detailed') {
+                contentLength = 'detailed amount of text (8-10 bullet points per slide)';
+            }
+            
+            // Get theme
+            const theme = themeSelect.value || 'Gallery';
+              // Create new prompt text based on selections
+            const promptText = `You are a ${subject} teacher teaching a ${audience} level class.\nGenerate ${numSlides} PowerPoint presentation slides to present using the ${theme} theme.\nEach slide should have ${contentLength}.\nUse ${audience} language and structure.\nThe presentation should address the following learning outcomes:\n${learningOutcomes}`;
+            
+            // Update the prompt textarea
+            promptTextarea.value = promptText;
+        }
+          // Add event listeners to form elements to update prompt when they change
+        if (subjectSelect) subjectSelect.addEventListener('change', updatePrompt);
+        if (audienceSelect) audienceSelect.addEventListener('change', updatePrompt);
+        if (numSlidesSelect) numSlidesSelect.addEventListener('change', updatePrompt);
+        if (contentLengthSelect) contentLengthSelect.addEventListener('change', updatePrompt);
+        if (themeSelect) themeSelect.addEventListener('change', updatePrompt);
+        
+        // Preview button handling
+        const previewBtn = document.getElementById('previewBtn');
+        const aiResponseContainer = document.getElementById('aiResponseContainer');
+        const aiResponseText = document.getElementById('aiResponseText');
+        const aiResponseClose = document.getElementById('aiResponseClose');
+        const saveResponseBtn = document.getElementById('saveResponseBtn');
+
+        // Store original content and marker lines for protection
+        let originalContent = '';
+        let markerLines = [];
+        let allSlides = []; // Array to store all slide objects
+
+        // Function to parse slides from content
+        function parseSlides(content) {
+            // Split by slide markers
+            const parts = content.split(/^!!!.*$/m);
+            const headers = content.match(/^!!!.*$/gm) || [];
+            const slides = [];
+
+            // Start from index 1 because the first part is empty (content before first marker)
+            for (let i = 0; i < headers.length; i++) {
+                const slideNumber = i + 1;
+                const header = headers[i];
+                const content = parts[i + 1] || '';
+                
+                slides.push({
+                    id: 'slide-' + slideNumber,
+                    number: slideNumber,
+                    header: header,
+                    content: content.trim()
+                });
+            }
+            
+            return slides;
+        }
+
+        // Function to render all slides in the editor
+        function renderSlideEditors(slides) {
+            const container = document.getElementById('slideEditorContainer');
+            container.innerHTML = ''; // Clear existing content
+            
+            slides.forEach(slide => {
+                const slideEditor = createSlideEditor(slide);
+                container.appendChild(slideEditor);
+            });
+        }
+        
+        // Function to create a slide editor element
+        function createSlideEditor(slide) {
+            const slideDiv = document.createElement('div');
+            slideDiv.className = 'card mb-3 slide-editor';
+            slideDiv.id = slide.id;
+            slideDiv.dataset.slideNumber = slide.number;
+            
+            // Create slide header with title and delete button
+            const slideHeader = document.createElement('div');
+            slideHeader.className = 'card-header bg-light d-flex justify-content-between align-items-center';
+            
+            const slideTitle = document.createElement('h6');
+            slideTitle.className = 'mb-0';
+            slideTitle.textContent = slide.header.replace('!!!', '').trim();
+            
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn btn-sm btn-outline-danger delete-slide-btn';
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            deleteBtn.title = 'Delete Slide';
+            deleteBtn.onclick = function() { deleteSlide(slide.id); };
+            
+            slideHeader.appendChild(slideTitle);
+            slideHeader.appendChild(deleteBtn);
+            
+            // Create slide content editor
+            const slideBody = document.createElement('div');
+            slideBody.className = 'card-body';
+            
+            const slideContent = document.createElement('textarea');
+            slideContent.className = 'form-control slide-content';
+            slideContent.rows = 10;
+            slideContent.value = slide.content;
+            slideContent.placeholder = 'Enter slide content here...';
+            
+            slideBody.appendChild(slideContent);
+            
+            // Assemble the slide editor
+            slideDiv.appendChild(slideHeader);
+            slideDiv.appendChild(slideBody);
+            
+            return slideDiv;
+        }
+        
+        // Function to delete a slide
+        function deleteSlide(slideId) {
+            if (allSlides.length <= 1) {
+                showWarningAlert("Cannot delete the last slide. Presentations must have at least one slide.");
+                return;
+            }
+            
+            // Find the slide to delete
+            const slideIndex = allSlides.findIndex(slide => slide.id === slideId);
+            if (slideIndex === -1) return;
+            
+            // Remove the slide from our array
+            allSlides.splice(slideIndex, 1);
+            
+            // Renumber remaining slides
+            allSlides.forEach((slide, index) => {
+                slide.number = index + 1;
+                slide.id = 'slide-' + slide.number;
+                
+                // Update the header to reflect new slide number
+                slide.header = slide.header.replace(/Slide\s+\d+/, 'Slide ' + slide.number);
+            });
+            
+            // Re-render all slides
+            renderSlideEditors(allSlides);
+        }
+        
+        // Function to collect content from all slide editors
+        function collectSlideContent() {
+            let compiledContent = '';
+            
+            // Get all slide editors in order
+            allSlides.forEach(slide => {
+                // Find the DOM element
+                const slideDiv = document.getElementById(slide.id);
+                const contentArea = slideDiv.querySelector('.slide-content');
+                
+                // Update the slide object with the latest content
+                slide.content = contentArea.value;
+                
+                // Add to the compiled content
+                compiledContent += slide.header + '\n\n' + slide.content + '\n\n';
+            });
+            
+            return compiledContent.trim();
+        }
+
+        // Function to protect marker lines (!!!)
+        function protectMarkerLines() {
+            originalContent = aiResponseText ? aiResponseText.value : '';
+            
+            // Parse slides from the content
+            allSlides = parseSlides(originalContent);
+            
+            // Render slide editors
+            renderSlideEditors(allSlides);
+            
+            // Store marker lines for reference
+            markerLines = originalContent.split('\n')
+                .filter(line => line.trim().startsWith('!!!'))
+                .map(line => line.trim());
+            
+            // Add input event listener to prevent deletion of marker lines
+            aiResponseText.addEventListener('input', validateMarkerLines);
+        }        // Function to validate that marker lines maintain proper sequence
+        function validateMarkerLines() {
+            const currentContent = aiResponseText.value;
+            const currentLines = currentContent.split('\n');
+            
+            // Extract current marker lines with slide numbers
+            const currentMarkers = currentLines
+                .filter(line => line.trim().startsWith('!!!'))
+                .map(line => {
+                    // Extract slide number from the marker
+                    const match = line.match(/^!!!\s+Slide\s+(\d+):/i);
+                    return match ? { 
+                        text: line.trim(),
+                        number: parseInt(match[1], 10) 
+                    } : null;
+                })
+                .filter(item => item !== null);
+            
+            // Check if marker sequence is valid (continuous numbers starting from 1)
+            let isSequenceValid = true;
+            if (currentMarkers.length > 0) {
+                // Check if numbers are sequential
+                for (let i = 0; i < currentMarkers.length; i++) {
+                    if (currentMarkers[i].number !== i + 1) {
+                        isSequenceValid = false;
+                        break;
+                    }
+                }
+            }
+            
+            // If sequence is invalid, restore and show warning
+            if (!isSequenceValid) {
+                // Store cursor position
+                const cursorPos = aiResponseText.selectionStart;
+                
+                // Restore original content
+                aiResponseText.value = originalContent;
+                
+                // Try to restore cursor position
+                try {
+                    aiResponseText.setSelectionRange(cursorPos, cursorPos);
+                } catch (e) {
+                    console.error("Error setting selection range:", e);
+                }
+                
+                // Show warning notification
+                showWarningAlert("Please maintain slide numbering sequence. You can delete entire slides, but slide numbers must remain sequential (1, 2, 3...).");
+                
+                // Update the original content (it might have valid changes in other parts)
+                originalContent = aiResponseText.value;
+            } else {
+                // Update the original content with valid changes and update marker lines
+                originalContent = currentContent;
+                
+                // Update marker lines array with new markers
+                markerLines = currentMarkers.map(marker => marker.text);
+            }
+        }
+        
+        // Function to display warning alert
+        function showWarningAlert(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-warning alert-dismissible fade show';
+            alertDiv.innerHTML = `
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            // Insert at the top of the AI response container
+            const container = document.querySelector('#aiResponseContainer .card-body');
+            container.insertBefore(alertDiv, container.firstChild.nextSibling);
+            
+            // Auto dismiss after 3 seconds
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 150);
+            }, 3000);
+        }
+        
+        previewBtn.addEventListener('click', function() {
+            // Show loading status
+            statusContainer.classList.remove('d-none');
+            statusMessage.textContent = "Generating AI response...";
+            
+            // Disable the preview button
+            previewBtn.disabled = true;
+            // Get form data
+            const formData = new FormData(form);
+            formData.append('preview_only', 'true');
+            
+            // Send AJAX request to generate the AI response
+            fetch('/presentation/preview', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide status container
+                statusContainer.classList.add('d-none');
+                  if (data.status === 'success') {
+                    // Show AI response container
+                    aiResponseContainer.classList.remove('d-none');
+                    
+                    // Store the content and initialize slide editors
+                    originalContent = data.content;
+                    
+                    // Parse slides and render editors
+                    allSlides = parseSlides(originalContent);
+                    renderSlideEditors(allSlides);
+                    
+                    // Highlight the UI elements for better user experience
+                    highlightMarkerLines();
+                } else {
+                    // Show error container
+                    errorContainer.classList.remove('d-none');
+                    errorMessage.textContent = data.message;
+                }
+                
+                // Re-enable the preview button
+                previewBtn.disabled = false;
+            })
+            .catch(error => {
+                // Hide status container
+                statusContainer.classList.add('d-none');
+                
+                // Show error container
+                errorContainer.classList.remove('d-none');
+                errorMessage.textContent = 'An unexpected error occurred. Please try again.';
+                
+                // Re-enable the preview button
+                previewBtn.disabled = false;
+                
+                console.error('Error:', error);            });
+        });
+        
+        // Function to visually highlight marker lines
+        function highlightMarkerLines() {
+            // We can't directly style parts of a textarea, but we can enhance the warning
+            // and make the markers visually distinct in other ways
+            const warningText = document.querySelector('#aiResponseContainer .card-body p');
+            warningText.innerHTML = `
+                <div class="alert alert-warning mb-2">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Important:</strong> Lines starting with !!! define slide boundaries.
+                    <span class="text-info">You can delete entire slides, but slide numbers must remain in sequence (1, 2, 3...).</span>
+                    <br>Never delete individual marker lines or change their slide numbers.
+                </div>
+            `;
+        }
+          // Close AI response editor
+        aiResponseClose.addEventListener('click', function() {
+            aiResponseContainer.classList.add('d-none');
+        });
+        
+        // Save AI response changes
+        saveResponseBtn.addEventListener('click', function() {
+            // Collect content from all slide editors
+            const updatedContent = collectSlideContent();
+            
+            // Show loading status
+            statusContainer.classList.remove('d-none');
+            statusMessage.textContent = "Saving changes...";
+            
+            // Disable the save button
+            saveResponseBtn.disabled = true;
+            
+            // Send updated content to server
+            fetch('/presentation/save-response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: updatedContent
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide status container
+                statusContainer.classList.add('d-none');
+                
+                if (data.status === 'success') {
+                    // Remove/hide the Results Display container if it's visible
+                    if (!resultsContainer.classList.contains('d-none')) {
+                        resultsContainer.classList.add('d-none');
+                    }
+                    
+                    // Show success message below the Save Changes button
+                    const saveButtonContainer = document.querySelector('#aiResponseContainer .d-flex.justify-content-end');
+                    
+                    // Create success alert
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success mt-2 w-100';
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-check-circle me-2"></i>
+                        AI response saved successfully!
+                    `;
+                    
+                    // Insert after the button container
+                    saveButtonContainer.parentNode.insertBefore(alertDiv, saveButtonContainer.nextSibling);
+                    
+                    // Auto dismiss after 3 seconds
+                    setTimeout(() => {
+                        alertDiv.classList.remove('show');
+                        setTimeout(() => alertDiv.remove(), 150);
+                    }, 3000);
+                } else {
+                    // Show error container
+                    errorContainer.classList.remove('d-none');
+                    errorMessage.textContent = data.message;
+                }
+                
+                // Re-enable the save button
+                saveResponseBtn.disabled = false;
+            })
+            .catch(error => {
+                // Hide status container
+                statusContainer.classList.add('d-none');
+                
+                // Show error container
+                errorContainer.classList.remove('d-none');
+                errorMessage.textContent = 'An unexpected error occurred. Please try again.';
+                
+                // Re-enable the save button
+                saveResponseBtn.disabled = false;
+                
+                console.error('Error:', error);
+            });
+        });
+        
+        // Form submission for generating presentation
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show status and hide other containers
+            statusContainer.classList.remove('d-none');
+            resultsContainer.classList.add('d-none');
+            errorContainer.classList.add('d-none');
+            
+            // Disable the generate button
+            generateBtn.disabled = true;
+            
+            // Get form data
+            const formData = new FormData(form);
+            
+            // Send AJAX request
+            fetch('/presentation', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide status container
+                statusContainer.classList.add('d-none');
+                
+                if (data.status === 'success') {
+                    // Show results container
+                    resultsContainer.classList.remove('d-none');
+                    
+                    // Set download link
+                    downloadLink.href = data.file_url;
+                } else {
+                    // Show error container
+                    errorContainer.classList.remove('d-none');
+                    errorMessage.textContent = data.message;
+                }
+                
+                // Re-enable the generate button
+                generateBtn.disabled = false;
+            })
+            .catch(error => {
+                // Hide status container
+                statusContainer.classList.add('d-none');
+                
+                // Show error container
+                errorContainer.classList.remove('d-none');
+                errorMessage.textContent = 'An unexpected error occurred. Please try again.';
+                
+                // Re-enable the generate button
+                generateBtn.disabled = false;
+                
+                console.error('Error:', error);
+            });
+        });
+
+        // Initial update of the prompt
+        updatePrompt();
+    });
+</script>
+{% endblock %}

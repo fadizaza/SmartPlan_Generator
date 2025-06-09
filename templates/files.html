@@ -1,0 +1,384 @@
+{% extends "base.html" %}
+
+{% block title %}View Generated Files - SmartPlan{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Generated Files</h4>
+                <div>
+                    <button id="showFoldersBtn" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-home"></i> Home
+                    </button>
+                    {% if topic %}
+                    <span class="badge bg-primary">Topic: {{ topic }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Folders view - initially hidden -->
+                <div id="foldersView" style="display: none;" class="mb-4">
+                    <h5 class="border-bottom pb-2 mb-3">Your Topics</h5>
+                    <div id="foldersList">
+                        <!-- Folders will be loaded here via AJAX -->
+                        <div class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Files view -->
+                <div id="filesView">
+                    {% if files %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>File Name</th>
+                                    <th>Type</th>
+                                    <th>Size</th>
+                                    <th>Last Modified</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in files %}
+                                <tr>
+                                    <td>{{ file.name }}</td>
+                                    <td>
+                                        {% if file.name.endswith('.docx') %}
+                                        <span class="badge bg-primary">Word Document</span>
+                                        {% elif file.name.endswith('.pptx') %}
+                                        <span class="badge bg-danger">PowerPoint</span>
+                                        {% elif file.name.endswith('.pdf') %}
+                                        <span class="badge bg-success">PDF</span>
+                                        {% elif file.name.endswith('.txt') %}
+                                        <span class="badge bg-secondary">Text</span>
+                                        {% else %}
+                                        <span class="badge bg-info">File</span>
+                                        {% endif %}
+                                    </td>                                <td>{{ file.size }}</td>
+                                    <td>{{ file.modified }}</td>
+                                    <td>
+                                        <a href="{{ url_for('download_file', filename=file.name) }}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-download"></i> Download
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> No files have been generated yet.
+                        {% if not topic %}
+                        <div class="mt-3">
+                            <a href="/learning_outcomes" class="btn btn-primary">Set Topic First</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Generate More Content</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2 mb-3">
+                        <a href="/questions" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-question mb-2"></i><br>
+                            Questions
+                        </a>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <a href="/worksheet" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-file-alt mb-2"></i><br>
+                            Worksheet
+                        </a>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <a href="/lesson_plan" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-book mb-2"></i><br>
+                            Lesson Plan
+                        </a>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <a href="/presentation" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-image mb-2"></i><br>
+                            Presentation
+                        </a>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <a href="/revision" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-pencil-alt mb-2"></i><br>
+                            Revision
+                        </a>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <a href="/learning_outcomes" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-edit mb-2"></i><br>
+                            Change Topic
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Check if we have any files
+        const filesCount = {{ files|length }};
+        if (filesCount === 0) {
+            // Show a message if no files
+            if ("{{ topic }}") {
+                showAlert('No files have been generated yet. Start by creating some content!', 'info');
+            } else {
+                showAlert('Please set a topic first before generating files.', 'warning');
+            }
+        }
+
+        // Track current folder for navigation
+        let currentFolder = "";
+        
+        // Function to load folders
+        function loadFolders(folderPath = "") {
+            currentFolder = folderPath;
+            
+            // Show loading indicator
+            $("#foldersList").html(
+                '<div class="text-center">' +
+                '<div class="spinner-border text-primary" role="status">' +
+                '<span class="visually-hidden">Loading...</span>' +
+                '</div>' +
+                '</div>'
+            );
+            
+            // Make AJAX request to get folders
+            $.ajax({
+                url: "{{ url_for('get_user_folders') }}",
+                type: "GET",
+                data: { folder: folderPath },
+                success: function(response) {
+                    if (response.status === "success") {
+                        // Clear loading indicator
+                        $("#foldersList").empty();
+                        
+                        // Create breadcrumb navigation
+                        let breadcrumbHtml = '<nav aria-label="breadcrumb" class="mb-3">' +
+                                             '<ol class="breadcrumb">';
+                        
+                        response.breadcrumbs.forEach(function(crumb) {
+                            if (crumb.path === response.current_folder) {
+                                breadcrumbHtml += '<li class="breadcrumb-item active" aria-current="page">' + crumb.name + '</li>';
+                            } else {
+                                breadcrumbHtml += '<li class="breadcrumb-item"><a href="#" class="folder-nav" data-path="' + 
+                                                 crumb.path + '">' + crumb.name + '</a></li>';
+                            }
+                        });
+                        
+                        breadcrumbHtml += '</ol></nav>';
+                        $("#foldersList").append(breadcrumbHtml);
+                        
+                        // Load both folders and files for the current location
+                        loadFolderContents(folderPath);
+                    } else {
+                        // Error loading folders
+                        $("#foldersList").html(
+                            '<div class="alert alert-danger">' +
+                            '<i class="fas fa-exclamation-circle me-2"></i> ' + response.message +
+                            '</div>'
+                        );
+                    }
+                },
+                error: function() {
+                    // AJAX error
+                    $("#foldersList").html(
+                        '<div class="alert alert-danger">' +
+                        '<i class="fas fa-exclamation-circle me-2"></i> Failed to load folders. Please try again.' +
+                        '</div>'
+                    );
+                }
+            });
+        }
+        
+        // Function to load folder contents (both folders and files)
+        function loadFolderContents(folderPath) {
+            // First load subfolders
+            $.ajax({
+                url: "{{ url_for('get_user_folders') }}",
+                type: "GET",
+                data: { folder: folderPath },
+                success: function(response) {
+                    if (response.status === "success") {
+                        // Add table for contents if not empty
+                        if (response.folders.length > 0) {
+                            let foldersHtml = 
+                                '<h5>Folders</h5>' +
+                                '<div class="table-responsive mb-4">' +
+                                '<table class="table table-hover">' +
+                                '<thead>' +
+                                '<tr>' +
+                                '<th>Folder Name</th>' +
+                                '<th>Last Modified</th>' +
+                                '<th>Files</th>' +
+                                '<th>Actions</th>' +
+                                '</tr>' +
+                                '</thead>' +
+                                '<tbody>';
+
+                            // Populate folders as table rows
+                            response.folders.forEach(function(folder) {
+                                foldersHtml += 
+                                    '<tr>' +
+                                    '<td><i class="fas fa-folder text-warning me-2"></i>' + folder.name + '</td>' +
+                                    '<td>' + folder.modified + '</td>' +
+                                    '<td><span class="badge bg-info">' + folder.file_count + ' files</span></td>' +
+                                    '<td>' +
+                                    '<button class="btn btn-sm btn-primary folder-nav" data-path="' + folder.path + '">' +
+                                    '<i class="fas fa-folder-open"></i> Open' +
+                                    '</button>' +
+                                    '</td>' +
+                                    '</tr>';
+                            });
+
+                            foldersHtml += '</tbody></table></div>';
+                            $("#foldersList").append(foldersHtml);
+                        }
+                        
+                        // Now load files in the current folder
+                        loadFiles(folderPath);
+                    }
+                }
+            });
+        }
+        
+        // Function to load files in a folder
+        function loadFiles(folderPath) {
+            $.ajax({
+                url: "{{ url_for('get_folder_files') }}",
+                type: "GET",
+                data: { folder: folderPath },
+                success: function(response) {
+                    if (response.status === "success") {
+                        if (response.files.length > 0) {
+                            let filesHtml = 
+                                '<h5>Files</h5>' +
+                                '<div class="table-responsive">' +
+                                '<table class="table table-hover">' +
+                                '<thead>' +
+                                '<tr>' +
+                                '<th>File Name</th>' +
+                                '<th>Type</th>' +
+                                '<th>Size</th>' +
+                                '<th>Last Modified</th>' +
+                                '<th>Actions</th>' +
+                                '</tr>' +
+                                '</thead>' +
+                                '<tbody>';
+
+                            // Populate files as table rows
+                            response.files.forEach(function(file) {
+                                let badge = '';
+                                switch(file.type) {
+                                    case 'Word Document':
+                                        badge = '<span class="badge bg-primary">Word Document</span>';
+                                        break;
+                                    case 'PowerPoint':
+                                        badge = '<span class="badge bg-danger">PowerPoint</span>';
+                                        break;
+                                    case 'PDF':
+                                        badge = '<span class="badge bg-success">PDF</span>';
+                                        break;
+                                    case 'Text':
+                                        badge = '<span class="badge bg-secondary">Text</span>';
+                                        break;
+                                    case 'HTML':
+                                        badge = '<span class="badge bg-info">HTML</span>';
+                                        break;
+                                    default:
+                                        badge = '<span class="badge bg-info">File</span>';
+                                }
+                                
+                                filesHtml += 
+                                    '<tr>' +
+                                    '<td><i class="fas fa-file text-primary me-2"></i>' + file.name + '</td>' +
+                                    '<td>' + badge + '</td>' +
+                                    '<td>' + file.size + '</td>' +
+                                    '<td>' + file.modified + '</td>' +
+                                    '<td>' +
+                                    '<a href="/download/' + encodeURIComponent(file.path) + '" class="btn btn-sm btn-primary">' +
+                                    '<i class="fas fa-download"></i> Download' +
+                                    '</a>' +
+                                    '</td>' +
+                                    '</tr>';
+                            });
+
+                            filesHtml += '</tbody></table></div>';
+                            $("#foldersList").append(filesHtml);
+                        } else if (response.folders && response.folders.length === 0) {
+                            // Only show empty message if both folders and files are empty
+                            $("#foldersList").append(
+                                '<div class="alert alert-info">' +
+                                '<i class="fas fa-info-circle me-2"></i> This folder is empty.' +
+                                '</div>'
+                            );
+                        }
+                    } else {
+                        $("#foldersList").append(
+                            '<div class="alert alert-danger">' +
+                            '<i class="fas fa-exclamation-circle me-2"></i> ' + response.message +
+                            '</div>'
+                        );
+                    }
+                },
+                error: function() {
+                    $("#foldersList").append(
+                        '<div class="alert alert-danger">' +
+                        '<i class="fas fa-exclamation-circle me-2"></i> Failed to load files. Please try again.' +
+                        '</div>'
+                    );
+                }
+            });
+        }
+
+        // Home button functionality
+        $("#showFoldersBtn").click(function() {
+            // Toggle visibility of folders and files views
+            if ($("#foldersView").is(":visible")) {
+                $("#foldersView").hide();
+                $("#filesView").show();
+                $(this).html('<i class="fas fa-home"></i> Home');
+            } else {
+                // Load folders from root
+                loadFolders("");
+                
+                // Show folders view, hide files view
+                $("#foldersView").show();
+                $("#filesView").hide();
+                $(this).html('<i class="fas fa-arrow-left"></i> Back to Files');
+            }
+        });
+        
+        // Handle folder navigation by delegating event to parent
+        $(document).on('click', '.folder-nav', function(e) {
+            e.preventDefault();
+            const folderPath = $(this).data('path');
+            loadFolders(folderPath);
+        });
+    });
+</script>
+{% endblock %}

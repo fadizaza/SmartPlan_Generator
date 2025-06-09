@@ -1,0 +1,541 @@
+{% extends "base.html" %}
+
+{% block title %}Generate Lesson Plan - SmartPlan{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="mb-0">Generate Lesson Plan</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">Generate a comprehensive lesson plan for: <strong>{{ topic }}</strong></p>
+                
+                <form id="lessonPlanForm" method="POST">
+                    <!-- Subject and Level Selection -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-secondary me-2"><i class="fas fa-graduation-cap"></i></span>
+                                <h5 class="mb-0">General Settings</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject" class="form-label fw-bold text-primary">Subject:</label>
+                                    <select class="form-select" id="subject" name="subject">
+                                        <option selected>Select the subject</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                        <option value="Science">Science</option>
+                                        <option value="Languages">Languages</option>
+                                        <option value="Social Studies">Social Studies</option>
+                                        <option value="Arts">Arts</option>
+                                        <option value="Physical Education">Physical Education</option>
+                                        <option value="Engineering">Engineering</option>
+                                        <option value="Business">Business</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="student_level" class="form-label fw-bold text-primary">Student Level:</label>
+                                    <select class="form-select" id="student_level" name="student_level">
+                                        <option selected>Select Level</option>
+                                        <option value="Elementary">Elementary</option>
+                                        <option value="Middle School">Middle School</option>
+                                        <option value="High School">High School</option>
+                                        <option value="College">College</option>
+                                        <option value="Adult Education">Adult Education</option>
+                                        <option value="Professional">Professional</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Learning Objectives -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-primary me-2"><i class="fas fa-bullseye"></i></span>
+                                <h5 class="mb-0">Learning Objectives / Outcomes</h5>
+                            </div>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="include_objectives" name="include_objectives" checked>
+                                <label class="form-check-label" for="include_objectives">Include in lesson plan</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <textarea class="form-control" id="learning_objectives" name="learning_objectives" rows="3" placeholder="Enter learning objectives or use the provided ones from previous page">{{ learning_outcomes }}</textarea>
+                        </div>
+                    </div>
+
+                    <!-- Lesson Plan Sections -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-info me-2"><i class="fas fa-list"></i></span>
+                                <h5 class="mb-0">Lesson Plan Sections</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="materials_resources" name="sections[]" value="materials_resources" checked>
+                                        <label class="form-check-label" for="materials_resources">
+                                            Resources Needed
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="instructional_steps" name="sections[]" value="instructional_steps" checked>
+                                        <label class="form-check-label" for="instructional_steps">
+                                            Instructional Steps / Procedure
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="assessment" name="sections[]" value="assessment" checked >
+                                        <label class="form-check-label" for="assessment">
+                                            Assessment / Evaluation
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="vocabulary" name="sections[]" value="vocabulary" checked >
+                                        <label class="form-check-label" for="vocabulary">
+                                            Vocabulary
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="guided_practice" name="sections[]" value="guided_practice" checked>
+                                        <label class="form-check-label" for="guided_practice">
+                                            Guided Practice
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="closure" name="sections[]" value="closure" checked>
+                                        <label class="form-check-label" for="closure">
+                                            Closure
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="intro_warmup" name="sections[]" value="intro_warmup" checked>
+                                        <label class="form-check-label" for="intro_warmup">
+                                            Introduction / Warm-Up
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="independent_practice" name="sections[]" value="independent_practice" checked>
+                                        <label class="form-check-label" for="independent_practice">
+                                            Independent Practice
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="differentiation" name="sections[]" value="differentiation" checked>
+                                        <label class="form-check-label" for="differentiation">
+                                            Differentiation
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="teacher_directed" name="sections[]" value="teacher_directed" checked>
+                                        <label class="form-check-label" for="teacher_directed">
+                                            Teacher Directed Activities
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="student_directed" name="sections[]" value="student_directed" checked>
+                                        <label class="form-check-label" for="student_directed">
+                                            Student Directed Activities
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="extension_activities" name="sections[]" value="extension_activities" checked>
+                                        <label class="form-check-label" for="extension_activities">
+                                            Extension, Refinement, and Practice Activities
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="media_technology" name="sections[]" value="media_technology" checked>
+                                        <label class="form-check-label" for="media_technology">
+                                            Use of Media & Technology
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="cooperative_groupings" name="sections[]" value="cooperative_groupings" checked>
+                                        <label class="form-check-label" for="cooperative_groupings">
+                                            Cooperative Groupings
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instructions -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="badge rounded-circle bg-secondary me-2"><i class="fas fa-info-circle"></i></span>
+                                    <h5 class="mb-0 d-inline">Prompt to be sent to the AI</h5>
+                                </div>
+                                <span class="badge bg-success" id="prompt-update-badge" style="display: none;">Updated!</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="instructions" class="form-label">Customize your lesson plan generation:</label>
+                                <textarea class="form-control" id="instructions" name="instructions" rows="5" placeholder="Add any specific requirements for your lesson plan...">
+                                </textarea>
+                                <div class="form-text mt-2">Leave the default instructions or customize for your specific needs.</div>
+                            </div>
+                        </div>
+                    </div>
+                      <!-- Output Formats -->
+                    <div class="card mb-4" id="outputFormatsCard">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-secondary me-2"><i class="fas fa-file-alt"></i></span>
+                                <h5 class="mb-0">Output Formats:</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">                            
+                            <div class="row ms-2">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <div class="form-check me-2">
+                                            <input class="form-check-input" type="checkbox" id="format_docx" name="format_docx" value="true" checked>
+                                            <label class="form-check-label" for="format_docx">DOCX</label>
+                                        </div>
+                                        <select class="form-select form-select-sm ms-2" id="docx_template" name="docx_template" style="width: auto; min-width: 150px;">
+                                            <option value="template1">Template 1</option>
+                                            <option value="template2">Template 2</option>
+                                            <option value="template3">Template 3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="format_html" name="format_html" value="true" >
+                                        <label class="form-check-label" for="format_html">HTML</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Buttons -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" id="generate-btn" class="btn btn-accent btn-lg">
+                            <i class="fas fa-cog me-2"></i> Generate Lesson Plan
+                        </button>
+                        <a href="/" class="btn btn-outline-secondary">Cancel</a>
+                        <a href="/files" class="btn btn-primary">
+                            <i class="fas fa-folder-open me-2"></i> View Files
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <div class="sidebar">
+            <h4 class="mb-4">Generation Status</h4>
+            
+            <!-- Progress indicator -->
+            <div class="progress-spinner text-center" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2" id="progress-text">Processing: 0%</p>
+                <div class="progress mt-2">
+                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                </div>
+                <p class="text-muted mt-3 small">Please wait while your lesson plan is being generated...</p>
+            </div>
+            
+            <!-- Success message (initially hidden) -->
+            <div id="success-message" style="display: none;">
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i> Lesson plan generated successfully!
+                </div>
+                <!-- Download buttons will be added here dynamically -->
+            </div>
+            
+            <!-- Tips -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Tips</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Include timeframes for each section</li>
+                        <li class="list-group-item">Specify materials needed for activities</li>
+                        <li class="list-group-item">Consider diverse learning styles in activities</li>
+                        <li class="list-group-item">Add assessment methods to measure outcomes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+        // Initialize tooltips if needed
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        
+        const subject = $('#subject').val();
+        const studentLevel = $('#student_level').val();
+        
+        // Function to update the custom instructions based on user selections
+        function updateCustomInstructions() {
+            const includeObjectives = $('#include_objectives').is(':checked');
+            const subject = $('#subject').val();
+            const studentLevel = $('#student_level').val();
+            const learningObjectives = $('#learning_objectives').val();
+            
+            // Get selected sections
+            const selectedSections = [];
+            $('input[name="sections[]"]:checked').each(function() {
+                selectedSections.push($(this).val());
+            });
+            
+            // Add subject and level if specified
+            let instructions = ""
+            //"Create a lesson plan for the following topic: {{ topic }}\n\n";
+            if (studentLevel !== "Select Level") {
+                instructions += `You are a ${subject} teacher for ${studentLevel} level students.\n`;
+            } else if (subject !== "Select the subject") {
+                instructions += `You are a ${subject} teacher, \n\n`;
+            }
+            instructions += "Your task is to create a lesson plan for the following topic: {{ topic }}\n\n";
+            // Add learning objectives if included
+            if (includeObjectives && learningObjectives.trim()) {
+                instructions += "The lesson plan should cover the following Learning Objectives / Outcomes:\n" + learningObjectives + "\n";
+            }
+            instructions += "\nPlease include the following sections in the lesson plan:\n";
+            // First add the checked sections
+            selectedSections.forEach(function(section) {
+                const sectionNames = {
+                    "materials_resources": "Materials / Resources Needed",
+                    "instructional_steps": "Instructional Steps / Procedure",
+                    "assessment": "Assessment / Evaluation",
+                    "vocabulary": "Vocabulary",
+                    "guided_practice": "Guided Practice (10-15 minutes)",
+                    "closure": "Closure (5 minutes)",
+                    "intro_warmup": "Introduction / Warm-Up (5-10 minutes)",
+                    "independent_practice": "Independent Practice (10-15 minutes)",
+                    "differentiation": "Differentiation",
+                    "teacher_directed": "Teacher Directed Activities",
+                    "student_directed": "Student Directed Activities",
+                    "extension_activities": "Extension, Refinement, and Practice Activities",
+                    "media_technology": "Use of Media & Technology",
+                    "cooperative_groupings": "Cooperative Groupings"
+                };
+                
+                if (section in sectionNames) {
+                    instructions += "- " + sectionNames[section] + "\n";
+                }
+            });
+            
+            // Update the custom instructions field
+            $('#instructions').val(instructions);
+            
+            // Show a brief "Updated" message
+            $('#prompt-update-badge').fadeIn(200).delay(1000).fadeOut(500);
+        }
+
+        $('#learning_objectives').on('input', updateCustomInstructions);
+        $('#include_objectives').change(updateCustomInstructions);
+        // Add change event handlers to all form elements that should trigger an update
+        $('#subject, #student_level').change(updateCustomInstructions);
+        $('#learning_objectives').on('input', updateCustomInstructions);
+        $('#include_objectives').change(updateCustomInstructions);
+        $('input[name="sections[]"]').change(updateCustomInstructions);
+        
+        // Form submission
+        $('#lessonPlanForm').submit(function(event) {
+            event.preventDefault();
+            
+            // Show spinner
+            $('.progress-spinner').show();
+            $('#success-message').hide();
+            
+            // Get form data and format preferences
+            const instructionsText = $('#instructions').val();
+            const subject = $('#subject').val();
+            const studentLevel = $('#student_level').val();
+            const learningObjectives = $('#learning_objectives').val();
+            const includeObjectives = $('#include_objectives').is(':checked');
+            
+            // Get selected sections
+            const selectedSections = [];
+            $('input[name="sections[]"]:checked').each(function() {
+                selectedSections.push($(this).val());
+            });
+            
+            const outputFormats = {
+                docx: $('#format_docx').is(':checked'),
+                html: $('#format_html').is(':checked'),
+                docx_template: $('#docx_template').val() // Get the selected template
+            };
+            
+            // If nothing selected, default to DOCX
+            if (!outputFormats.docx && !outputFormats.html) {
+                outputFormats.docx = true;
+                $('#format_docx').prop('checked', true);
+            }
+            
+            // Make sure at least one format is selected
+            if (!outputFormats.docx && !outputFormats.html) {
+                // If nothing selected, default to DOCX
+                outputFormats.docx = true;
+                $('#format_docx').prop('checked', true);
+            }   type: 'POST',
+              // Submit data via AJAX
+            $.ajax({
+                url: '/lesson_plan',
+                type: 'POST',
+                data: {
+                    subject: subject,
+                    student_level: studentLevel,
+                    learning_objectives: learningObjectives,
+                    instructions: instructionsText,
+                    include_objectives: includeObjectives,
+                    selected_sections: JSON.stringify(selectedSections),
+                    output_formats: JSON.stringify(outputFormats) // This now includes the template selection
+                },
+                success: function(response) {
+                    if (response.status === 'success') {
+                        $('.progress-spinner').hide();
+                        $('#success-message').show();
+                        
+                        // Clear existing download buttons
+                        $('#success-message .download-buttons-container').remove();
+                        let downloadButtonsHtml = '<div class="download-buttons-container d-grid gap-2 mt-3">';
+                        
+                        // Add DOCX download button if available
+                        if (response.docx_url) {
+                            downloadButtonsHtml += `
+                                <a href="${response.docx_url}" class="btn btn-primary">
+                                    <i class="fas fa-download me-2"></i> Download DOCX
+                                </a>`;
+                        }
+                        
+                        // Add HTML view button if available
+                        if (response.html_url) {
+                            downloadButtonsHtml += `
+                                <a href="${response.html_url}" class="btn btn-info" target="_blank">
+                                    <i class="fas fa-globe me-2"></i> View as HTML
+                                </a>`;
+                        }
+                        
+                        downloadButtonsHtml += '</div>';
+                        // Add download buttons to success message
+                        $('#success-message').append(downloadButtonsHtml);
+                    } else {
+                        $('.progress-spinner').hide();
+                        showAlert(response.message, 'danger');
+                    }
+                },
+                error: function() {
+                    $('.progress-spinner').hide();
+                    showAlert('An error occurred. Please try again.', 'danger');
+                }
+            });
+            
+            // Start progress simulation
+            simulateProgress();
+        });
+        
+        // Simulate progress for better UX
+        function simulateProgress() {
+            let progress = 0;
+            const interval = setInterval(function() {
+                progress += 5;
+                
+                if (progress > 95) {
+                    clearInterval(interval);
+                    return;
+                }
+                
+                // Update progress bar and text
+                $('.progress-bar').css('width', progress + '%');
+                $('#progress-text').text('Processing: ' + progress + '%');
+                
+                // Check status from server
+                checkGenerationStatus();
+            }, 2000);
+        }
+        
+        // Check generation status
+        function checkGenerationStatus() {
+            $.get('/status', function(data) {
+                if (data.status === 'completed') {
+                    // If complete, stop simulation and show success
+                    $('.progress-bar').css('width', '100%');
+                    $('#progress-text').text('Processing: 100%');
+                }
+            });
+        }
+        
+        // Helper function to show alerts
+        function showAlert(message, type) {
+            const alertHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+            
+            // Insert the alert at the top of the form
+            $('#lessonPlanForm').prepend(alertHTML);
+            
+            // Auto-dismiss after 5 seconds
+            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 5000);
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}SmartPlan - AI-powered Lesson Planning{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Main Content Area -->
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Lesson Generator Tools</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">Generate comprehensive teaching materials with AI assistance.</p>
+                
+                <!-- Tools Grid -->
+                <div class="row">
+                    <!-- Learning Outcomes Tool -->
+                    <div class="col-md-6 mb-4">
+                        <a href="/learning_outcomes" class="text-decoration-none">
+                            <div class="card tool-card">
+                                <div class="card-body text-center">
+                                    <div class="tool-icon">
+                                        <i class="fas fa-bullseye"></i>
+                                    </div>
+                                    <h5 class="card-title">Add Learning Outcomes / Topic</h5>
+                                    <p class="card-text text-muted">Define learning objectives or a topic to start</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Questions Tool -->
+                    <div class="col-md-6 mb-4">
+                        <a href="/questions" class="text-decoration-none">
+                            <div class="card tool-card">
+                                <div class="card-body text-center">
+                                    <div class="tool-icon">
+                                        <i class="fas fa-question"></i>
+                                    </div>
+                                    <h5 class="card-title">Generate Questions</h5>
+                                    <p class="card-text text-muted">Create assessment questions</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Revision Tool -->
+                    <div class="col-md-6 mb-4">
+                        <a href="/revision" class="text-decoration-none">
+                            <div class="card tool-card">
+                                <div class="card-body text-center">
+                                    <div class="tool-icon">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </div>
+                                    <h5 class="card-title">Generate Revision</h5>
+                                    <p class="card-text text-muted">Create revision materials</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Lesson Plan Tool -->
+                    <div class="col-md-6 mb-4">
+                        <a href="/lesson_plan" class="text-decoration-none">
+                            <div class="card tool-card">
+                                <div class="card-body text-center">
+                                    <div class="tool-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <h5 class="card-title">Generate Lesson Plan</h5>
+                                    <p class="card-text text-muted">Create a structured lesson plan</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Presentation Tool -->
+                    <div class="col-md-6 mb-4">
+                        <a href="/presentation" class="text-decoration-none">
+                            <div class="card tool-card">
+                                <div class="card-body text-center">
+                                    <div class="tool-icon">
+                                        <i class="fas fa-image"></i>
+                                    </div>
+                                    <h5 class="card-title">Generate Presentation</h5>
+                                    <p class="card-text text-muted">Create a PowerPoint presentation</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Worksheet Tool -->
+                    <div class="col-md-6 mb-4">
+                        <a href="/worksheet" class="text-decoration-none">
+                            <div class="card tool-card">
+                                <div class="card-body text-center">
+                                    <div class="tool-icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <h5 class="card-title">Generate Worksheet</h5>
+                                    <p class="card-text text-muted">Create student worksheets</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-md-4">
+        <div class="sidebar">
+            <h4 class="sidebar-title">Actions</h4>
+            
+            <!-- View Files Button -->
+            <a href="/files" class="btn btn-primary w-100 mb-4">
+                <i class="fas fa-folder-open me-2"></i> View Generated Files
+            </a>
+            
+            
+            
+            <!-- Current Topic Card -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Current Topic
+                </div>
+                <div class="card-body">
+                    <p>{{ topic if topic else "No topic selected" }}</p>
+                </div>
+            </div>
+            
+            <!-- Learning Outcomes Card -->
+            <div class="card">
+                <div class="card-header">
+                    Learning Outcomes
+                </div>
+                <div class="card-body">
+                    <div class="learning-outcomes-list">
+                        {% if learning_outcomes %}
+                            {{ learning_outcomes|safe }}
+                        {% else %}
+                            <p></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block current_date %}
+{{ current_date if current_date else now.strftime('%B %d, %Y') }}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Format learning outcomes to display on separate lines
+        const learningOutcomes = "{{ learning_outcomes|safe }}";
+        if (learningOutcomes) {
+            const outcomes = learningOutcomes.split('\n').filter(item => item.trim() !== '');
+            if (outcomes.length > 0) {
+                const outcomesList = outcomes.map(outcome => `<p>${outcome}</p>`).join('');
+                $('.learning-outcomes-list').html(outcomesList);
+            }
+        }
+
+        // Check if topic is set
+        const topic = "{{ topic }}";
+        if (!topic) {
+            showAlert('Please set a topic and learning outcomes to begin.', 'info');
+        }
+    });
+</script>
+{% endblock %}

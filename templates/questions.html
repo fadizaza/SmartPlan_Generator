@@ -1,0 +1,803 @@
+{% extends "base.html" %}
+
+{% block title %}Generate Questions - SmartPlan{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="mb-0">Customize Questions</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">Generate questions about: <strong>{{ topic }}</strong></p>
+                
+                <!-- Hidden fields for JavaScript to safely access server-side variables -->
+                <input type="hidden" id="hidden-learning-outcomes" value="{{ learning_outcomes|e }}">
+                <input type="hidden" id="hidden-topic" value="{{ topic|e }}">
+                
+                <form id="questionsForm" method="POST">
+                    <!-- Subject and Level Selection -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-secondary me-2"><i class="fas fa-check"></i></span>
+                                <h5 class="mb-0">Customize Question Settings</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject" class="form-label fw-bold text-primary">Subject:</label>
+                                    <select class="form-select" id="subject" name="subject">
+                                        <option value="Select the subject">Select the subject</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Math">Math</option>
+                                        <option value="English">English</option>
+                                        <option value="Science">Science</option>
+                                        <option value="History">History</option>
+                                        <option value="Art">Art</option>
+                                        <option value="Physical Education">Physical Education</option>
+                                        <option value="Music">Music</option>
+                                        <option value="Language">Language</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="student_level" class="form-label fw-bold text-primary">Student Level:</label>
+                                    <select class="form-select" id="student_level" name="student_level">
+                                        <option value="Select Level">Select Level</option>
+                                        <option value="Primary">Primary</option>
+                                        <option value="Secondary">Secondary</option>
+                                        <option value="High School">High School</option>
+                                        <option value="College/University">College/University</option>
+                                        <option value="Adult Education">Adult Education</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-text">Select or type custom options</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question Types -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-primary me-2"><i class="fas fa-question"></i></span>
+                                <h5 class="mb-0">Question Types:</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="form-text mb-3">Sub-questions are multiple parts within a single question. Select the number and difficulty for each question type.</p>
+                            
+                            <!-- Column Headers -->
+                            <div class="row mb-2">
+                                <div class="col-md-4">
+                                    <strong>Question Types:</strong>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Number of Questions:</strong>
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Difficulty Level:</strong>
+                                </div>
+                            </div>
+                            
+                            <!-- Multiple Choice - New row-based layout -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input question-type-check" type="checkbox" value="mcq" id="mcq_check" name="question_type">
+                                                <label class="form-check-label fw-bold" for="mcq_check">
+                                                    Multiple Choice
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-select form-select-sm" name="count_mcq">
+                                                <option value="1">1 Question</option>
+                                                <option value="2">2 Questions</option>
+                                                <option value="3">3 Questions</option>
+                                                <option value="4">4 Questions</option>
+                                                <option value="5" selected>5 Questions</option>
+                                                <option value="6">6 Questions</option>
+                                                <option value="8">8 Questions</option>
+                                                <option value="10">10 Questions</option>
+                                                <option value="12">12 Questions</option>
+                                                <option value="15">15 Questions</option>
+                                                <option value="20">20 Questions</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-select form-select-sm" name="difficulty_mcq" data-bs-toggle="tooltip" title="Easy: Basic recall, Medium: Application of concepts, Hard: Analysis and evaluation, Mixed: Combination of difficulty levels">
+                                                <option value="Easy">Easy</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="Hard">Hard</option>
+                                                <option value="Mixed">Mixed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                              <!-- Short Answer - New row-based layout -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input question-type-check" type="checkbox" value="short_answer" id="short_answer_check" name="question_type">
+                                                <label class="form-check-label fw-bold" for="short_answer_check">
+                                                    Short Answer
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-select form-select-sm" name="count_short_answer">
+                                                <option value="1">1 Question</option>
+                                                <option value="2">2 Questions</option>
+                                                <option value="3">3 Questions</option>
+                                                <option value="4">4 Questions</option>
+                                                <option value="5" selected>5 Questions</option>
+                                                <option value="6">6 Questions</option>
+                                                <option value="8">8 Questions</option>
+                                                <option value="10">10 Questions</option>
+                                                <option value="12">12 Questions</option>
+                                                <option value="15">15 Questions</option>
+                                                <option value="20">20 Questions</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-select form-select-sm" name="difficulty_short_answer">
+                                                <option value="Easy">Easy</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="Hard">Hard</option>
+                                                <option value="Mixed">Mixed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                              <!-- True/False - New row-based layout -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input question-type-check" type="checkbox" value="true_false" id="true_false_check" name="question_type">
+                                                <label class="form-check-label fw-bold" for="true_false_check">
+                                                    True/False
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-select form-select-sm" name="count_true_false">
+                                                <option value="1">1 Question</option>
+                                                <option value="2">2 Questions</option>
+                                                <option value="3">3 Questions</option>
+                                                <option value="4">4 Questions</option>
+                                                <option value="5" selected>5 Questions</option>
+                                                <option value="6">6 Questions</option>
+                                                <option value="8">8 Questions</option>
+                                                <option value="10">10 Questions</option>
+                                                <option value="12">12 Questions</option>
+                                                <option value="15">15 Questions</option>
+                                                <option value="20">20 Questions</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-select form-select-sm" name="difficulty_true_false">
+                                                <option value="Easy">Easy</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="Hard">Hard</option>
+                                                <option value="Mixed">Mixed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                              <!-- Fill in the Blanks - New row-based layout -->
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input question-type-check" type="checkbox" value="fill_blanks" id="fill_blanks_check" name="question_type">
+                                                <label class="form-check-label fw-bold" for="fill_blanks_check">
+                                                    Fill-in-the-Blanks
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-select form-select-sm" name="count_fill_blanks">
+                                                <option value="1">1 Question</option>
+                                                <option value="2">2 Questions</option>
+                                                <option value="3">3 Questions</option>
+                                                <option value="4">4 Questions</option>
+                                                <option value="5" selected>5 Questions</option>
+                                                <option value="6">6 Questions</option>
+                                                <option value="8">8 Questions</option>
+                                                <option value="10">10 Questions</option>
+                                                <option value="12">12 Questions</option>
+                                                <option value="15">15 Questions</option>
+                                                <option value="20">20 Questions</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-select form-select-sm" name="difficulty_fill_blanks">
+                                                <option value="Easy">Easy</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="Hard">Hard</option>
+                                                <option value="Mixed">Mixed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                              <!-- Matching - New row-based layout -->
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input question-type-check" type="checkbox" value="matching" id="matching_check" name="question_type">
+                                                <label class="form-check-label fw-bold" for="matching_check">
+                                                    Matching
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-select form-select-sm" name="count_matching">
+                                                <option value="1">1 Question</option>
+                                                <option value="2">2 Questions</option>
+                                                <option value="3">3 Questions</option>
+                                                <option value="4">4 Questions</option>
+                                                <option value="5" selected>5 Questions</option>
+                                                <option value="6">6 Questions</option>
+                                                <option value="8">8 Questions</option>
+                                                <option value="10">10 Questions</option>
+                                                <option value="12">12 Questions</option>
+                                                <option value="15">15 Questions</option>
+                                                <option value="20">20 Questions</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-select form-select-sm" name="difficulty_matching">
+                                                <option value="Easy">Easy</option>
+                                                <option value="Medium">Medium</option>
+                                                <option value="Hard">Hard</option>
+                                                <option value="Mixed">Mixed</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Output Formats -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-secondary me-2"><i class="fas fa-file-alt"></i></span>
+                                <h5 class="mb-0">Output Formats:</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row ms-2">
+                                <div class="col-md-4">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="format_docx" name="format_docx" value="true" checked>
+                                        <label class="form-check-label" for="format_docx">DOCX</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="format_html" name="format_html" value="true">
+                                        <label class="form-check-label" for="format_html">HTML</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Prompt -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">AI Prompt (This is what will be sent to the AI model):</h5>
+                                <span class="badge bg-success" id="prompt-update-badge" style="display: none;">Updated</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <textarea class="form-control" id="prompt" name="prompt" rows="8" placeholder="AI prompt will be generated based on your selections above">Your goal is to evaluate their understanding of the following learning outcome:
+{{ learning_outcomes }}</textarea>
+                            <div class="d-flex justify-content-between mt-2">
+                                <div class="form-text">The prompt is automatically updated based on your selections. You can also modify it directly.</div>
+                                <button type="button" id="update-prompt-btn" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-sync-alt"></i> Update Prompt
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Buttons -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" id="generate-btn" class="btn btn-accent btn-lg">
+                            <i class="fas fa-cog me-2"></i> Generate Questions
+                        </button>
+                        <a href="/" class="btn btn-outline-secondary">Cancel</a>
+                        <a href="/files" class="btn btn-primary">
+                            <i class="fas fa-folder-open me-2"></i> View Files
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <div class="sidebar">
+            <h4 class="mb-4">Generation Status</h4>
+            
+            <!-- Progress indicator -->
+            <div class="progress-spinner text-center" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2" id="progress-text">Processing: 0%</p>
+                <div class="progress mt-2">
+                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                </div>
+                <p class="text-muted mt-3 small">Please wait while questions are being generated...</p>
+            </div>
+            
+            <!-- Success message (initially hidden) -->
+            <div id="success-message" style="display: none;">
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i> Questions generated successfully!
+                </div>
+                <div class="card mt-3">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Generated Files</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-2" id="download-links-container">
+                            <a href="#" id="download-link" class="btn btn-primary mb-2">
+                                <i class="fas fa-download me-2"></i> Download Questions (DOCX)
+                            </a>
+                            <a href="#" id="view-html-link" class="btn btn-info">
+                                <i class="fas fa-code me-2"></i> Download HTML Version
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tips -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Tips</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Select at least one question type</li>
+                        <li class="list-group-item">Mix difficulty levels for balanced assessment</li>
+                        <li class="list-group-item">Edit the prompt for more specific instructions</li>
+                        <li class="list-group-item">Consider student level when setting difficulty</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        console.log("Document ready function executing");
+        
+        // Check if topic is set
+        const topic = "{{ topic }}";
+        console.log("Topic from template:", topic);
+        if (!topic) {
+            window.location.href = "/learning_outcomes";
+        }
+        
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+        
+        // Initialize all event handlers
+        initializeEventHandlers();
+        
+        // Function to set up all event handlers
+        function initializeEventHandlers() {
+            console.log("Initializing event handlers");
+            
+            // With our new layout, we don't need to toggle visibility of options
+            // Just track checkbox changes
+            $('.question-type-check').change(function() {
+                const typeId = $(this).attr('id').replace('_check', '');
+                console.log("Question type changed:", typeId, "Checked:", this.checked);
+                updatePrompt();
+                
+                // Enable/disable related selects when checkbox changes
+                const $row = $(this).closest('.row');
+                const $selects = $row.find('select');
+                $selects.prop('disabled', !this.checked);
+                
+                // Add/remove visual indication that selects are disabled
+                if (this.checked) {
+                    $selects.removeClass('text-muted');
+                } else {
+                    $selects.addClass('text-muted');
+                }
+            });
+            
+            // Update prompt when any option changes - using direct event binding
+            $(document).on('change', '#subject, #student_level', function() {
+                console.log("Dropdown changed:", $(this).attr('id'), "Value:", $(this).val());
+                updatePrompt();
+            });
+            
+            // Updated selector to handle all select elements for counts and difficulties
+            $(document).on('change', 'select[name^="difficulty_"], select[name^="count_"]', function() {
+                console.log("Question option changed:", $(this).attr('name'), "Value:", $(this).val());
+                updatePrompt();
+            });
+            
+            // Also update when question type checkboxes are changed
+            $(document).on('change', '.question-type-check', function() {
+                console.log("Question type checkbox changed:", $(this).val(), "Checked:", $(this).is(':checked'));
+                updatePrompt();
+            });
+            
+            // Add handler for the manual update button
+            $('#update-prompt-btn').on('click', function() {
+                console.log("Manual prompt update requested");
+                updatePrompt();
+            });
+            
+            // Add event handlers for output format checkboxes
+            $(document).on('change', '#format_docx, #format_html', function() {
+                console.log("Output format changed:", $(this).attr('id'), "Checked:", $(this).is(':checked'));
+                
+                // Make sure at least one output format is selected
+                if (!$('#format_docx').is(':checked') && !$('#format_html').is(':checked')) {
+                    // If both are unchecked, force the DOCX format to be checked
+                    $('#format_docx').prop('checked', true);
+                }
+            });
+            
+            // Force initial prompt update when page loads with a longer delay
+            console.log("Initial prompt update triggered");
+            setTimeout(updatePrompt, 1000);
+        }  // End of initializeEventHandlers function
+        
+        function updatePrompt() {
+            console.log("updatePrompt function called");
+            
+            // Start building the prompt
+            let promptParts = [];
+            // Get the learning outcomes and topic from hidden fields in the page to avoid JS string issues
+            const learningOutcomes = $('#hidden-learning-outcomes').val();
+            const topic = $('#hidden-topic').val();
+            
+            console.log("Learning outcomes from template:", learningOutcomes);
+            console.log("Topic from template:", topic);
+            
+            try {
+                // Add teacher role based on subject
+                const subject = $('#subject').val();
+                console.log("Subject value:", subject);
+                if (subject && subject !== "Select the subject") {
+                    promptParts.push(`You are an experienced ${subject} teacher.`);
+                }
+                
+                // Add student level
+                const studentLevel = $('#student_level').val();
+                console.log("Student level value:", studentLevel);
+                if (studentLevel && studentLevel !== "Select Level") {
+                    promptParts.push(`creating assessment material for ${studentLevel} students.`);
+                }
+                
+                // Add learning outcomes
+                promptParts.push("Your goal is to evaluate their understanding of the following learning outcome:");
+                promptParts.push(learningOutcomes);
+                
+                // Add topic information
+                if (topic && topic.trim() !== "") {
+                    promptParts.push(`The topic is: ${topic}`);
+                }
+                
+                promptParts.push("");
+                
+                // Add instructions for each selected question type
+                let selectedQuestionTypes = [];
+                
+                // Find all checked question types - with additional logging
+                console.log("Checking for selected question types");
+                const checkedTypes = $('.question-type-check:checked');
+                console.log(`Found ${checkedTypes.length} checked question types`);
+                
+                checkedTypes.each(function() {
+                    const typeValue = $(this).val();
+                    console.log("Processing checked question type:", typeValue);
+                    
+                    // Get count and difficulty values, with fallbacks
+                    let count = "5";
+                    let difficulty = "easy";
+                    
+                    // Get count select element (now using select instead of input)
+                    const countSelect = $(`select[name="count_${typeValue}"]`);
+                    if (countSelect.length) {
+                        count = countSelect.val() || "5";
+                        console.log(`Found count for ${typeValue}:`, count);
+                    } else {
+                        console.warn(`Could not find count select for ${typeValue}`);
+                    }
+                    
+                    // Get difficulty select element
+                    const difficultySelect = $(`select[name="difficulty_${typeValue}"]`);
+                    if (difficultySelect.length) {
+                        difficulty = difficultySelect.val() || "Easy";
+                        difficulty = difficulty.toLowerCase();
+                        console.log(`Found difficulty for ${typeValue}:`, difficulty);
+                    } else {
+                        console.warn(`Could not find difficulty select for ${typeValue}`);
+                    }
+                    
+                    console.log(`For type ${typeValue}: count=${count}, difficulty=${difficulty}`);
+                    
+                    let instruction = '';
+                    if (typeValue === "mcq") {
+                        instruction = `Create multiple choice question containing ${count} ${difficulty} difficulty sub-questions.`;
+                    } else if (typeValue === "short_answer") {
+                        instruction = `Create short answer question containing ${count} ${difficulty} difficulty sub-questions.`;
+                    } else if (typeValue === "true_false") {
+                        instruction = `Create True/False question containing ${count} ${difficulty} difficulty sub-questions.`;
+                    } else if (typeValue === "fill_blanks") {
+                        instruction = `Create fill-in-the-blanks question containing ${count} ${difficulty} difficulty sub-questions.`;
+                    } else if (typeValue === "matching") {
+                        instruction = `Create matching question that consist of ${count} matching points at ${difficulty} difficulty level.`;
+                    }
+                    
+                    if (instruction) {
+                        selectedQuestionTypes.push(instruction);
+                    }
+                });
+                
+                // Add the question type instructions to the prompt
+                if (selectedQuestionTypes.length > 0) {
+                    promptParts.push(selectedQuestionTypes.join("\n"));
+                }
+                
+                // Create initial prompt even if no options are selected yet
+                if (promptParts.length === 0) {
+                    promptParts.push("Please select subject, student level, and/or question types to customize the AI prompt.");
+                }
+                
+                // Combine all parts into the final prompt
+                const finalPrompt = promptParts.join("\n");
+                console.log("Final prompt:", finalPrompt);
+                
+                // Update the prompt textarea using multiple approaches to ensure it works
+                try {
+                    // First try with jQuery since it's more reliable
+                    const $promptTextarea = $('#prompt');
+                    if ($promptTextarea.length) {
+                        console.log("Setting prompt via jQuery");
+                        $promptTextarea.val(finalPrompt);
+                    } else {
+                        // Fallback to direct DOM manipulation
+                        const promptTextarea = document.getElementById('prompt');
+                        if (promptTextarea) {
+                            console.log("Setting prompt via DOM element");
+                            promptTextarea.value = finalPrompt;
+                        } else {
+                            console.error("Could not find prompt textarea by any method");
+                            // Try another approach - create a new textarea if needed
+                            console.log("Attempting final fallback method");
+                            $('.card-body').find('textarea[name="prompt"]').val(finalPrompt);
+                        }
+                    }
+                    
+                    // Show "Updated" badge with animation
+                    $('#prompt-update-badge').show().fadeIn(200);
+                    setTimeout(function() {
+                        $('#prompt-update-badge').fadeOut(1000);
+                    }, 1500);
+                } catch (err) {
+                    console.error("Error in final prompt application:", err);
+                }
+            } catch (err) {
+                console.error("Error in updatePrompt:", err);
+                // Set a fallback prompt
+                $('#prompt').val("Error generating prompt. Please try refreshing the page.");
+            }
+        }
+        
+        // Form submission
+        $('#questionsForm').submit(function(event) {
+            event.preventDefault();
+            
+            // Validate
+            let hasQuestionType = false;
+            $('.question-type-check').each(function() {
+                if ($(this).is(':checked')) {
+                    hasQuestionType = true;
+                }
+            });
+            
+            if (!hasQuestionType && $('#prompt').val().trim() === '') {
+                showAlert('Please select at least one question type or provide custom instructions in the prompt field.', 'warning');
+                return;
+            }
+            
+            // Show spinner
+            $('.progress-spinner').show();
+            
+            // Start progress simulation and store the interval ID
+            const progressInterval = simulateProgress();
+            
+            // Submit form via AJAX
+            $.ajax({
+                url: '/questions',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    // Stop the progress simulation immediately
+                    if (progressInterval) {
+                        clearInterval(progressInterval);
+                    }
+                    
+                    if (response.status === 'success') {
+                        $('.progress-spinner').hide();
+                        $('#success-message').show();
+                        
+                        console.log("Server response:", response); // Debug log
+                        
+                        // Update download links based on available formats
+                        // Check for DOCX URL in multiple possible property names
+                        const docxUrl = response.docx_url || response.file_url || response.download_url;
+                        if (docxUrl) {
+                            $('#download-link').attr('href', docxUrl);
+                            $('#download-link').show();
+                            console.log("DOCX link set to:", docxUrl);
+                        } else {
+                            $('#download-link').hide();
+                            console.log("No DOCX URL found in response");
+                        }
+                        
+                        // If HTML format was generated, show the view HTML button
+                        if (response.html_url) {
+                            $('#view-html-link').attr('href', response.html_url);
+                            $('#view-html-link').show();
+                            console.log("HTML link set to:", response.html_url);
+                        } else {
+                            $('#view-html-link').hide();
+                            console.log("No HTML URL found in response");
+                        }
+                        
+                        // Add a link to view all generated files in the files page
+                        if ($('#download-links-container').find('.view-all-files-btn').length === 0) {
+                            $('#download-links-container').append(`
+                                <a href="/files" class="btn btn-outline-secondary view-all-files-btn mt-3">
+                                    <i class="fas fa-folder-open me-2"></i> View All Generated Files
+                                </a>
+                            `);
+                        }
+                        
+                        // Scroll to the success message to make sure user sees it
+                        $('html, body').animate({
+                            scrollTop: $("#success-message").offset().top - 100
+                        }, 500);
+                        
+                        showAlert('Questions generated successfully!', 'success');
+                    } else {
+                        $('.progress-spinner').hide();
+                        showAlert(response.message, 'danger');
+                    }
+                },
+                error: function() {
+                    // Stop the progress simulation on error too
+                    if (progressInterval) {
+                        clearInterval(progressInterval);
+                    }
+                    $('.progress-spinner').hide();
+                    showAlert('An error occurred. Please try again.', 'danger');
+                }
+            });
+        });
+        
+        // Simulate progress for better UX
+        function simulateProgress() {
+            let progress = 0;
+            const interval = setInterval(function() {
+                progress += 5;
+                if (progress > 95) {
+                    clearInterval(interval);
+                    return;
+                }
+                
+                // Update progress bar and text
+                $('.progress-bar').css('width', progress + '%');
+                $('#progress-text').text('Processing: ' + progress + '%');
+            }, 1500);
+            
+            // Return the interval ID so it can be cleared externally
+            return interval;
+        }
+        
+        function checkGenerationStatus() {
+            $.get('/status', function(data) {
+                if (data.status === 'completed') {
+                    $('.progress-spinner').hide();
+                    $('#success-message').show();
+                    
+                    console.log("Status response:", data); // Debug log
+                    
+                    // Update download links visibility and URLs
+                    // Check for DOCX URL in multiple possible property names
+                    const docxUrl = data.docx_url || data.file_url || data.download_url;
+                    if (docxUrl) {
+                        $('#download-link').attr('href', docxUrl);
+                        $('#download-link').show();
+                        console.log("DOCX link set from status to:", docxUrl);
+                    } else {
+                        $('#download-link').hide();
+                        console.log("No DOCX URL found in status response");
+                    }
+                    
+                    if (data.html_url) {
+                        $('#view-html-link').attr('href', data.html_url);
+                        $('#view-html-link').show();
+                    } else {
+                        $('#view-html-link').hide();
+                    }
+                    
+                    // Add a link to view all generated files in the files page
+                    if ($('#download-links-container').find('.view-all-files-btn').length === 0) {
+                        $('#download-links-container').append(`
+                            <a href="/files" class="btn btn-outline-secondary view-all-files-btn mt-3">
+                                <i class="fas fa-folder-open me-2"></i> View All Generated Files
+                            </a>
+                        `);
+                    }
+                    
+                    // Scroll to success message
+                    $('html, body').animate({
+                        scrollTop: $("#success-message").offset().top - 100
+                    }, 500);
+                }
+            });
+        }
+        
+        // Helper function to show alerts
+        function showAlert(message, type) {
+            const alertHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}   $('#questionsForm').prepend(alertHTML);
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>            // Auto-dismiss after 5 seconds
+
+
+
+
+
+
+
+
+            setTimeout(function() {            // Automatically close alerts after 3 seconds                        $('#success-message').before(alertHTML);            // Insert the alert at the top of the form                        `;            setTimeout(function() {
+                $('.alert').alert('close');
+            }, 5000);
+        }
+    });
+</script>
+{% endblock %}

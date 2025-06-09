@@ -1,0 +1,662 @@
+{% extends "base.html" %}
+
+{% block title %}Generate Worksheet - SmartPlan{% endblock %}
+
+{% block content %}
+<!-- Top Progress Bar (initially hidden) -->
+<div id="top-progress-container" class="position-fixed end-0 top-0 me-3 mt-3 shadow" style="display: none; z-index: 1050; width: 300px; background-color: white; border-radius: 8px;">
+    <div class="card">
+        <div class="card-header bg-primary text-white py-2 d-flex align-items-center justify-content-between" style="border-radius: 8px 8px 0 0;">
+            <span><i class="fas fa-spinner fa-spin me-2"></i> Generation Status</span>
+            <span id="progress-percentage" class="badge bg-light text-primary">0%</span>
+        </div>
+        <div class="card-body p-3">
+            <div class="progress mb-2" style="height: 8px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" 
+                     id="top-progress-bar" role="progressbar" style="width: 0%"></div>
+            </div>
+            <p id="top-progress-status" class="mb-0 small">Preparing worksheet...</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <h4 class="mb-0">Customize Worksheet</h4>
+            </div>            <div class="card-body">                <p class="text-muted mb-4">Generate worksheet activities for: <strong>{{ topic }}</strong></p>
+                
+                <!-- Hidden fields for JavaScript to safely access server-side variables -->
+                <input type="hidden" id="hidden-topic" value="{{ topic|e }}">
+                <input type="hidden" id="hidden-learning-outcomes" value="{{ learning_outcomes|e }}">
+                
+                <form id="worksheetForm" method="POST">
+                    <!-- Worksheet Options -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-primary me-2"><i class="fas fa-cog"></i></span>
+                                <h5 class="mb-0">Worksheet Options:</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject" class="form-label fw-bold text-primary">Subject:</label>
+                                    <select class="form-select" id="subject" name="subject">
+                                        <option value="" selected>Select the subject</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Mathematics">Mathematics</option>
+                                        <option value="Science">Science</option>
+                                        <option value="Business">Business</option>
+                                        <option value="Engineering">Engineering</option>
+                                        <option value="Humanities">Humanities</option>
+                                        <option value="Arts">Arts</option>
+                                        <option value="Medicine">Medicine</option>
+                                        <option value="Social Sciences">Social Sciences</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="studentLevel" class="form-label fw-bold text-primary">Student Level:</label>
+                                    <select class="form-select" id="studentLevel" name="student_level">
+                                        <option value="" selected>Select Level</option>
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                        <option value="Professional">Professional</option>
+                                        <option value="Academic">Academic</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="difficultyLevel" class="form-label fw-bold text-primary">Difficulty Level:</label>
+                                    <select class="form-select" id="difficultyLevel" name="difficulty_level">
+                                        <option value="Easy">Easy</option>
+                                        <option value="Moderate" selected>Moderate</option>
+                                        <option value="Challenging">Challenging</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="numActivities" class="form-label fw-bold text-primary">Number of Activities:</label>
+                                    <select class="form-select" id="numActivities" name="num_activities">
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Worksheet Types -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-success me-2"><i class="fas fa-list-check"></i></span>
+                                <h5 class="mb-0">Worksheet Types:</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="practiceExercises" name="worksheet_type" value="practice_exercises" checked>
+                                        <label class="form-check-label" for="practiceExercises">Practice Exercises</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="assessmentActivities" name="worksheet_type" value="assessment_activities" checked>
+                                        <label class="form-check-label" for="assessmentActivities">Assessment Activities</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="interactiveActivities" name="worksheet_type" value="interactive_activities">
+                                        <label class="form-check-label" for="interactiveActivities">Interactive Activities</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="projectBasedTasks" name="worksheet_type" value="project_based_tasks">
+                                        <label class="form-check-label" for="projectBasedTasks">Project-Based Tasks</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="problemSolvingActivities" name="worksheet_type" value="problem_solving_activities">
+                                        <label class="form-check-label" for="problemSolvingActivities">Problem Solving Activities</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="creativeActivities" name="worksheet_type" value="creative_activities">
+                                        <label class="form-check-label" for="creativeActivities">Creative Activities</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="collaborativeExercises" name="worksheet_type" value="collaborative_exercises">
+                                        <label class="form-check-label" for="collaborativeExercises">Collaborative Exercises</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="homeworkActivities" name="worksheet_type" value="homework_activities">
+                                        <label class="form-check-label" for="homeworkActivities">Homework Activities</label>
+                                    </div>
+                                </div>                            </div>
+                        </div>
+                    </div>
+                      <!-- Output Formats -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-secondary me-2"><i class="fas fa-file-alt"></i></span>
+                                <h5 class="mb-0">Output Formats:</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small mb-2">Select the output format(s) for your worksheet:</p>
+                            <div class="row ms-2">
+                                <div class="col-md-4">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="format_docx" name="format_docx" value="true" checked>
+                                        <label class="form-check-label" for="format_docx">Word Document (DOCX)</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" id="format_html" name="format_html" value="true">
+                                        <label class="form-check-label" for="format_html">Web Page (HTML)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Worksheet Prompt -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge rounded-circle bg-danger me-2"><i class="fas fa-pen-to-square"></i></span>
+                                    <h5 class="mb-0">AI Prompt:</h5>
+                                </div>
+                                <span class="badge bg-success" id="prompt-update-badge" style="display: none;">Updated</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted small mb-2">This prompt will be used to generate your worksheet. It updates automatically based on your selections above.</p>
+                            <textarea class="form-control" id="instructions" name="instructions" rows="8" style="font-size: 0.9rem; background-color: #f8f9fa;" placeholder="Enter specific instructions for the worksheet (optional)"></textarea>
+                            <div class="d-flex justify-content-between mt-2">
+                                <div class="form-text">The prompt is automatically updated based on your selections. You can also modify it directly.</div>
+                                <button type="button" id="update-prompt-btn" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-sync-alt"></i> Update Prompt
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                        <button type="submit" class="btn btn-primary" id="generateBtn">
+                            <i class="fas fa-wand-magic-sparkles"></i> Generate Worksheet
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Sidebar with generation status and resources -->
+    <div class="col-lg-4">
+        <div class="sidebar">
+            <h4 class="mb-4">Generation Status</h4>
+            
+            <!-- Progress indicator -->
+            <div class="progress-spinner text-center" style="display: none;" id="sidebar-progress-spinner">
+                <div class="spinner-border text-primary" role="status" id="sidebar-spinner">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2" id="sidebar-progress-status">Ready to generate</p>
+                <div class="progress mt-2">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="sidebar-generation-progress" 
+                         role="progressbar" style="width: 0%"></div>
+                </div>
+                <p class="text-muted mt-3 small">Please wait while worksheet is being generated...</p>
+            </div>
+            
+            <!-- Success message (initially hidden) -->
+            <div id="sidebar-success-message" style="display: none;">
+                <div class="alert alert-success">
+                    <i class="fas fa-check-circle me-2"></i> Worksheet generated successfully!
+                </div>
+                <div class="d-grid gap-2" id="sidebar-download-buttons">
+                    <a href="#" id="sidebar-download-link" class="btn btn-primary">
+                        <i class="fas fa-download me-2"></i> Download Worksheet
+                    </a>
+                </div>
+            </div>
+        
+        <div class="card">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="fas fa-info-circle text-primary"></i> About Worksheets</h5>
+            </div>
+            <div class="card-body">
+                <p>Worksheets are an effective way to reinforce learning and provide practical application of concepts. They can be used for:</p>
+                <ul>
+                    <li>In-class activities</li>
+                    <li>Homework assignments</li>
+                    <li>Assessment preparation</li>
+                    <li>Group work and collaboration</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Error modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Error</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">There was an error generating your worksheet.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    console.log("Document ready function executing for worksheet");
+    
+    // Check if topic is set
+    const topic = "{{ topic }}";
+    console.log("Topic from template:", topic);
+    if (!topic) {
+        window.location.href = "/";
+    }
+    
+    // Initialize tooltips
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+    
+    // Progress simulation variables
+    let progressInterval;
+    let currentProgress = 0;
+    
+    // Function to simulate progress during worksheet generation        
+    window.startProgressSimulation = function() {
+        clearInterval(progressInterval);
+        currentProgress = 0;
+        
+        // Show top progress bar
+        $('#top-progress-container').fadeIn(300);
+        $('#top-progress-bar').css('width', '0%');
+        $('#progress-percentage').text('0%');
+        $('#top-progress-status').text('Preparing worksheet...');
+        
+        // Show spinner in sidebar
+        $('#sidebar-progress-spinner').show();
+        $('#sidebar-success-message').hide();
+        
+        const progressSteps = [
+            { threshold: 10, message: "Analyzing topic and requirements..." },
+            { threshold: 25, message: "Planning worksheet structure..." },
+            { threshold: 40, message: "Creating activities..." },
+            { threshold: 60, message: "Formatting content..." },
+            { threshold: 80, message: "Finalizing worksheet..." },
+            { threshold: 95, message: "Almost done..." }
+        ];
+        
+        progressInterval = setInterval(function() {
+            // Increase progress but slow down as it approaches 95%
+            if (currentProgress < 30) {
+                currentProgress += 2;
+            } else if (currentProgress < 60) {
+                currentProgress += 1.5;
+            } else if (currentProgress < 80) {
+                currentProgress += 0.8;
+            } else if (currentProgress < 95) {
+                currentProgress += 0.3;
+            }
+            
+            if (currentProgress >= 95) {
+                currentProgress = 95;  // Cap at 95%, will go to 100% when complete
+                clearInterval(progressInterval);
+            }
+            
+            // Update progress bars
+            const progressPercentage = Math.round(currentProgress);
+            $('#top-progress-bar, #sidebar-generation-progress').css('width', progressPercentage + '%');
+            $('#progress-percentage').text(progressPercentage + '%');
+            
+            // Update message based on progress thresholds
+            for (let step of progressSteps) {
+                if (currentProgress >= step.threshold && currentProgress < step.threshold + 5) {
+                    const message = step.message;
+                    $('#top-progress-status').text(message);
+                    $('#sidebar-progress-status').text(message);
+                    break;
+                }
+            }
+        }, 200);
+    };
+    
+    // Initialize all event handlers
+    initializeEventHandlers();
+    
+    // Function to set up all event handlers
+    function initializeEventHandlers() {
+        console.log("Initializing event handlers");
+        
+        // Update prompt when any option changes
+        $('#difficultyLevel, #numActivities, #subject, #studentLevel').on('change', function() {
+            console.log("Dropdown changed:", $(this).attr('id'), "Value:", $(this).val());
+            updatePrompt();
+        });
+          // Update when worksheet type checkboxes are changed
+        $('input[name="worksheet_type"]').on('change', function() {
+            console.log("Worksheet type checkbox changed:", $(this).attr('id'), "Checked:", $(this).is(':checked'));
+            updatePrompt();
+        });
+        
+        // Update when format checkboxes are changed
+        $('#format_docx, #format_html').on('change', function() {
+            // Ensure at least one format is always selected
+            if (!$('#format_docx').is(':checked') && !$('#format_html').is(':checked')) {
+                $(this).prop('checked', true);
+                alert("At least one output format must be selected.");
+            }
+        });
+        
+        // Add handler for the manual update button
+        // We'll add it dynamically to ensure it's always present
+        try {
+            const promptHeader = $('.card-header:has(.fa-pen-to-square)');
+            if (promptHeader.length) {
+                const headerDiv = promptHeader.find('.d-flex');
+                
+                if (!$('#update-prompt-btn').length) {
+                    const btn = $('<button>', {
+                        type: 'button',
+                        id: 'update-prompt-btn',
+                        class: 'btn btn-sm btn-outline-secondary ms-2',
+                        html: '<i class="fas fa-sync-alt"></i>',
+                        title: 'Update prompt based on selections'
+                    });
+                    
+                    btn.on('click', function() {
+                        console.log("Manual prompt update requested");
+                        updatePrompt();
+                    });
+                    
+                    headerDiv.append(btn);
+                }
+            }
+        } catch (e) {
+            console.error("Could not add update button:", e);
+        }
+        
+        // Force initial prompt update when page loads with a longer delay
+        console.log("Initial prompt update triggered");
+        setTimeout(updatePrompt, 1000);
+    }
+      function updatePrompt() {
+        console.log("updatePrompt function called");
+        let promptParts = [];
+          // Get the topic and learning outcomes from hidden fields
+        const topic = $('#hidden-topic').val();
+        const learningOutcomes = $('#hidden-learning-outcomes').val();
+        console.log("Topic from template:", topic);
+        console.log("Learning outcomes from template:", learningOutcomes);
+        
+        try {
+            // Get form values
+            const difficultyLevel = $('#difficultyLevel').val() || 'Moderate';
+            const numActivities = $('#numActivities').val() || '5';
+            const subject = $('#subject').val();
+            const studentLevel = $('#studentLevel').val();
+            
+             // Add subject if selected
+            if (subject && subject !== "Select the subject") {
+                promptParts.push(`You are a ${subject} teacher for ${studentLevel} level students.`);
+            }
+           
+            
+           
+             // Build the prompt
+            promptParts.push(`Create a ${difficultyLevel.toLowerCase()} level worksheet with ${numActivities} activities.`);
+            
+           
+            // Get selected worksheet types
+            const selectedTypes = [];
+            $('input[name="worksheet_type"]:checked').each(function() {
+                const label = $(this).next('label');
+                if (label.length > 0) {
+                    selectedTypes.push(label.text().trim());
+                }
+            });
+            
+            // Add worksheet types
+            const worksheetTypes = selectedTypes.length > 0 ? selectedTypes.join(', ') : 'practice exercises, assessment activities';
+            promptParts.push(`\nInclude the following types of activities: ${worksheetTypes}.`);
+              // Add topic information
+            if (topic && topic.trim() !== "") {
+                promptParts.push(`The worksheet should focus on the topic: ${topic}`);
+            }
+            
+            // Add learning outcomes if available
+            if (learningOutcomes && learningOutcomes.trim() !== "") {
+                promptParts.push(`\nEnsure the worksheet addresses these learning outcomes:\n${learningOutcomes}`);
+            }
+            
+            // Create initial prompt even if no options are selected yet
+            if (promptParts.length === 0) {
+                promptParts.push("Please select options to customize the worksheet AI prompt.");
+            }
+            
+            // Combine all parts into the final prompt
+            const finalPrompt = promptParts.join("\n");
+            console.log("Final prompt:", finalPrompt);
+            
+            // Update the prompt textarea
+            try {
+                // First try with jQuery
+                const $promptTextarea = $('#instructions');
+                if ($promptTextarea.length) {
+                    console.log("Setting prompt via jQuery");
+                    $promptTextarea.val(finalPrompt);
+                      // Visual feedback
+                    $promptTextarea.css({
+                        'background-color': '#e8f4ff',
+                        'border-color': '#0d6efd'
+                    });
+                    
+                    // Show "Updated" badge with animation
+                    $('#prompt-update-badge').show().fadeIn(200);
+                    setTimeout(function() {
+                        $('#prompt-update-badge').fadeOut(1000);
+                    }, 1500);
+                    
+                    setTimeout(function() {
+                        $promptTextarea.css({
+                            'background-color': '#f8f9fa',
+                            'border-color': ''
+                        });
+                    }, 500);
+                } else {
+                    // Fallback to direct DOM
+                    const promptTextarea = document.getElementById('instructions');
+                    if (promptTextarea) {
+                        console.log("Setting prompt via DOM");
+                        promptTextarea.value = finalPrompt;
+                    } else {
+                        console.error("Could not find instructions textarea");
+                    }
+                }
+            } catch (err) {
+                console.error("Error updating prompt textarea:", err);
+            }
+        } catch (err) {
+            console.error("Error in updatePrompt:", err);
+            $('#instructions').val("Error generating prompt. Please try refreshing the page.");
+        }
+    }
+      // Form submission
+    $('#worksheetForm').submit(function(e) {
+        e.preventDefault();
+        
+        // Reset progress indicators
+        $('#top-progress-bar').css('width', '0%');
+        $('#progress-percentage').text('0%');
+        $('#top-progress-status').text('Starting generation...');
+        $('#sidebar-generation-progress').css('width', '0%');
+        $('#sidebar-progress-status').text('Processing: 0%');
+        $('#sidebar-progress-spinner').show();
+        $('#sidebar-success-message').hide();
+        
+        // Start progress animation
+        startProgressSimulation();
+          
+        // Get form data
+        const formData = new FormData(this);
+        
+        // Send AJAX request
+        $.ajax({
+            url: "{{ url_for('worksheet') }}",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log("Server response:", response);
+                
+                // Complete the progress animation
+                clearInterval(progressInterval);
+                $('#top-progress-bar, #sidebar-generation-progress').css('width', '100%');
+                $('#progress-percentage').text('100%');
+                $('#top-progress-status').text('Completed!');
+                $('#sidebar-progress-status').text('Processing: 100%');
+                
+                // Wait a moment to show 100% completion before updating UI
+                setTimeout(function() {
+                    // Hide top progress bar with animation
+                    $('#top-progress-container').fadeOut(500);
+                    
+                    if (response.status === 'success') {
+                        // Always show success in the sidebar when status is success
+                        $('#sidebar-progress-spinner').hide();
+                        $('#sidebar-success-message').show();
+                        
+                        // Setup download buttons for different formats
+                        const $downloadButtons = $('#sidebar-download-buttons');
+                        $downloadButtons.empty(); // Clear existing buttons
+                        
+                        let hasDownloadLink = false;
+                        
+                        // Check and add DOCX download link
+                        if (response.file_path || response.docx_url) {
+                            const docxUrl = response.file_path || response.docx_url;
+                            $downloadButtons.append(`
+                                <a href="${docxUrl}" class="btn btn-primary mb-2">
+                                    <i class="fas fa-file-word me-2"></i> Download DOCX
+                                </a>
+                            `);
+                            // Set the main download link
+                            $('#sidebar-download-link').attr('href', docxUrl);
+                            hasDownloadLink = true;
+                        }
+                        
+                        // Check and add HTML download link
+                        if (response.html_url) {
+                            $downloadButtons.append(`
+                                <a href="${response.html_url}" class="btn btn-info">
+                                    <i class="fas fa-file-code me-2"></i> Download HTML
+                                </a>
+                            `);
+                            // If no DOCX URL was set, use HTML for main download link
+                            if (!hasDownloadLink) {
+                                $('#sidebar-download-link').attr('href', response.html_url);
+                            }
+                        }
+                        
+                        // Always update the sidebar UI to success state
+                        $('#sidebar-spinner').hide();
+                        $('#sidebar-progress-status').text('Worksheet generated successfully!');
+                        $('#sidebar-generation-progress').removeClass('progress-bar-animated').addClass('bg-success');
+                        
+                        // Never show the error modal for success responses
+                    } else {
+                        // Only show error for actual error responses
+                        const errorMsg = response.message || 'There was an error generating your worksheet.';
+                        console.error("Error response:", errorMsg);
+                        $('#sidebar-progress-spinner').hide();
+                        $('#sidebar-progress-status').text('Error: ' + errorMsg);
+                        $('#sidebar-generation-progress').removeClass('progress-bar-animated').addClass('bg-danger');
+                        
+                        // Show error modal
+                        $('#errorMessage').text(errorMsg);
+                        $('#errorModal').modal('show');
+                    }                
+                }, 800);
+            },
+            error: function(xhr, status, error) {
+                // Show error in sidebar and hide top progress
+                $('#top-progress-container').fadeOut(500);
+                $('#sidebar-progress-spinner').hide();
+                $('#sidebar-progress-status').text('Error: Server error. Please try again.');
+                $('#sidebar-generation-progress').css('width', '100%').removeClass('progress-bar-animated').addClass('bg-danger');
+                console.error("AJAX error:", status, error);
+                
+                // Show error modal
+                $('#errorMessage').text('Server error. Please try again.');
+                $('#errorModal').modal('show');
+            }
+        });
+        
+        // Poll for status updates
+        let statusInterval = setInterval(function() {
+            $.get("{{ url_for('status') }}", function(data) {
+                if (data.status === 'completed' || data.status === 'failed') {
+                    clearInterval(statusInterval);
+                    
+                    if (data.status === 'failed') {
+                        $('#top-progress-container').fadeOut(500);
+                        $('#sidebar-progress-spinner').hide();
+                        $('#sidebar-progress-status').text('Error: Generation failed');
+                        $('#sidebar-generation-progress').css('width', '100%').removeClass('progress-bar-animated').addClass('bg-danger');
+                        
+                        // Show error modal
+                        $('#errorMessage').text('Failed to generate worksheet. Please try again.');
+                        $('#errorModal').modal('show');
+                    }
+                }
+            }).fail(function() {
+                // Clear interval if the request fails
+                clearInterval(statusInterval);
+            });
+        }, 2000);
+    });
+});
+</script>
+<script src="{{ url_for('static', filename='worksheet_loading_fix.js') }}"></script>
+<script src="{{ url_for('static', filename='worksheet_status_sidebar.js') }}"></script>
+<script src="{{ url_for('static', filename='worksheet_format_fix.js') }}"></script>
+{% endblock %}
