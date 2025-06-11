@@ -1,0 +1,108 @@
+!!!Materials / Resources Needed
+
+ Computers with internet access
+ Text editor (Notepad++, Sublime Text, or similar – simpler is better for this age group.  Consider a visual editor like Blockly Games if appropriate for student skill level)
+ Projector or interactive whiteboard
+ Pre-prepared HTML examples (simple webpage with headings, paragraphs, images)
+ Printed worksheets with HTML code examples and practice exercises (with varying levels of difficulty)
+ Markers/crayons/colored pencils (for optional visual representation of elements)
+ Images for students to use in their webpages (pre-selected or student-provided)
+
+
+!!!Instructional Steps / Procedure
+
+1. Introduction/Warm-up (see below)
+2. Teacher-directed activity: Introduction to HTML and basic tags (headings, paragraphs). Show examples on the projector.
+3. Guided Practice (see below): Students create a simple webpage with headings and paragraphs using a provided template.
+4. Teacher-directed activity: Introduction to images and attributes (src, alt). Demonstrate how to add images to a webpage.
+5. Guided Practice (see below): Students add images to their webpages.
+6. Teacher-directed activity: Introduce block-level and inline elements using visual aids (e.g., building blocks).
+7. Independent Practice (see below): Students complete worksheet exercises, creating simple webpages with headings, paragraphs, and images. Include error correction exercises.
+8. Closure (see below): Review key concepts and answer student questions.
+
+
+!!!Assessment / Evaluation
+
+ Observation of student participation during guided practice and independent practice.
+ Review of student-created webpages for accuracy and completeness.
+ Assessment of worksheet exercises.
+ Informal questioning to gauge student understanding.
+
+
+!!!Vocabulary
+
+ HTML (HyperText Markup Language)
+ Tag
+ Element
+ Attribute
+ Heading (<h1> to <h6>)
+ Paragraph (<p>)
+ Image (<img>)
+ src (source)
+ alt (alternative text)
+ Block-level element
+ Inline element
+ Syntax
+
+
+!!!Guided Practice (10-15 minutes)
+
+Students work in pairs to create a simple webpage using a provided template. Teacher circulates, providing support and guidance as needed. The template will include pre-written basic structure and a few blanks to fill in text and image URLs.
+
+
+!!!Closure (5 minutes)
+
+Review the key concepts learned (purpose of common tags, attributes, block-level vs. inline elements). Ask students to summarize what they learned using simple sentences or drawings.  Have students share the most challenging aspect of creating a webpage and how they overcame it.
+
+
+!!!Introduction / Warm-Up (5-10 minutes)
+
+Start with a discussion about websites and how they are created. Ask students to identify the different parts of a webpage (headings, paragraphs, images). Show examples of simple webpages.  Introduce the concept of HTML as the "language" of the web.
+
+
+!!!Independent Practice (10-15 minutes)
+
+Students work individually to complete a worksheet with HTML code examples and practice exercises.  Exercises should range from filling in missing tags to creating simple webpages from scratch.  Some exercises should include intentional errors for students to identify and correct.
+
+
+!!!Differentiation
+
+ For students who need more support: Provide more structured templates and simplified exercises. Pair them with more advanced students for peer support. Use visual aids and simplified explanations.
+ For students who need more challenge:  Encourage them to explore additional HTML tags and attributes (e.g., lists, links, formatting tags).  Ask them to design more complex webpages or add interactive elements (if appropriate for their skill level).
+
+
+!!!Teacher Directed Activities
+
+ Introduction to HTML tags and attributes through lecture and demonstration.
+ Modeling the creation of a simple webpage step-by-step.
+ Explaining the difference between block-level and inline elements using visual aids.
+ Reviewing student work and providing feedback.
+
+
+!!!Student Directed Activities
+
+ Creating simple webpages based on provided templates and exercises.
+ Working collaboratively with peers to troubleshoot and debug HTML code.
+ Completing individual worksheet exercises.
+ Designing their own webpages (extension activity).
+
+
+!!!Extension, Refinement, and Practice Activities
+
+ Students can create a simple webpage about their favorite hobby or topic.
+ Students can design a webpage for a fictional business.
+ Research and introduce additional HTML tags and attributes.
+ Introduce CSS (Cascading Style Sheets) for basic styling of webpages (if time permits and students are ready).
+
+
+!!!Use of Media & Technology
+
+ Projector or interactive whiteboard for presenting information and examples.
+ Computers with internet access for creating and testing HTML code.
+ Image search engines to find images for webpages.  Pre-selected images reduce tech barriers and ensure safe content.
+
+
+!!!Cooperative Groupings
+
+ Pair students for guided practice activities to encourage collaboration and peer learning.
+ Consider small group work for debugging more complex HTML code.
