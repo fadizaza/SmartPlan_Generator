@@ -966,6 +966,11 @@ def generate_ai_response_only(prompt):
         app.logger.error(f"Error generating AI response: {str(e)}")
         raise
 
+@app.route('/about')
+def about():
+    """Display the About Us page"""
+    return render_template('about.html', colors=colors)
+
 # Routes for authentication
 @app.route('/login', methods=['GET', 'POST'])
 def login():

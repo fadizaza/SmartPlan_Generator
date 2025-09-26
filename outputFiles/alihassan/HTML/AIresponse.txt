@@ -1,0 +1,76 @@
+!!! Slide 1:  HTML Attributes
+
+* Attributes provide additional information about elements.
+* They are placed inside the opening tag.
+* Example: `<p style="color:blue;">Blue text</p>`
+* We'll explore more attributes later.
+* Attributes modify the appearance or behaviour of elements.
+
+!!! Slide 2: Formatting Text with Attributes
+
+* `style` attribute for inline styling (e.g., color, font size).
+*  `<b>` for bold text.
+* `<i>` for italic text.
+* `<br>` for line breaks.
+* `<p align="center">Centered Text</p>`
+
+!!! Slide 3: Block-Level vs. Inline Elements
+
+* Block-level elements take up the full width.
+* Examples: `<p>`, `<h1>`, `<div>`.
+* Inline elements only take up as much width as needed.
+* Examples: `<span>`, `<b>`, `<i>`, `<img>`.
+* Understanding this is key for page layout.
+
+!!! Slide 4:  Practice:  A Simple Webpage
+
+* Let's create a webpage together!
+* Include a heading, a paragraph, and an image.
+* Use different heading levels.
+* Add some styling using attributes (e.g., color).
+* Save your work as an HTML file (.html).
+
+!!! Slide 5: Debugging HTML
+
+* Common errors: Unclosed tags, typos in tag names.
+* Your browser's developer tools can help.
+* Look for error messages in the console.
+* Check your tags carefully for correct syntax.
+* Start simple and build your page gradually.
+
+!!! Slide 6:  Example of a Syntax Error
+
+* Incorrect: `<p>This is a paragraph</p`
+* Correct: `<p>This is a paragraph</p>`
+* Missing closing tag is a common mistake.
+*  Pay attention to details!
+* Carefully check each tag for proper opening and closing.
+
+!!! Slide 7: More Attributes: Image Size
+
+* Control image size using `width` and `height` attributes.
+* Example: `<img src="myimage.jpg" alt="My Image" width="200" height="150">`
+*  Use appropriate sizes for your images.
+* Avoid excessively large images that slow down your page load.
+
+!!! Slide 8:  Review: Key Concepts
+
+* HTML structure: `<html>`, `<head>`, `<body>`.
+*  Common tags: `<h1>` to `<h6>`, `<p>`, `<img>`.
+*  HTML attributes (e.g., `src`, `alt`, `style`).
+* Block-level vs. inline elements.
+* Debugging techniques.
+
+!!! Slide 9:  Quiz Time!
+
+* Short quiz to check your understanding.
+*  Questions on tags, attributes, and block/inline elements.
+* Let's see what you've learned!
+
+!!! Slide 10:  Resources & Next Steps
+
+* Links to helpful online resources.
+*  Suggestions for further learning.
+*  Keep practicing!
+*  Experiment with different tags and attributes.
+*  Build more complex webpages.

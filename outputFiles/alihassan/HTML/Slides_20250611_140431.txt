@@ -1,0 +1,128 @@
+!!!Slide 1: Welcome to HTML!
+
+*   What is HTML?  (HyperText Markup Language)
+*   Why use HTML? To create web pages!
+*   We'll learn the basics today.
+*   It's easier than you think!
+*   Let's get started!
+
+
+!!!Slide 2:  Basic HTML Structure
+
+*   Every webpage starts with `<html>`.
+*   `<head>` contains information *about* the page (title, etc.).
+*   `<body>` contains the content you see.
+*   Always close your tags!  (e.g., `</html>`, `</head>`, `</body>`)
+*   Think of it like a sandwich!
+
+
+!!!Slide 3: Headings (<h1> to <h6>)
+
+*   Use `<h1>` for the main heading.
+*   `<h2>` to `<h6>` for subheadings.
+*   Headings structure your page.
+*   Larger numbers are smaller headings.
+*   Use them to organize your content logically.
+
+
+!!!Slide 4: Paragraphs (<p>)
+
+*   Use `<p>` tags to create paragraphs.
+*   Each `<p>` starts a new paragraph.
+*   Add spaces between your `<p>` tags for readability.
+*   Keep paragraphs concise and focused.
+*   They are block-level elements.
+
+
+!!!Slide 5: Images (<img>)
+
+*   Use `<img src="image.jpg" alt="Description">`
+*   `src` specifies the image file location.
+*   `alt` provides alternative text (important for accessibility).
+*   Always use descriptive alt text.
+*   Images are inline elements by default.
+
+
+!!!Slide 6:  Attributes
+
+*   Attributes add extra information to tags.
+*   They're written inside the opening tag.
+*   Example: `<p style="color:blue;">Blue text!</p>`
+*   We'll explore more attributes later.
+*   Attributes modify the behavior or appearance.
+
+
+!!!Slide 7: Text Formatting with Attributes (Part 1)
+
+*   `<b>` makes text bold.
+*   `<i>` makes text italic.
+*   `<u>` underlines text.
+*   Use these sparingly for emphasis.
+*   There are better ways to format text using CSS (later!).
+
+
+!!!Slide 8: Text Formatting with Attributes (Part 2)
+
+*   `<br>` inserts a line break.
+*   `<hr>` creates a horizontal rule (line).
+*   These tags control the layout of text.
+*   `<strong>`  strong emphasis (often rendered in bold).
+*   `<em>` emphasized text (often rendered in italics).
+
+
+!!!Slide 9: Block-Level vs. Inline Elements
+
+*   Block-level elements take up the full width.  (e.g., `<p>`, `<h1>`, `<div>`)
+*   Inline elements only take up as much width as needed. (e.g., `<span>`, `<img>`, `<b>`)
+*   This affects how elements are displayed on the page.
+*   Understanding this is key to page layout.
+
+
+!!!Slide 10:  Debugging HTML
+
+*   Check for typos in tag names.
+*   Make sure all tags are closed correctly.
+*   Check for missing quotes in attributes.
+*   Use your browser's developer tools to find errors.
+*   Practice, practice, practice!
+
+
+!!!Slide 11: Common HTML Errors
+
+*   Unclosed tags (e.g., `<p>This is a paragraph`)
+*   Mismatched tags (e.g., `<p>…</div>`)
+*   Incorrect attribute syntax (e.g., src=image.jpg)
+*   Missing quotes around attribute values
+*   Case sensitivity (HTML tags are not case-sensitive, but attributes usually are)
+
+
+!!!Slide 12: Practice Exercise 1: Simple Webpage
+
+*   Create a webpage with a title.
+*   Add a main heading and a subheading.
+*   Include a paragraph of text.
+*   Insert an image (find a free image online).
+
+
+!!!Slide 13: Practice Exercise 2: Formatting
+
+*   Bold and italicize some words in your paragraph.
+*   Add a horizontal rule.
+*   Use line breaks to separate parts of the text.
+
+
+!!!Slide 14: Putting it all Together
+
+*   Review what we've learned.
+*   Remember the basic structure.
+*   Practice building web pages.
+*   Experiment with different tags and attributes.
+
+
+!!!Slide 15:  Next Steps & Resources
+
+*   Explore more HTML tags online.
+*   Practice creating more complex pages.
+*   Learn about CSS for styling.
+*   Explore online tutorials and documentation.
+*   Keep coding!
