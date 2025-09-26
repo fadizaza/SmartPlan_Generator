@@ -1,6 +1,6 @@
 import urllib.request
 import requests
-import tkinter as tk
+
 
 # Global dictionary to store prompt changes in memory
 prompt_changes = {}
