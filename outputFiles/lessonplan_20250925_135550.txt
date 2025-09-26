@@ -1,0 +1,104 @@
+!!!Materials / Resources Needed
+
+ Computers with internet access
+ Projector or whiteboard
+ Markers or pens
+ Printed handouts with basic HTML examples
+ Pre-made HTML templates (optional, for students needing extra support)
+ Images for students to use in their webpages (e.g., downloaded pictures of animals, objects etc)
+
+
+!!!Instructional Steps / Procedure
+
+1. Introduction/Warm-up (5 minutes): Start with a discussion about websites and what makes them interactive and engaging.  Show examples of simple websites.
+2. Teacher-Directed Activity (15 minutes): Introduce the concept of HTML as the building blocks of websites. Explain the basic structure of an HTML document: <html>, <head>, <body>. Show examples on the projector. Introduce common tags: <h1>-<h6> (headings), <p> (paragraph), <img> (image), and <b> or <strong> (bold). Explain attributes like src (for images) and alt (alternative text for images).
+3. Guided Practice (10 minutes): Work through creating a simple webpage together as a class, step-by-step, on the projector.  Students follow along on their computers, typing the code.
+4. Independent Practice (15 minutes): Students create their own simple webpage using headings, paragraphs, and an image. Provide clear instructions and encourage creativity.
+5. Student-Directed Activity (10 minutes): Students share their webpages with a partner for peer review, focusing on correct tag usage and structure.
+6. Closure (5 minutes): Review key concepts and answer any remaining questions. Discuss what they learned and how they can continue to learn more about HTML.
+
+
+!!!Assessment / Evaluation
+
+ Observation of student participation during class discussions and activities.
+ Review of student-created webpages for correct use of HTML tags and attributes.
+ Peer review feedback from student webpage sharing.
+
+
+!!!Vocabulary
+
+ HTML
+ Tags
+ Attributes
+ Elements
+ Head
+ Body
+ Heading (h1-h6)
+ Paragraph (<p>)
+ Image (<img>)
+ src
+ alt
+ Website
+
+
+!!!Guided Practice (10-15 minutes)
+
+Teacher leads students through creating a simple webpage together, step-by-step.  Focus will be on typing the correct code, understanding the placement of tags, and seeing the immediate visual results on their screens.  Example:  Create a webpage with a title "My First Webpage", a heading "Welcome!", a paragraph introducing themselves, and an image of their choice.
+
+
+!!!Closure (5 minutes)
+
+Brief review of the day's learning.  Ask students to summarize the main concepts: What is HTML? What are some important tags? What are attributes? What did they learn today that surprised them?  End with positive reinforcement and encouragement for future exploration.
+
+
+!!!Introduction / Warm-Up (5-10 minutes)
+
+Start by asking students what websites they like and why. Show examples of simple websites on the projector. Discuss the different elements on a webpage (pictures, text, headings). Lead into the idea that these elements are created using a code called HTML.
+
+
+!!!Independent Practice (10-15 minutes)
+
+Students create their own simple webpages individually. They are given a list of requirements (e.g., include a heading, two paragraphs, and an image) and encouraged to personalize their webpages with their own content and images.
+
+
+!!!Differentiation
+
+ For students who need extra support: Provide pre-made HTML templates with fill-in-the-blank sections for key elements.  Pair them with more advanced students for peer support. Offer simplified instructions and one-on-one assistance.
+ For students who are ready for a challenge: Encourage them to experiment with additional HTML tags and attributes (e.g., different font styles, colors, links).  Challenge them to create a more complex webpage with multiple sections.
+
+
+!!!Teacher Directed Activities
+
+ Introducing the concept of HTML and its structure.
+ Demonstrating the use of common HTML tags and attributes through examples.
+ Guiding students through creating a simple webpage together.
+ Reviewing student work and providing feedback.
+
+
+!!!Student Directed Activities
+
+ Creating their own simple webpages individually.
+ Sharing their webpages with a partner for peer review.
+ Exploring additional HTML tags and attributes on their own.
+
+
+!!!Extension, Refinement, and Practice Activities
+
+ Research and use more advanced HTML tags (e.g., lists, tables, links).
+ Create a webpage with multiple sections and organized content.
+ Explore online resources and tutorials for more in-depth learning.
+
+
+!!!Use of Media & Technology
+
+ Computers with internet access for students to create and view webpages.
+ Projector or whiteboard to display examples and instructions.
+ Images for students to use in their webpages (pre-downloaded or sourced online with teacher approval).
+ Online code editors (optional, for added convenience).
+
+
+!!!Cooperative Groupings
+
+ Pair students for peer review of their webpages.
+ Consider group work for more complex projects or if additional support is needed.
+

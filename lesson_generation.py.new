@@ -1,0 +1,10 @@
+def get_user_session(user_id):
+    """Get or create a user session for the given user_id"""
+    if user_id not in user_sessions:
+        user_sessions[user_id] = UserSession()
+    return user_sessions[user_id]
+
+def clear_user_session(user_id):
+    """Clear the session data for a user"""
+    if user_id in user_sessions:
+        del user_sessions[user_id]

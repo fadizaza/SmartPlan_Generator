@@ -115,18 +115,19 @@ def learning_outcomes():
         topic = request.form.get('topic', '')
         learning_outcomes = request.form.get('learning_outcomes', '')
         
-        # Update session and module variables
+        # Update session variables
         session['topic'] = topic
         session['learning_outcomes'] = learning_outcomes
         
-        # Update the global variables in the lesson_generation module
-        lg.topic = topic
-        lg.learning_outcomes = learning_outcomes
+        # Get user-specific session and update it
+        user_session = lg.get_user_session(current_user.id)
+        user_session.topic = topic
+        user_session.learning_outcomes = learning_outcomes
         
-        # Set the user_directory global variable for file storage
+        # Set user-specific directory
         if current_user.is_authenticated:
             user_folder = os.path.join(OUTPUT_FOLDER, current_user.username)
-            lg.user_directory = user_folder
+            user_session.user_directory = user_folder
             os.makedirs(user_folder, exist_ok=True)
             print(f"Set user_directory to: {user_folder}")
         
@@ -211,7 +212,11 @@ def questions():
             # Generate questions in a background thread and return a job ID
             # In a real app, use a task queue like Celery
             session['generation_status'] = 'running'
-            result = lg.create_questions(custom_prompt=prompt, output_formats=output_formats)
+            result = lg.create_questions(
+                custom_prompt=prompt,
+                output_formats=output_formats,
+                user_id=current_user.id
+            )
             session['generation_status'] = 'completed'
               # Check if result is a dictionary or string (backward compatibility)
             if isinstance(result, dict):

@@ -16,8 +16,17 @@ from utils import read_file_contents, clean_text, extract_important_lines
 
 # Constants
 API_KEY = "AIzaSyCG8AfYACs8p2odQhti4fcHqLOUg7rkbi4"
-learning_outcomes = None
-topic = None
+
+# Class to store per-user session data
+class UserSession:
+    def __init__(self):
+        self.topic = None
+        self.learning_outcomes = None
+        self.user_directory = None
+        self.sections = None
+
+# Dictionary to store user sessions
+user_sessions = {}
 role = None
 main_prompt = None
 questions_prompt = None
@@ -181,18 +190,27 @@ def get_ai_response(prompt=None):
         print(f"Error in get_AI_response: {str(e)}")
         raise
 
-def create_questions(custom_prompt=None, output_formats=None):
+def create_questions(custom_prompt=None, output_formats=None, user_id=None):
     """Generate questions document and webpage.
     
     Args:
         custom_prompt (str, optional): Custom prompt to generate content.
         output_formats (dict, optional): Dictionary with keys 'docx', 'html' and boolean values.
                                         Defaults to {'docx': True, 'html': False}.
+        user_id: The ID of the current user.
     
     Returns:
         dict or str: Dictionary with paths to generated files or the path to the docx file for backward compatibility.
     """
-    global topic, topic_directory, user_directory
+    if user_id is None:
+        raise ValueError("user_id is required")
+        
+    # Get user-specific session
+    user_session = get_user_session(user_id)
+    topic = user_session.topic
+    learning_outcomes = user_session.learning_outcomes
+    user_directory = user_session.user_directory
+    
     print(f"Topic directory: {topic}")
     print(f"Generating Questions about ({topic})...")
     
@@ -206,7 +224,6 @@ def create_questions(custom_prompt=None, output_formats=None):
         try:
             # Try to read from questions.txt as fallback
             prompt = read_file_contents("questions.txt") + f" about: {topic}"
-            global learning_outcomes
             if learning_outcomes:
                 prompt += f" considering these learning outcomes: {learning_outcomes}"
         except Exception as e:
