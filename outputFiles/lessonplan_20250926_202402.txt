@@ -1,0 +1,193 @@
+!!! Materials / Resources Needed
+
+   Computers with internet access and a web-based Python interpreter (e.g., repl.it, Google Colab) OR a pre-installed Python IDE (e.g., Thonny).
+   Whiteboard or projector
+   Markers or pens
+   Handout with Python syntax cheat sheet (basic operators, data types)
+   Printable worksheets with coding challenges and error identification tasks.
+   Optional: Colorful sticky notes
+   Optional: Python-themed stickers
+
+!!! Instructional Steps / Procedure
+
+1.  Introduction / Warm-Up (5-10 minutes):
+       Ask students: "Have you ever given instructions to a computer?" Discuss examples like playing a video game or using a search engine.
+       Introduce the concept of coding as giving instructions to a computer in a language it understands.
+       Engage with: “What jobs do you think use computers?” (Solicit a wide variety of answers.)
+       Introduce the term "programming language" and ask students if they've heard of any.
+       Transition into introducing Python as a friendly and versatile programming language.
+       Briefly show a picture of a python snake (optional – keeps it lighthearted).
+
+2.  Teacher Directed Activities: Defining Python and its Applications (10 minutes):
+       Define Python: "Python is a programming language that helps us tell computers what to do."
+       Explain Python's common applications using simple examples:
+           Games (e.g., making a simple choose-your-own-adventure game)
+           Websites (e.g., helping websites work smoothly)
+           Data analysis (e.g., counting votes in a school election)
+           Robotics (e.g., controlling a robot to move and perform tasks)
+       Use visuals (pictures or short video clips) to illustrate these applications.
+
+3.  Teacher Directed Activities: Basic Python Syntax and Data Types (15 minutes):
+       Introduce the web-based Python interpreter.
+       Demonstrate how to write and execute a simple "Hello, World!" program: `print("Hello, World!")`
+       Explain the role of `print()` as a command to display text.
+       Introduce basic data types:
+           Integers (whole numbers): `1, 2, 10, -5`
+           Strings (text): `"Hello", "Python", "My name is..."`
+           Booleans (True/False values): `True, False`
+       Show examples of using each data type in the `print()` function.
+
+4.  Guided Practice (10-15 minutes):
+       Lead students through writing and executing short Python programs using the interpreter.
+       Examples:
+           `print(5 + 3)` (integer addition)
+           `print("My favorite number is", 7)` (string concatenation with an integer)
+           `print(True)` (boolean value)
+       Encourage students to experiment with different values and see what happens.
+       Actively circulate the room to assist students with syntax errors and answer questions.
+
+5.  Student Directed Activities: Variables and Operators (15 minutes):
+       Introduce the concept of variables as containers for storing data.
+       Demonstrate how to assign values to variables: `name = "Alice"`, `age = 10`
+       Explain how to use variables in the `print()` function: `print("Hello,", name)`
+       Introduce basic operators: `+` (addition), `-` (subtraction), `` (multiplication), `/` (division).
+       Show examples of using operators with variables:
+           `apples = 5`
+           `bananas = 3`
+           `total_fruit = apples + bananas`
+           `print("Total fruit:", total_fruit)`
+       String manipulation: Introduce string concatenation using the `+` operator.
+           `first_name = "Bob"`
+           `last_name = "Smith"`
+           `full_name = first_name + " " + last_name`
+           `print(full_name)`
+
+6.  Independent Practice (10-15 minutes):
+       Provide students with a worksheet or a list of coding challenges to complete on their own.
+       Examples:
+           Write a program to calculate the area of a rectangle.
+           Write a program to combine two strings and print the result.
+           Write a program that prints your name and age.
+       Circulate to provide assistance and answer questions as needed.
+
+7.  Teacher Directed Activities: Identifying and Correcting Syntax Errors (10 minutes):
+       Introduce common syntax errors (e.g., missing parentheses, incorrect capitalization, misspelled keywords).
+       Show examples of code with syntax errors and ask students to identify the errors.
+       Demonstrate how to read error messages and use them to fix the code.
+       Provide a worksheet or online activity with code snippets containing syntax errors for students to correct.
+       Emphasize the importance of attention to detail when coding.
+
+8.  Closure (5 minutes):
+       Review the key concepts covered in the lesson: What is Python? What are data types? What are variables and operators?
+       Ask students what they learned today.
+       Briefly mention what they will learn in the next lesson (e.g., conditional statements or loops).
+       Encourage students to continue practicing Python at home.
+
+!!! Assessment / Evaluation
+
+   Formative Assessment: Observe student participation during guided practice and independent practice. Review student responses to questions and coding challenges.
+   Summative Assessment:
+       Collect completed worksheets or online coding activities.
+       Assign a short coding quiz or project to assess understanding of basic syntax, data types, variables, and operators.
+       Observe students' ability to debug simple Python programs.
+       Check if students can successfully write and execute basic Python programs independently.
+
+!!! Vocabulary
+
+   Python: A programming language.
+   Program: A set of instructions that tells a computer what to do.
+   Code: The language we use to write programs.
+   Syntax: The rules of a programming language.
+   Data Type: The kind of information a variable can hold (e.g., integer, string, boolean).
+   Integer: A whole number (e.g., 1, 10, -5).
+   String: Text (e.g., "Hello", "Python").
+   Boolean: True or False value.
+   Variable: A name that represents a value.
+   Operator: A symbol that performs an operation (e.g., +, -, ).
+   Print():  A command that displays text or values on the screen.
+   Error: A mistake in the code that prevents it from running.
+   Debug: To find and fix errors in the code.
+
+!!! Guided Practice (10-15 minutes)
+
+   Activity 1: Data Type Identification: Display code snippets with different data types. Ask students to identify the data type of each snippet. (Example: `print("Hello")` - String, `print(10)` - Integer, `print(True)` - Boolean)
+   Activity 2: Variable Assignment:  Provide a scenario (e.g., "You have 8 cookies. You eat 2."). Ask students to write Python code to represent the scenario using variables and operators. (`cookies = 8`, `eaten = 2`, `remaining = cookies - eaten`, `print(remaining)`)
+   Activity 3: String Concatenation: Guide students through creating a program that asks for their first name and last name and then prints their full name. (Requires input, which may need to be simplified or omitted depending on the students' prior knowledge.) Simplified version: `first_name = "YourFirst"` , `last_name = "YourLast"` , `full_name = first_name + " " + last_name`, `print(full_name)`
+   Teacher circulates, providing individual assistance and answering questions.
+
+!!! Closure (5 minutes)
+
+   Review the definition of Python and its applications.
+   Ask students: "What was the most interesting thing you learned today?" or "What was the most challenging thing you learned today?"
+   Briefly preview the next lesson's topic (e.g., "Next time, we'll learn how to make the computer make choices using 'if' statements!").
+   Give positive reinforcement for their efforts.
+   Optional: A quick "Python Power-Up" cheer or high-five.
+
+!!! Introduction / Warm-Up (5-10 minutes)
+
+   Ask: "What is a computer program? What is it like to give a computer instructions?"
+   Have students act out instructions: "Stand up, turn around, sit down." Explain that computers need very precise instructions.
+   Show a picture of a robot and ask how the robot knows what to do.
+   Briefly mention different programming languages (without going into too much detail).
+   Introduce Python as a fun and easy-to-learn programming language, mentioning it's used to make games, websites, and more.
+
+!!! Independent Practice (10-15 minutes)
+
+   Worksheet Challenges:
+       Write a program to calculate the sum of three numbers.
+       Write a program to create a personalized greeting message (e.g., "Hello, [Name]! Welcome to Python!").
+       Correct syntax errors in provided code snippets.
+       Write the value of `x` after this code: `x= 2 + 3  4`
+   Provide varying levels of difficulty for the challenges to accommodate different learning paces.
+   Students work individually at their computers or with printed worksheets.
+   Teacher circulates and provides support as needed.
+
+!!! Differentiation
+
+   For struggling learners:
+       Provide simplified code examples and step-by-step instructions.
+       Pair them with a more advanced student for peer tutoring.
+       Offer one-on-one support.
+       Reduce the number of coding challenges.
+   For advanced learners:
+       Provide more challenging coding problems that require critical thinking and problem-solving skills.
+       Encourage them to explore additional Python features and libraries.
+       Have them create a simple game or application.
+       Allow them to help other students.
+
+!!! Teacher Directed Activities
+
+   Introduce Python and its applications (already covered above).
+   Demonstrate basic Python syntax and data types (already covered above).
+   Explain variables and operators (already covered above).
+   Show examples of code with syntax errors and explain how to identify and fix them (already covered above).
+   Provide direct instruction on new concepts and skills.
+
+!!! Student Directed Activities
+
+   Explore the Python interpreter and experiment with different code snippets.
+   Complete coding challenges and projects independently or in small groups.
+   Debug code and correct syntax errors.
+   Share their code and ideas with the class.
+
+!!! Extension, Refinement, and Practice Activities
+
+   Create a Simple Calculator: Challenge students to build a basic calculator that can perform addition, subtraction, multiplication, and division.
+   Storytelling with Code: Have students create a short story using Python code. They can use variables to represent characters, objects, and events.
+   Number Guessing Game: Guide students in creating a simple number guessing game where the computer randomly selects a number, and the player has to guess it.
+   Online Python Tutorials and Resources: Provide links to websites like Codecademy, Khan Academy, or freeCodeCamp for further practice and exploration.
+
+!!! Use of Media & Technology
+
+   Use a web-based Python interpreter (e.g., repl.it, Google Colab) for interactive coding demonstrations and student practice.
+   Show video clips or animations to illustrate Python's applications in various fields.
+   Use online resources and tutorials to supplement the lesson content.
+   Use a projector or interactive whiteboard to display code examples and facilitate discussions.
+   Optionally: use Python Turtle Graphics for simple visual programming.
+
+!!! Cooperative Groupings
+
+   Pair Programming: Pair students to work together on coding challenges. One student acts as the "driver" (writing the code), while the other acts as the "navigator" (reviewing the code and providing guidance).
+   Group Debugging: Divide students into small groups and give them a code snippet with syntax errors. Have them work together to identify and correct the errors.
+   Project-Based Learning: Assign a larger coding project that students can complete in small groups. This encourages collaboration and problem-solving skills. (Potentially for future lessons, but can be introduced as a goal.)
+   Randomize groupings to foster collaboration among different students.

@@ -13,9 +13,10 @@ import requests
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from utils import read_file_contents, clean_text, extract_important_lines
+from google import genai
 
 # Constants
-API_KEY = "AIzaSyCG8AfYACs8p2odQhti4fcHqLOUg7rkbi4"
+#GEMINI_API_KEY = "AIzaSyBvyETScRxR7F_LTV1-i0WGOJGtziQ-OBc"
 
 # Class to store per-user session data
 class UserSession:
@@ -27,6 +28,13 @@ class UserSession:
 
 # Dictionary to store user sessions
 user_sessions = {}
+
+def get_user_session(user_id):
+    """Get or create a user session for the given user_id"""
+    if user_id not in user_sessions:
+        user_sessions[user_id] = UserSession()
+    return user_sessions[user_id]
+
 role = None
 main_prompt = None
 questions_prompt = None
@@ -63,70 +71,19 @@ def add_row(version, time, topic, ip, computer_name):
 
 def ai_agent(prompt):
     print("Calling AI agent...")
-    #print(prompt)
-    """Call the AI model API and get response."""
-    if not API_KEY or API_KEY.strip() == "":
-        error_msg = "Error: API key is missing or empty. Please check the googleAPIkey.txt file."
-        print(error_msg)
-        raise ValueError(error_msg)
-
-    url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + API_KEY
-    headers = {'Content-Type': 'application/json'}
-    data = {
-        'contents': [{
-            'parts': [{'text': prompt}]
-        }]
-    }
+    # Use Gemini API via HTTP requests
     
-    try:
-        response = requests.post(url, headers=headers, json=data)
-        
-        # Check HTTP status code
-        response.raise_for_status()
-        
-        # Parse the response
-        json_response = response.json()
-        
-        # Check for API errors in the response
-        if 'error' in json_response:
-            error_msg = f"API Error: {json_response['error'].get('message', 'Unknown error')}"
-            print(error_msg)
-            raise ValueError(error_msg)
-            
-        # Check for missing candidates in response
-        if 'candidates' not in json_response or not json_response['candidates']:
-            error_msg = "API Error: No content generated. The API response didn't contain any candidates."
-            print(error_msg)
-            raise ValueError(error_msg)
-            
-        return json_response['candidates'][0]['content']['parts'][0]['text']
-        
-    except requests.exceptions.HTTPError as e:
-        error_msg = f"HTTP Error: {e}. Status code: {response.status_code}"
-        if response.status_code == 401 or response.status_code == 403:
-            error_msg += " - This may indicate an invalid API key."
-        print(error_msg)
-        raise ValueError(error_msg)
-    except requests.exceptions.ConnectionError:
-        error_msg = "Connection Error: Could not connect to the API. Please check your internet connection."
-        print(error_msg)
-        raise ValueError(error_msg)
-    except requests.exceptions.Timeout:
-        error_msg = "Timeout Error: The request timed out. Please try again later."
-        print(error_msg)
-        raise ValueError(error_msg)
-    except requests.exceptions.RequestException as e:
-        error_msg = f"Request Error: An error occurred during the request: {str(e)}"
-        print(error_msg)
-        raise ValueError(error_msg)
-    except KeyError as e:
-        error_msg = f"Response Format Error: The API response format is unexpected: {str(e)}"
-        print(error_msg)
-        raise ValueError(error_msg)
-    except Exception as e:
-        error_msg = f"Unexpected Error: {str(e)}"
-        print(error_msg)
-        raise ValueError(error_msg)
+
+    os.environ['GEMINI_API_KEY'] = "AIzaSyBvyETScRxR7F_LTV1-i0WGOJGtziQ-OBc"
+
+    client = genai.Client()
+    response = client.models.generate_content(
+    model="gemini-2.0-flash", 
+    contents=prompt
+  )
+    print(response.text)
+    return response.text
+
 
 def generate_topic_from_outcomes(outcomes):
     """Generate a topic based on learning outcomes."""
