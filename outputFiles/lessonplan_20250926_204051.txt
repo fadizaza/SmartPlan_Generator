@@ -1,0 +1,162 @@
+!!! Materials / Resources Needed
+
+   Computers or tablets with internet access
+   Web browser (Chrome, Firefox, Safari, etc.)
+   Online Python interpreter (e.g., Trinket.io, Replit.com, PythonAnywhere) - accounts pre-set for ease of access.
+   Projector or interactive whiteboard
+   Markers or pens
+   Whiteboard or chart paper
+   Printable worksheets with coding challenges
+   Index cards or small pieces of paper for vocabulary game
+   Optional: Small prizes (stickers, pencils) for participation and correct answers
+   Optional: Printed copies of example code snippets
+
+!!! Instructional Steps / Procedure
+
+Day 1: Introduction to Python
+
+1.  (Introduction / Warm-Up): Engage students with a relatable analogy, like comparing Python to giving instructions to a robot.
+2.  (Teacher Directed Activities): Introduce the concept of programming and Python's role. Explain what a variable is, using the analogy of labeled boxes that hold information. Show examples of different data types (integers, strings, booleans) with real-world examples. Demonstrate basic arithmetic operators (+, -, \, /) and string concatenation.
+3.  (Guided Practice): Write a simple "Hello, World!" program together.  Then, create a variable for the student's name, and greet them by name.
+4.  (Independent Practice): Students modify the greeting program to include their age and favorite color.
+5.  (Student Directed Activities): Students explore different mathematical operations and string combinations.
+6.  (Closure): Review what they learned about variables, data types, and operators. Preview the next lesson.
+
+Day 2: Conditional Statements and Loops
+
+1.  (Introduction / Warm-Up): Quick review of variables and data types from the previous lesson. Ask a question to connect to conditional statements, such as "What do you do if it's raining?"
+2.  (Teacher Directed Activities): Introduce `if/else` statements using flowcharts or diagrams. Explain how conditions are evaluated (True/False). Introduce `for` and `while` loops with visual examples (e.g., a loop repeating an action a certain number of times, or until a condition is met).
+3.  (Guided Practice): Create an `if/else` statement that checks if a number is even or odd.  Then, create a `for` loop that prints numbers from 1 to 5.
+4.  (Independent Practice): Students create a program that checks if a number is positive, negative, or zero. Then, they create a `while` loop that counts down from 10 to 1.
+5.  (Student Directed Activities): Students experiment with nested `if/else` statements and different loop conditions.
+6.  (Closure): Review the concepts of conditional statements and loops.
+
+Day 3: Functions
+
+1.  (Introduction / Warm-Up): Review `if/else` and Loops from the previous lesson. Relate the idea of functions to steps in a recipe.
+2.  (Teacher Directed Activities): Explain the concept of functions as reusable blocks of code. Demonstrate how to define a function with parameters and a return value. Show how to call a function and pass arguments.
+3.  (Guided Practice): Create a function that adds two numbers and returns the sum. Call the function with different arguments.
+4.  (Independent Practice): Students create a function that calculates the area of a rectangle.
+5.  (Student Directed Activities): Students modify the area function to calculate the area of a triangle or a circle.
+6.  (Closure): Review the benefits of using functions for code organization and reusability.
+
+Day 4: Lists and Dictionaries
+
+1.  (Introduction / Warm-Up): What are lists and what are dictionaries? Brainstorming session.
+2.  (Teacher Directed Activities): Explain the concept of lists as ordered collections of items. Demonstrate how to create a list, access elements by index, and add/remove elements.  Explain dictionaries as collections of key-value pairs. Demonstrate how to create a dictionary, access values by key, and add/remove key-value pairs.
+3.  (Guided Practice): Create a list of students' names. Print each name in the list using a `for` loop. Create a dictionary that stores the student's name and their favorite subject.
+4.  (Independent Practice): Students create a program that stores a list of favorite foods and prints them. Then, students create a dictionary that stores the capital cities of different countries.
+5.  (Student Directed Activities): Students explore different list methods (e.g., sort, reverse) and dictionary methods (e.g., keys, values).
+6.  (Closure): Review the use of lists and dictionaries for storing and manipulating data.
+
+Day 5: Putting it all Together - Mini-Project
+
+1.  (Introduction / Warm-Up): Review all the concepts learned during the week (variables, data types, operators, conditional statements, loops, functions, lists, dictionaries).
+2.  (Teacher Directed Activities): Introduce a mini-project, such as creating a simple text-based adventure game or a calculator program. Provide a basic framework or outline for the project.
+3.  (Student Directed Activities): Students work individually or in small groups to complete the mini-project, applying the concepts learned throughout the week. The teacher provides guidance and support as needed.
+4.  (Independent Practice): Students continue to work on their mini-projects.
+5.  (Closure): Students present their projects to the class.
+
+!!! Assessment / Evaluation
+
+   Observation: Observe student participation in discussions and activities.
+   Worksheets: Collect and review completed worksheets with coding challenges.
+   Code Review: Review student code for correctness, clarity, and efficiency.
+   Mini-Project: Evaluate the mini-project based on functionality, code quality, and creativity.
+   Class Participation: Ask questions during and after explanations
+   Informal Assessments: Use thumbs up/down for quick comprehension checks during teacher-directed activities.
+
+!!! Vocabulary
+
+   Variable: A named storage location for a value.
+   Data Type: The type of value that a variable can hold (e.g., integer, string, boolean).
+   Operator: A symbol that performs an operation (e.g., +, -, \, /).
+   Conditional Statement: A statement that executes code based on a condition (e.g., `if/else`).
+   Loop: A statement that repeats a block of code (e.g., `for`, `while`).
+   Function: A reusable block of code that performs a specific task.
+   List: An ordered collection of items.
+   Dictionary: A collection of key-value pairs.
+   Argument: The value passed into a function.
+   Parameter: The variable in a function that holds the argument passed in.
+   Return Value: The value sent back by the function to the point where it was called.
+
+!!! Guided Practice (10-15 minutes)
+
+   Day 1: Write a simple "Hello, World!" program together. Then, create a variable for the student's name, and greet them by name.
+   Day 2: Create an `if/else` statement that checks if a number is even or odd. Then, create a `for` loop that prints numbers from 1 to 5.
+   Day 3: Create a function that adds two numbers and returns the sum. Call the function with different arguments.
+   Day 4: Create a list of students' names. Print each name in the list using a `for` loop. Create a dictionary that stores the student's name and their favorite subject.
+   Day 5: Provide a basic framework or outline for the mini-project.
+
+!!! Closure (5 minutes)
+
+   Day 1: Review what they learned about variables, data types, and operators. Preview the next lesson.
+   Day 2: Review the concepts of conditional statements and loops.
+   Day 3: Review the benefits of using functions for code organization and reusability.
+   Day 4: Review the use of lists and dictionaries for storing and manipulating data.
+   Day 5: Students present their projects to the class.
+
+!!! Introduction / Warm-Up (5-10 minutes)
+
+   Day 1: Engage students with a relatable analogy, like comparing Python to giving instructions to a robot.
+   Day 2: Quick review of variables and data types from the previous lesson. Ask a question to connect to conditional statements, such as "What do you do if it's raining?"
+   Day 3: Review `if/else` and Loops from the previous lesson. Relate the idea of functions to steps in a recipe.
+   Day 4: What are lists and what are dictionaries? Brainstorming session.
+   Day 5: Review all the concepts learned during the week (variables, data types, operators, conditional statements, loops, functions, lists, dictionaries).
+
+!!! Independent Practice (10-15 minutes)
+
+   Day 1: Students modify the greeting program to include their age and favorite color.
+   Day 2: Students create a program that checks if a number is positive, negative, or zero. Then, they create a `while` loop that counts down from 10 to 1.
+   Day 3: Students create a function that calculates the area of a rectangle.
+   Day 4: Students create a program that stores a list of favorite foods and prints them. Then, students create a dictionary that stores the capital cities of different countries.
+   Day 5: Students continue to work on their mini-projects.
+
+!!! Differentiation
+
+   For struggling learners: Provide simplified code examples and step-by-step instructions. Pair them with more advanced students for peer tutoring. Offer one-on-one support during independent practice.
+   For advanced learners: Challenge them to explore more complex coding problems or create their own projects. Encourage them to help other students. Offer extension activities that involve more advanced concepts.
+   Visual Learners: Use visual aids like flowcharts, diagrams, and color-coded code examples.
+   Auditory Learners: Provide verbal explanations and encourage students to explain concepts to each other.
+   Kinesthetic Learners: Incorporate hands-on activities, such as physical simulations of loops or conditional statements. Allow students to move around and work on computers in different locations.
+
+!!! Teacher Directed Activities
+
+   Day 1: Introduce the concept of programming and Python's role. Explain what a variable is, using the analogy of labeled boxes that hold information. Show examples of different data types (integers, strings, booleans) with real-world examples. Demonstrate basic arithmetic operators (+, -, \, /) and string concatenation.
+   Day 2: Introduce `if/else` statements using flowcharts or diagrams. Explain how conditions are evaluated (True/False). Introduce `for` and `while` loops with visual examples (e.g., a loop repeating an action a certain number of times, or until a condition is met).
+   Day 3: Explain the concept of functions as reusable blocks of code. Demonstrate how to define a function with parameters and a return value. Show how to call a function and pass arguments.
+   Day 4: Explain the concept of lists as ordered collections of items. Demonstrate how to create a list, access elements by index, and add/remove elements. Explain dictionaries as collections of key-value pairs. Demonstrate how to create a dictionary, access values by key, and add/remove key-value pairs.
+   Day 5: Introduce a mini-project, such as creating a simple text-based adventure game or a calculator program. Provide a basic framework or outline for the project.
+
+!!! Student Directed Activities
+
+   Day 1: Students explore different mathematical operations and string combinations.
+   Day 2: Students experiment with nested `if/else` statements and different loop conditions.
+   Day 3: Students modify the area function to calculate the area of a triangle or a circle.
+   Day 4: Students explore different list methods (e.g., sort, reverse) and dictionary methods (e.g., keys, values).
+   Day 5: Students work individually or in small groups to complete the mini-project, applying the concepts learned throughout the week. The teacher provides guidance and support as needed.
+
+!!! Extension, Refinement, and Practice Activities
+
+   Challenge Problems: Provide more complex coding challenges that require students to combine multiple concepts.
+   Project-Based Learning: Encourage students to create their own Python projects based on their interests.
+   Online Resources: Direct students to online coding platforms like Codecademy or Khan Academy for further practice.
+   Coding Competitions: Organize a friendly coding competition to motivate students.
+   Mentorship: Pair advanced students with beginners to provide mentorship and support.
+   Real-world Applications: Discuss real-world applications of Python in different fields, such as data science, web development, and game development.
+
+!!! Use of Media & Technology
+
+   Online Python Interpreter: Use an online Python interpreter (e.g., Trinket.io, Replit.com, PythonAnywhere) for coding demonstrations and student practice.
+   Presentation Software: Use presentation software (e.g., PowerPoint, Google Slides) to present concepts and code examples.
+   Educational Videos: Show educational videos about Python programming.
+   Interactive Whiteboard: Use an interactive whiteboard for collaborative coding and problem-solving.
+   Gamification: Incorporate gamified elements into the lesson using online coding games or platforms.
+
+!!! Cooperative Groupings
+
+   Think-Pair-Share: Pose a coding problem, have students think about it individually, then pair up to discuss their solutions, and finally share their ideas with the whole class.
+   Pair Programming: Have students work in pairs, with one student acting as the "driver" (typing the code) and the other as the "navigator" (reviewing the code and providing guidance).
+   Group Projects: Assign larger coding projects that require students to work collaboratively and divide tasks.
+   Peer Tutoring: Pair advanced students with beginners to provide support and mentorship.
+   Jigsaw Method: Divide a coding problem into smaller sub-problems, assign each sub-problem to a different group, have each group become experts on their sub-problem, and then have the groups come together to solve the overall problem.

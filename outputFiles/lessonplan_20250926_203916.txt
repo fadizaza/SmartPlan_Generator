@@ -1,0 +1,129 @@
+!!! Materials / Resources Needed
+
+   Computers or tablets with internet access
+   Web browser (Chrome, Safari, Firefox, etc.)
+   Online Python editor (e.g., Trinket.io, repl.it, or Google Colab) - Ensure chosen platform is age-appropriate and doesn't require account creation or installation for simplicity.
+   Worksheets with example code snippets and practice problems (printed or digital)
+   Colorful markers or pens
+   Index cards or sticky notes
+   Projector or interactive whiteboard
+   Visual aids: Python keywords poster, data types chart.
+
+!!! Instructional Steps / Procedure
+
+1.  Introduction / Warm-Up (5-10 minutes): Begin with a fun, engaging activity. Ask students if they know what programming is, and if anyone has programmed before. Introduce the concept of Python as a language that computers can understand. Relate it to human languages (English, Spanish, etc.) and explain that Python uses specific words and rules (syntax).
+
+2.  Teacher-Directed Activities:
+
+       Variables and Data Types (15 minutes): Define variables as containers that hold information. Introduce basic data types: integers (whole numbers), floats (numbers with decimals), strings (text), and booleans (True/False). Demonstrate how to assign values to variables using the `=` operator and how to print the value of variables using the `print()` function.
+       Operators (5 minutes): Briefly cover basic arithmetic operators (+, -, \, /) and comparison operators (==, !=, >, <). Explain their use in performing calculations and comparisons.
+       Conditional Statements (if/else) (15 minutes): Explain that conditional statements allow the program to make decisions. Introduce the `if` and `else` keywords. Demonstrate how to write simple `if` and `if/else` statements using comparison operators.
+       Loops (for/while) (15 minutes): Explain that loops allow code to be repeated. Introduce the `for` loop (using `range()`) and the `while` loop. Demonstrate how to use loops to repeat actions a certain number of times or until a condition is met.
+       Functions (15 minutes): Introduce functions as reusable blocks of code. Explain how to define a function using the `def` keyword, give it a name, and define parameters (inputs). Demonstrate how to call a function using its name followed by parentheses.
+       Data Structures: Lists and Dictionaries (15 minutes): Explain lists as ordered collections of items and dictionaries as collections of key-value pairs. Demonstrate how to create lists and dictionaries, access elements, and add or remove elements.
+
+3.  Student-Directed Activities:
+
+       Guided Practice (10-15 minutes): Work through example problems together as a class, with students following along on their own computers. For example, write a program that asks the user for their name and age, then prints a personalized greeting.
+       Independent Practice (10-15 minutes): Provide students with a set of practice problems to work on independently. These problems should reinforce the concepts covered in the teacher-directed activities.
+       Cooperative Groupings (15-20 minutes): Divide students into small groups and assign a collaborative coding project. For example, each group could write a program that simulates a simple game (e.g., a number guessing game or a rock-paper-scissors game).
+       Extension, Refinement, and Practice Activities: Students who finish early can work on more challenging problems or explore additional Python features.
+
+4.  Use of Media & Technology: Use the projector/interactive whiteboard to display example code and demonstrate programming concepts. Use online Python editors to allow students to practice coding interactively. Show relevant videos (e.g., introductory Python tutorials on YouTube Kids) to supplement the lesson. Use visual aids like charts and posters to reinforce key concepts.
+
+5.  Closure (5 minutes): Review the main concepts covered in the lesson. Ask students to share what they learned or what they found most interesting. Preview the next lesson's topic.
+
+!!! Assessment / Evaluation
+
+   Observation: Observe students as they work on guided and independent practice problems, noting their understanding of the concepts and their ability to apply them.
+   Worksheet Review: Collect and review the worksheets to assess students' understanding of variables, data types, operators, conditional statements, loops, functions, lists, and dictionaries.
+   Coding Project Evaluation: Evaluate the collaborative coding projects based on functionality, code quality, and group participation. Use a rubric to provide clear expectations and feedback.
+   Quiz: Administer a short quiz at the end of the lesson to assess students' understanding of the key concepts. The quiz could include multiple-choice questions, fill-in-the-blank questions, and short coding problems.
+   Exit Ticket: At the end of class, ask students to write down one thing they learned and one question they still have. This provides valuable feedback for future lessons.
+
+!!! Vocabulary
+
+   Variable: A container that stores information.
+   Data Type: The type of information a variable can hold (e.g., integer, float, string, boolean).
+   Integer: A whole number (e.g., 1, 2, 3, -4).
+   Float: A number with a decimal (e.g., 1.5, 3.14, -2.7).
+   String: Text (e.g., "Hello", "Python").
+   Boolean: True or False.
+   Operator: A symbol that performs a calculation or comparison (e.g., +, -, \, /, ==, !=, >, <).
+   Conditional Statement: A statement that allows the program to make decisions (e.g., `if`, `else`).
+   Loop: A block of code that repeats (e.g., `for`, `while`).
+   Function: A reusable block of code.
+   List: An ordered collection of items.
+   Dictionary: A collection of key-value pairs.
+   Print: To display something on the screen.
+   Syntax: The rules of a programming language.
+
+!!! Guided Practice (10-15 minutes)
+
+   Problem 1: Write a program that asks the user for their name and then prints "Hello, [name]!".
+    ```python
+    name = input("What is your name? ")
+    print("Hello, " + name + "!")
+    ```
+   Problem 2: Write a program that calculates the area of a rectangle. Ask the user for the length and width, and then print the area.
+    ```python
+    length = float(input("Enter the length: "))
+    width = float(input("Enter the width: "))
+    area = length  width
+    print("The area is:", area)
+    ```
+   Problem 3: Write a program that checks if a number is even or odd.
+    ```python
+    number = int(input("Enter a number: "))
+    if number % 2 == 0:
+        print("Even")
+    else:
+        print("Odd")
+    ```
+
+!!! Closure (5 minutes)
+
+   Review the key concepts covered in the lesson: variables, data types, operators, conditional statements, loops, functions, lists, and dictionaries.
+   Ask students to share one thing they learned today.
+   Ask students if they have any questions about the material.
+   Preview the topic of the next lesson (e.g., more advanced list operations or creating simple games).
+
+!!! Introduction / Warm-Up (5-10 minutes)
+
+   Activity: Ask students if they know what coding or programming is.
+   Discussion: What do they think computers can do? What do they think they can't do?
+   Analogy: Explain that computers need instructions, just like we need instructions to bake a cake or build a Lego set.
+   Introduction to Python: Briefly introduce Python as a computer language, like English or Spanish for humans. Computers understand Python instructions.
+
+!!! Independent Practice (10-15 minutes)
+
+   Problem 1: Create a variable called `age` and assign it your age. Then, print "I am [age] years old."
+   Problem 2: Write a program that asks the user for two numbers and then prints their sum.
+   Problem 3: Write an `if/else` statement that checks if a number is greater than 10. If it is, print "Greater than 10". Otherwise, print "Less than or equal to 10".
+   Problem 4: Write a `for` loop that prints the numbers from 1 to 5.
+   Problem 5: Create a list of your favorite colors. Print each color in the list.
+
+!!! Differentiation
+
+   For students who need more support: Provide simplified versions of the practice problems with more detailed instructions. Offer one-on-one assistance and encourage peer tutoring. Provide pre-written code snippets that students can modify.
+   For students who are ready for a challenge: Offer more complex problems that require them to combine multiple concepts. Encourage them to explore additional Python features. Have them mentor other students who are struggling. Provide them with open-ended projects that allow them to be creative.
+
+!!! Extension, Refinement, and Practice Activities
+
+   Number Guessing Game: Create a program where the computer picks a random number, and the user has to guess it.
+   Simple Calculator: Expand the basic calculator program to include more operations (subtraction, multiplication, division).
+   Mad Libs Generator: Create a program that asks the user for different types of words (nouns, verbs, adjectives) and then uses those words to create a silly story.
+   Explore online Python tutorials and resources: Encourage students to continue learning about Python on their own.
+
+!!! Use of Media & Technology
+
+   Online Python Editor (Trinket.io, repl.it, Google Colab): For interactive coding and practice.
+   Projector/Interactive Whiteboard: For displaying code examples and demonstrating concepts.
+   Educational Videos (YouTube Kids): To supplement the lesson with engaging visual content.
+   Presentation Slides: To present information in a clear and organized manner.
+
+!!! Cooperative Groupings
+
+   Pair Programming: Students work in pairs, with one student acting as the "driver" (typing the code) and the other student acting as the "navigator" (reviewing the code and providing guidance). Roles can be switched frequently.
+   Small Group Projects: Divide students into small groups and assign a collaborative coding project (e.g., creating a simple game or a program that solves a specific problem).
+   Think-Pair-Share: Pose a question to the class, have students think about it individually, then discuss it with a partner, and finally share their ideas with the whole class.
