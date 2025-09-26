@@ -1,0 +1,27 @@
+!!! Slide 1: What is an AI Agent?
+
+*   An AI agent is a computer program that acts in an environment.
+*   It perceives its environment and acts to achieve goals.
+*   Think of it like a robot or a smart assistant!
+*   Different types of agents have different capabilities.
+
+!!! Slide 2: Reactive AI Agents
+
+*   Respond directly to their environment.
+*   No memory of past experiences.
+*   Example: Deep Blue (chess-playing AI).
+*   Simple but limited.
+
+!!! Slide 3: Memory-Based AI Agents
+
+*   Remember past experiences.
+*   Use past experiences to make decisions.
+*   Example: Self-driving car learning routes.
+*   More adaptable than reactive agents.
+
+!!! Slide 4: Goal-Oriented AI Agents
+
+*   Have specific goals they try to achieve.
+*   Plan and strategize to reach goals.
+*   Example: Robot vacuum cleaner cleaning a room.
+*   Most complex type of agent.
