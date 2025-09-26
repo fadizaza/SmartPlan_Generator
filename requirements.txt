@@ -45,5 +45,6 @@ tqdm==4.65.0
 # Error Handling and Logging
 sentry-sdk==1.19.1
 
-#SQlite Database
-Flask-SQLAlchemy==2.5.1
+# Database
+Flask-SQLAlchemy==3.0.2
+SQLAlchemy==1.4.41
