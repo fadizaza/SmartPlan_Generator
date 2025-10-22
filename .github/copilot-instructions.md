@@ -111,3 +111,5 @@ SmartPlan is a Flask-based web application for generating educational materials 
    - Template selection handled through UI
 
 Remember to validate file paths and ensure proper directory permissions when working with file operations.
+
+Important: always get user confirmation before performing any file operations.

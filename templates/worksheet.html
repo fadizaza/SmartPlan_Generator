@@ -33,6 +33,7 @@
                 
                 <form id="worksheetForm" method="POST">
                     <!-- Worksheet Options -->
+                    <input type="hidden" id="custom_prompt" name="custom_prompt" value="">
                     <div class="card mb-4">
                         <div class="card-header bg-light">
                             <div class="d-flex align-items-center">
@@ -177,29 +178,24 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Worksheet Prompt -->
+                    <!-- Additional Notes -->
                     <div class="card mb-4">
                         <div class="card-header bg-light">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <span class="badge rounded-circle bg-danger me-2"><i class="fas fa-pen-to-square"></i></span>
-                                    <h5 class="mb-0">AI Prompt:</h5>
-                                </div>
-                                <span class="badge bg-success" id="prompt-update-badge" style="display: none;">Updated</span>
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-info me-2"><i class="fas fa-sticky-note"></i></span>
+                                <h5 class="mb-0">Additional Notes:</h5>
                             </div>
                         </div>
                         <div class="card-body">
-                            <p class="text-muted small mb-2">This prompt will be used to generate your worksheet. It updates automatically based on your selections above.</p>
-                            <textarea class="form-control" id="instructions" name="instructions" rows="8" style="font-size: 0.9rem; background-color: #f8f9fa;" placeholder="Enter specific instructions for the worksheet (optional)"></textarea>
-                            <div class="d-flex justify-content-between mt-2">
-                                <div class="form-text">The prompt is automatically updated based on your selections. You can also modify it directly.</div>
-                                <button type="button" id="update-prompt-btn" class="btn btn-sm btn-outline-secondary">
-                                    <i class="fas fa-sync-alt"></i> Update Prompt
-                                </button>
+                            <textarea class="form-control" id="additional_notes" name="additional_notes" rows="4" 
+                                      placeholder="Add any specific instructions or requirements for the AI model (e.g., focus on practical applications, include real-world examples, avoid certain topics, etc.)"></textarea>
+                            <div class="form-text mt-2">
+                                <i class="fas fa-info-circle me-1"></i>
+                                These notes will be included in the AI prompt to customize the question generation according to your specific needs.
                             </div>
                         </div>
                     </div>
+                    
                     
                     <div class="d-flex justify-content-between">
                         <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
@@ -281,6 +277,8 @@
 
 {% block extra_js %}
 <script>
+    let promptParts = [];
+
 $(document).ready(function() {
     console.log("Document ready function executing for worksheet");
     
@@ -420,8 +418,11 @@ $(document).ready(function() {
     }
       function updatePrompt() {
         console.log("updatePrompt function called");
-        let promptParts = [];
-          // Get the topic and learning outcomes from hidden fields
+        
+        // Clear promptParts array to rebuild it fresh
+        promptParts = [];
+        
+        // Get the topic and learning outcomes from hidden fields
         const topic = $('#hidden-topic').val();
         const learningOutcomes = $('#hidden-learning-outcomes').val();
         console.log("Topic from template:", topic);
@@ -434,17 +435,12 @@ $(document).ready(function() {
             const subject = $('#subject').val();
             const studentLevel = $('#studentLevel').val();
             
-             // Add subject if selected
-            if (subject && subject !== "Select the subject") {
-                promptParts.push(`You are a ${subject} teacher for ${studentLevel} level students.`);
-            }
-           
+            // Add subject if selected
             
-           
-             // Build the prompt
-            promptParts.push(`Create a ${difficultyLevel.toLowerCase()} level worksheet with ${numActivities} activities.`);
             
-           
+            // Build the prompt
+            
+            
             // Get selected worksheet types
             const selectedTypes = [];
             $('input[name="worksheet_type"]:checked').each(function() {
@@ -457,15 +453,8 @@ $(document).ready(function() {
             // Add worksheet types
             const worksheetTypes = selectedTypes.length > 0 ? selectedTypes.join(', ') : 'practice exercises, assessment activities';
             promptParts.push(`\nInclude the following types of activities: ${worksheetTypes}.`);
-              // Add topic information
-            if (topic && topic.trim() !== "") {
-                promptParts.push(`The worksheet should focus on the topic: ${topic}`);
-            }
             
-            // Add learning outcomes if available
-            if (learningOutcomes && learningOutcomes.trim() !== "") {
-                promptParts.push(`\nEnsure the worksheet addresses these learning outcomes:\n${learningOutcomes}`);
-            }
+            
             
             // Create initial prompt even if no options are selected yet
             if (promptParts.length === 0) {
@@ -475,6 +464,10 @@ $(document).ready(function() {
             // Combine all parts into the final prompt
             const finalPrompt = promptParts.join("\n");
             console.log("Final prompt:", finalPrompt);
+            console.log("PromptParts array:", promptParts);
+            
+            // Update the hidden custom_prompt field immediately
+            $('#custom_prompt').val(finalPrompt);
             
             // Update the prompt textarea
             try {
@@ -516,12 +509,23 @@ $(document).ready(function() {
             }
         } catch (err) {
             console.error("Error in updatePrompt:", err);
-            $('#instructions').val("Error generating prompt. Please try refreshing the page.");
+            promptParts = ["Error generating prompt. Please try refreshing the page."];
+            $('#custom_prompt').val(promptParts.join("\n"));
         }
     }
       // Form submission
     $('#worksheetForm').submit(function(e) {
         e.preventDefault();
+        
+        // Ensure prompt is updated before submission
+        updatePrompt();
+        
+        // Double-check that custom_prompt has the latest value from promptParts
+        const currentPrompt = promptParts.join("\n");
+        $('#custom_prompt').val(currentPrompt);
+        
+        console.log("Form submission - Custom prompt being sent:", currentPrompt);
+        console.log("Hidden field value:", $('#custom_prompt').val());
         
         // Reset progress indicators
         $('#top-progress-bar').css('width', '0%');
@@ -534,9 +538,12 @@ $(document).ready(function() {
         
         // Start progress animation
         startProgressSimulation();
-          
+        
         // Get form data
         const formData = new FormData(this);
+        
+        // Verify the custom_prompt is in the form data
+        console.log("FormData custom_prompt:", formData.get('custom_prompt'));
         
         // Send AJAX request
         $.ajax({

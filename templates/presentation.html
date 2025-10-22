@@ -56,8 +56,9 @@
                                 <div class="col-md-4 mb-3">
                                     <label for="numSlides" class="form-label fw-bold text-primary">Number of Slides:</label>
                                     <select class="form-select" id="numSlides" name="numSlides">
+                                        <option value="5" selected>5</option>
                                         <option value="10">10</option>
-                                        <option value="15" selected>15</option>
+                                        <option value="15">15</option>
                                         <option value="20">20</option>
                                         <option value="25">25</option>
                                         <option value="30">30</option>
@@ -111,13 +112,25 @@
                                 <h5 class="mb-0">Presentation Prompt</h5>
                             </div>
                         </div>
-                        <div class="card-body">                            <div class="mb-3">
-                                <label for="prompt" class="form-label fw-bold text-primary">Prompt (you can customize):</label>
-                                <textarea class="form-control" id="prompt" name="prompt" rows="5" placeholder="Enter specific instructions for your presentation content, structure, or requirements..."></textarea>
+                        
+                    </div>
+                       <!-- Additional Notes -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-info me-2"><i class="fas fa-sticky-note"></i></span>
+                                <h5 class="mb-0">Additional Notes:</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <textarea class="form-control" id="additional_notes" name="additional_notes" rows="4" 
+                                      placeholder="Add any specific instructions or requirements for the AI model (e.g., focus on practical applications, include real-world examples, avoid certain topics, etc.)"></textarea>
+                            <div class="form-text mt-2">
+                                <i class="fas fa-info-circle me-1"></i>
+                                These notes will be included in the AI prompt to customize the question generation according to your specific needs.
                             </div>
                         </div>
                     </div>
-                    
                     
                       <!-- Preview and Generate Buttons -->
                     <div class="d-grid gap-2">
@@ -214,6 +227,8 @@
 </div>
 
 <script>
+    // Global variable for prompt
+    var prompt = "";
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('presentationForm');
         const generateBtn = document.getElementById('generateBtn');
@@ -225,9 +240,10 @@
           // Form elements for dynamic prompt update
         const subjectSelect = document.getElementById('subject');
         const audienceSelect = document.getElementById('audience');
-        const numSlidesSelect = document.getElementById('numSlides');        const contentLengthSelect = document.getElementById('contentLength');
+        const numSlidesSelect = document.getElementById('numSlides');     
+        const contentLengthSelect = document.getElementById('contentLength');
         const themeSelect = document.getElementById('theme');
-        const promptTextarea = document.getElementById('prompt');
+        
         
         // Function to update prompt based on form selections
         function updatePrompt() {
@@ -264,9 +280,10 @@
             const theme = themeSelect.value || 'Gallery';
               // Create new prompt text based on selections
             const promptText = `You are a ${subject} teacher teaching a ${audience} level class.\nGenerate ${numSlides} PowerPoint presentation slides to present using the ${theme} theme.\nEach slide should have ${contentLength}.\nUse ${audience} language and structure.\nThe presentation should address the following learning outcomes:\n${learningOutcomes}`;
-            
+            prompt = promptText;
+              // Update the hidden prompt field
             // Update the prompt textarea
-            promptTextarea.value = promptText;
+            
         }
           // Add event listeners to form elements to update prompt when they change
         if (subjectSelect) subjectSelect.addEventListener('change', updatePrompt);

@@ -146,6 +146,30 @@ def learning_outcomes():
                           escaped_learning_outcomes=escaped_learning_outcomes,
                           colors=colors)
 
+@app.route('/api/check_file_content', methods=['GET'])
+@login_required
+def api_check_file_content():
+    """Check if the current user has uploaded file content available and return it"""
+    try:
+        user_session = lg.get_user_session(current_user.id)
+        has_file_content = hasattr(user_session, 'fileContent') and user_session.fileContent
+        
+        response = {
+            'status': 'success',
+            'hasFileContent': bool(has_file_content)
+        }
+        
+        # Include the actual file content if available
+        if has_file_content:
+            response['fileContent'] = user_session.fileContent
+        
+        return jsonify(response)
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': f'Failed to check file content: {str(e)}'
+        }), 500
+
 @app.route('/questions', methods=['GET', 'POST'])
 @login_required
 def questions():
@@ -157,6 +181,7 @@ def questions():
         subject = request.form.get('subject')
         student_level = request.form.get('student_level')
         question_types = request.form.getlist('question_type')
+        additional_notes = request.form.get('additional_notes', '')
         difficulty_levels = {}
         sub_question_counts = {}
         
@@ -175,39 +200,40 @@ def questions():
             difficulty_levels[q_type] = request.form.get(f'difficulty_{q_type}', 'Easy')
             sub_question_counts[q_type] = request.form.get(f'count_{q_type}', '5')
             print(f"Processing question type: {q_type}, count: {sub_question_counts[q_type]}, difficulty: {difficulty_levels[q_type]}")
-          # Get prompt directly from the textarea instead of building it programmatically
-        prompt = request.form.get('prompt', '')
         
-        # If no prompt is provided (unlikely but as fallback), build one
-        if not prompt:
-            # Build prompt similar to the desktop version (fallback only)
-            prompt = ""
-            if subject != "Select the subject":
-                prompt += f"You are an experienced {subject} teacher. "
-            if student_level != "Select Level":
-                prompt += f"creating assessment material for {student_level} students. "
-                
-            prompt += "\\nYour goal is to evaluate their understanding of the following learning outcome:"
-            if lg.learning_outcomes:
-                prompt += f"\\n{lg.learning_outcomes}\\n\\n"
-            
-            # Add instructions for each selected question type
-            for q_type in question_types:
-                count = sub_question_counts.get(q_type, "5")
-                difficulty = difficulty_levels.get(q_type, "easy").lower()
-                
-                if q_type == "mcq":
-                    prompt += f"Create multiple choice question containing {count} {difficulty} difficulty sub-questions.\\n"
-                elif q_type == "short_answer":
-                    prompt += f"Create short answer question containing {count} {difficulty} difficulty sub-questions.\\n"
-                elif q_type == "true_false":
-                    prompt += f"Create True/False question containing {count} {difficulty} difficulty sub-questions.\\n"
-                elif q_type == "fill_blanks":
-                    prompt += f"Create fill-in-the-blanks question containing {count} {difficulty} difficulty sub-questions.\\n"
-                elif q_type == "matching":
-                    prompt += f"Create matching question that consist of {count} matching points at {difficulty} difficulty level\\n"
+
+        # Build the prompt
+        user_session = lg.get_user_session(current_user.id)
+        has_file_content = hasattr(user_session, 'fileContent') and user_session.fileContent
+               
+        prompt = f"You are an experienced and creative {subject} teacher "
+        prompt += f"designing engaging assessment questions for {student_level} students\n"
+        prompt += f"Your goal is to help students understand a given {session.get('topic', '')} in a simple and age-appropriate way.\n"
+        prompt += f"Use clear, student-friendly language and practical examples that make complex ideas easy to grasp."
+        if not has_file_content:
+            prompt += f"\nBase your questions on the provided learning outcomes: \n{session.get('learning_outcomes', '')}for that topic.\n"
+        prompt += "Generate questions according to the following specifications:\n"
+        for q_type in question_types:
+            prompt += f"Question Type: {q_type}, Difficulty: {difficulty_levels[q_type]}, Count: {sub_question_counts[q_type]}\n"
+        prompt = prompt.replace('mcq', 'multiple choice questions')
+       
         
+        if has_file_content:
+            prompt += "\nUse the below contents only to create your questions:\n"
+            prompt += user_session.fileContent + "\n"
         # Call the existing question generation function but adapt for web context
+        prompt += """
+        consider the following notes while creating the questions:\n
+            - Ensure the questions are aligned with the learning outcomes, encourage curiosity, and include relatable real-world examples (such as chatbots, robots, or games when appropriate).
+            - Provide clear, concise question wording suitable for primary learners.
+            - Reply only with the questions, no additional text.
+            - Format the questions appropriately based on their type (e.g., list options for multiple choice).
+            - Provide the correct answer for each question at the end of the question.
+        """
+        if additional_notes:
+            prompt += f"- {additional_notes}\n"
+        
+         # Debug: Print the constructed prompt
         try:
             # Generate questions in a background thread and return a job ID
             # In a real app, use a task queue like Celery
@@ -284,8 +310,45 @@ def worksheet():
     if not session.get('topic'):
         return redirect(url_for('learning_outcomes'))
         
-    if request.method == 'POST':        # Handle worksheet generation
-        instructions = request.form.get('instructions', '')
+    if request.method == 'POST':
+        # Handle worksheet generation
+        subject = request.form.get('subject', '')
+        studentLevel = request.form.get('student_level', '')
+        difficultyLevel = request.form.get('difficulty_level', '')
+        numActivities = request.form.get('num_activities', '')
+        activities = request.form.get('custom_prompt', '')
+        additional_notes = request.form.get('additional_notes', '')
+        
+       
+        user_session = lg.get_user_session(current_user.id)
+        has_file_content = hasattr(user_session, 'fileContent') and user_session.fileContent
+        #if has_file_content:
+        #   instructions += "\nUse the following content mainly to create your lesson plan:\n"
+        #   instructions += user_session.fileContent + "\n"
+        
+        # Check for alternative field names that might be used by frontend
+                
+       
+        
+        # If still empty, build a default prompt
+        
+        
+        custom_prompt = f"You are an experienced {subject} teacher.\n"
+        custom_prompt += f"Create a worksheet for {studentLevel} students.\n"
+        custom_prompt += f"The worksheet should be at {difficultyLevel} difficulty level.\n"
+        custom_prompt += f"You should create {numActivities} activities."
+        custom_prompt += activities + "\n"
+        if not has_file_content:
+            custom_prompt += f"The worksheet should focus on the topic: {session.get('topic', '')}\n"
+            custom_prompt += f"The worksheet should cover the following Learning Outcomes:\n{session.get('learning_outcomes', '')}\n"
+        if additional_notes:
+            custom_prompt += f"""
+        notes:
+            - {additional_notes}
+        """
+        if has_file_content:
+            custom_prompt += "\nUse the below contents only to create your worksheet:\n"
+            custom_prompt += user_session.fileContent + "\n"
         
         # Get output format preferences
         output_formats = {
@@ -294,7 +357,7 @@ def worksheet():
         }
         
         # Log the output format values for debugging
-        print(f"Output formats - DOCX: {output_formats['docx']}, HTML: {output_formats['html']}")
+        #print(f"Output formats - DOCX: {output_formats['docx']}, HTML: {output_formats['html']}")
         
         # Ensure at least one format is selected (default to DOCX if none)
         if not any(output_formats.values()):
@@ -302,9 +365,9 @@ def worksheet():
             print("No output formats selected, defaulting to DOCX")
         
         try:
-            # Call the existing worksheet generation function with format preferences
+            # Call the existing worksheet generation function with format preferences and user_id
             session['generation_status'] = 'running'
-            result = lg.create_worksheet(custom_prompt=instructions, output_formats=output_formats)
+            result = lg.create_worksheet(custom_prompt=custom_prompt, output_formats=output_formats, user_id=current_user.id)
             session['generation_status'] = 'completed'
             
             # Check if result is a dictionary (new format) or string (old format)
@@ -365,15 +428,21 @@ def lesson_plan():
     if request.method == 'POST':
         # Handle lesson plan generation
         instructions = request.form.get('instructions', '')
-
+        
         rules = '''
-        - each section should start with a "!!!" format.
-        - give me the sections directly without explanation at the beginning of your response.
+        It is very important that you follow these rules:
+        - Begin every section above with the marker "!!!".
+        - Present the sections immediately without any introductory explanation or comments.
         '''
         # Append formatting rules to the instructions
         instructions += "\n" + rules
        
-        
+        user_session = lg.get_user_session(current_user.id)
+        has_file_content = hasattr(user_session, 'fileContent') and user_session.fileContent
+        if has_file_content:
+            instructions += "\nUse the following content mainly to create your lesson plan:\n"
+            instructions += user_session.fileContent + "\n"
+
         # Get selected sections
        
         output_formats_str = request.form.get('output_formats', '')
@@ -399,7 +468,7 @@ def lesson_plan():
         try:
             # Call the existing lesson plan generation function with the enhanced instructions
             session['generation_status'] = 'running'
-            result = lg.create_lesson_plan(custom_prompt=instructions, output_formats=output_formats)
+            result = lg.create_lesson_plan(custom_prompt=instructions, output_formats=output_formats, user_id=current_user.id)
             session['generation_status'] = 'completed'
               # Check if result is a dictionary (new format) or string (old format)
             response = {
@@ -457,85 +526,68 @@ def presentation():
         return redirect(url_for('learning_outcomes'))
         
     if request.method == 'POST':        # Handle presentation generation
-        instructions = request.form.get('instructions', '')
-        theme = request.form.get('theme', 'Office')
-        
+              
         # Get additional parameters from the form
         subject = request.form.get('subject', '')
         audience = request.form.get('audience', '')
-        num_slides = request.form.get('numSlides', '15')
-        content_length = request.form.get('contentLength', 'Medium')
-        detail_level = request.form.get('detailLevel', 'Moderate')
-        prompt = request.form.get('prompt', '')
-        
-        # Build enhanced instructions
-        enhanced_instructions = ""
-          # If custom prompt is provided, use it
-        if prompt.strip():
-            enhanced_instructions = prompt
-        else:
-            enhanced_instructions = f"Create a {detail_level.lower()} level presentation with approximately {num_slides} slides.\n\n"
-            enhanced_instructions += f"Each slide should have a {content_length.lower()} amount of text.\n\n"
-            enhanced_instructions += f"Use the {theme} theme for this presentation.\n\n"
-            
-            if subject and subject != "Select the subject":
-                enhanced_instructions += f"Subject area: {subject}\n"
-            
-            if audience and audience != "Select Level":
-                enhanced_instructions += f"Target audience: {audience} level\n"
-            
-            # Add original instructions if provided
-            if instructions.strip():
-                enhanced_instructions += f"\nAdditional Instructions:\n{instructions}\n"
-        
+        num_slides = request.form.get('numSlides', '')
+        content_length = request.form.get('contentLength', '')
+        theme = request.form.get('theme', '')
+        additional_notes = request.form.get('additional_notes', '')
+       
         try:
-            # Check if AIresponse.txt exists and has content
-            output_dir = os.path.join(app.root_path, 'outputFiles', 'HTML')
-            ai_response_file = os.path.join(output_dir, 'AIresponse.txt')
+            user_session = lg.get_user_session(current_user.id)
+            has_file_content = hasattr(user_session, 'fileContent') and user_session.fileContent
+            # Build enhanced instructions
+            enhanced_instructions = ""
+            # If custom prompt is provided, use it
+            enhanced_instructions += f"You are an expert {subject} teacher teaching {audience} students.\n"
+            enhanced_instructions += f"you have to create a {num_slides} slides for a presentation.\n"
+            enhanced_instructions += f"Each slide should have a {content_length.lower()} amount of text.\n"
+            if not has_file_content:
+                enhanced_instructions += f"the slides should cover the following topic:\n{session.get('topic', '')}\n"
+                enhanced_instructions += f"the slides should cover the following learning outcomes:\n{session.get('learning_outcomes', '')}\n"
+       
             
-            # Set session status
-            session['generation_status'] = 'running'
+            if has_file_content:
+                enhanced_instructions += "\nUse the following content to create your presentation slides:\n"
+                enhanced_instructions += user_session.fileContent + "\n"
+        except Exception as e:
+            flash(f"Error reading directories: {str(e)}", "danger")
+        
+        enhanced_instructions += '''
+        notes:
+            - Begin every slide with the marker "!!!".
+            - the marker "!!!" should be followed by the slide title without new line.
+            - Present the slides immediately without any introductory explanation or comments.
+            - Each slide should have a title and bullet points.
+            - Use simple language suitable for the audience.
+            - Include relevant examples and analogies to explain complex concepts.
+            - Ensure the content is engaging and interactive.
+            - Use consistent formatting and style throughout the presentation.
+            '''
+        if additional_notes:
+            enhanced_instructions += f"- {additional_notes}\n"
+                
+                # Reset global sections variable before generating a new presentation
             
-            # Set the topic in lesson_generation module
-            lg.topic = session.get('topic', '')
-            lg.learning_outcomes = session.get('learning_outcomes', '')
-            
-            # Check if the file exists and has content
-            has_existing_response = False
-            if os.path.exists(ai_response_file):
-                with open(ai_response_file, 'r', encoding='utf-8') as f:
-                    content = f.read().strip()
-                    if content:
-                        # Set the sections in lesson_generation module
-                        lg.sections = content
-                        has_existing_response = True
-              # If we don't have existing response, generate it first using the prompt
-            if not has_existing_response:
-                # Generate using the prompt
-                lg.sections = None  # Reset sections to ensure new generation
+        
+        
+        lg.sections = None  # Reset sections to ensure new generation
                 
             # Print debug info
-            print(f"Generating presentation with theme: {theme}")
+            #
+            # Call the presentation generation function with user_id
+        result = lg.create_presentation(custom_prompt=enhanced_instructions, 
+                                          theme_name=theme,
+                                          user_id=current_user.id)
             
-            # Call the presentation generation function
-            result = lg.create_presentation(custom_prompt=enhanced_instructions if not has_existing_response else None, 
-                                          theme_name=theme)
-            
-            # Update session status
-            session['generation_status'] = 'completed'
-            
-            return jsonify({
+        return jsonify({
                 'status': 'success',
                 'message': 'Presentation generated successfully',
                 'file_url': url_for('download_file', filename=os.path.basename(result))
             })
-        except Exception as e:
-            session['generation_status'] = 'failed'
-            return jsonify({
-                'status': 'error',
-                'message': f'Failed to generate presentation: {str(e)}'
-            })
-    
+        
     # Escape the learning outcomes for proper display
     escaped_learning_outcomes = escape_learning_outcomes(session.get('learning_outcomes', ''))
     
@@ -553,7 +605,7 @@ def revision():
         
     if request.method == 'POST':
         # Handle revision material generation
-        instructions = request.json.get('instructions', '') if request.is_json else request.form.get('instructions', '')
+        prompt = request.json.get('instructions', '') if request.is_json else request.form.get('instructions', '')
         
         # Get output format preferences
         output_formats = request.json.get('output_formats', {}) if request.is_json else {}
@@ -577,8 +629,13 @@ def revision():
         
         try:
             # Call the existing revision generation function
+            user_session = lg.get_user_session(current_user.id)
+            has_file_content = hasattr(user_session, 'fileContent') and user_session.fileContent
+            if has_file_content:
+                prompt += "\nUse the following content mainly to create your revision:\n"
+                prompt += user_session.fileContent + "\n"
             session['generation_status'] = 'running'
-            result = lg.create_revision(custom_prompt=instructions, output_formats=output_formats)
+            result = lg.create_revision(custom_prompt=prompt, output_formats=output_formats, user_id=current_user.id)
             session['generation_status'] = 'completed'
             
             # Initialize response dictionary
@@ -733,6 +790,14 @@ def api_generate_outcomes():
         # Update session variables
         session['topic'] = topic
         session['learning_outcomes'] = learning_outcomes
+           
+        # Get user session and clear file content
+        user_session = lg.get_user_session(current_user.id)
+        user_session.fileContent = None
+        session['fileContent'] = None  # Clear any uploaded file content
+        
+        
+        
         
         # Update global variables in lesson_generation
         lg.topic = topic
@@ -767,6 +832,10 @@ def api_generate_topic():
         # Update session variables
         session['topic'] = topic
         session['learning_outcomes'] = learning_outcomes
+        user_session = lg.get_user_session(current_user.id)
+        user_session.fileContent = None
+        session['fileContent'] = None  # Clear any uploaded file content
+        
         
         # Update global variables in lesson_generation
         lg.topic = topic
@@ -815,42 +884,26 @@ def preview_presentation():
     
     try:
         # Get form data
-        instructions = request.form.get('instructions', '')
         subject = request.form.get('subject', '')
         audience = request.form.get('audience', '')
-        num_slides = request.form.get('numSlides', '15')
-        content_length = request.form.get('contentLength', 'Medium')
-        detail_level = request.form.get('detailLevel', 'Moderate')
-        theme = request.form.get('theme', 'Office')
-        prompt = request.form.get('prompt', '')
+        num_slides = request.form.get('numSlides', '')
+        content_length = request.form.get('contentLength', '')
+        theme = request.form.get('theme', '')
         
         # Build enhanced instructions
         enhanced_instructions = ""
+        enhanced_instructions += f"You are an expert {subject} teacher. You are teaching {audience} students.\n"
+        enhanced_instructions += f"Create a {num_slides} slide presentation.\n"
+        enhanced_instructions += f"Each slide should have a {content_length.lower()} amount of text.\n"
+        enhanced_instructions += f"the presentation should cover the following topic:\n{session.get('topic', '')}\n"
+        enhanced_instructions += f"the slides should cover the following learning outcomes:\n{session.get('learning_outcomes', '')}\n"
+        enhanced_instructions += '''
+            - each slide should start with a "!!!" format.
+            - give me the slides directly without explination at the begining of your response.
+            '''
         
-        # If custom prompt is provided, use it
-        if prompt.strip():
-            enhanced_instructions = prompt
-        else:
-            enhanced_instructions = f"Create a {detail_level.lower()} level presentation with approximately {num_slides} slides.\n\n"
-            enhanced_instructions += f"Each slide should have a {content_length.lower()} amount of text.\n\n"
-            enhanced_instructions += f"Use the {theme} theme for this presentation.\n\n"
-            
-            if subject and subject != "Select the subject":
-                enhanced_instructions += f"Subject area: {subject}\n"
-            
-            if audience and audience != "Select Level":
-                enhanced_instructions += f"Target audience: {audience} level\n"
-            
-            # Add original instructions if provided
-            if instructions.strip():
-                enhanced_instructions += f"\nAdditional Instructions:\n{instructions}\n"
-        
-        # Generate AI response
-        lg.topic = session.get('topic')
-        lg.learning_outcomes = session.get('learning_outcomes', '')
-        
-        # Use a custom function that just generates and saves the response but doesn't create the PPT
-        ai_response = generate_ai_response_only(enhanced_instructions)
+        # Generate AI response using the user session
+        ai_response = generate_ai_response_only(enhanced_instructions, current_user.id)
         
         return jsonify({
             'status': 'success',
@@ -881,14 +934,30 @@ def save_ai_response():
                 'message': 'No content provided.'
             })
         
-        # Save the content to the AIresponse.txt file in user's folder
-        user_folder = get_user_output_folder()
-        output_dir = os.path.join(user_folder, 'HTML')
-        os.makedirs(output_dir, exist_ok=True)
+        # Get user session and update it with the content
+        user_session = lg.get_user_session(current_user.id)
+        topic = user_session.topic or session.get('topic', '')
+        user_directory = user_session.user_directory
+        
+        # Determine output directory
+        if user_directory and topic:
+            sanitized_topic = re.sub(r'[^\w\s-]', '', topic).strip().replace(' ', '_')
+            output_dir = os.path.join(user_directory, sanitized_topic)
+            os.makedirs(output_dir, exist_ok=True)
+        else:
+            # Fallback to user folder
+            user_folder = get_user_output_folder()
+            output_dir = os.path.join(user_folder, 'HTML')
+            os.makedirs(output_dir, exist_ok=True)
+        
         output_file = os.path.join(output_dir, 'AIresponse.txt')
+        
         
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(content)
+        
+        # Update user session with the content
+        user_session.sections = content
         
         return jsonify({
             'status': 'success',
@@ -903,15 +972,34 @@ def save_ai_response():
 @app.route('/presentation/load-response', methods=['GET'])
 @login_required
 def load_ai_response():
+    if not session.get('topic'):
+        return jsonify({
+            'status': 'error',
+            'message': 'No topic has been selected.'
+        })
+    
     try:
-        # Check if AIresponse.txt exists in user's folder
-        user_folder = get_user_output_folder()
-        output_dir = os.path.join(user_folder, 'HTML')
-        ai_response_file = os.path.join(output_dir, 'AIresponse.txt')
+        # Get user session
+        user_session = lg.get_user_session(current_user.id)
+        topic = user_session.topic or session.get('topic', '')
+        user_directory = user_session.user_directory
         
-        if os.path.exists(ai_response_file):
-            with open(ai_response_file, 'r', encoding='utf-8') as f:
+        # Determine output directory
+        if user_directory and topic:
+            sanitized_topic = re.sub(r'[^\w\s-]', '', topic).strip().replace(' ', '_')
+            output_dir = os.path.join(user_directory, sanitized_topic)
+        else:
+            # Fallback to user folder
+            output_dir = get_user_output_folder()
+        
+        output_file = os.path.join(output_dir, 'AIresponse.txt')
+        
+        if os.path.exists(output_file):
+            with open(output_file, 'r', encoding='utf-8') as f:
                 content = f.read()
+            
+            # Update user session with the loaded content
+            user_session.sections = content
             
             return jsonify({
                 'status': 'success',
@@ -920,7 +1008,7 @@ def load_ai_response():
         else:
             return jsonify({
                 'status': 'error',
-                'message': 'No existing AI response found.'
+                'message': 'No saved response found.'
             })
     except Exception as e:
         return jsonify({
@@ -928,19 +1016,26 @@ def load_ai_response():
             'message': f'Failed to load AI response: {str(e)}'
         })
 
-def generate_ai_response_only(prompt):
+def generate_ai_response_only(prompt, user_id):
     """Generate AI response without creating the PowerPoint presentation.
     
     Args:
         prompt (str): The prompt to generate content.
+        user_id: The ID of the current user.
         
     Returns:
         str: The AI generated content.
     """
     try:
-        # Set the topic in lesson_generation module
-        lg.topic = session.get('topic', '')
-        lg.learning_outcomes = session.get('learning_outcomes', '')
+        # Get user session
+        user_session = lg.get_user_session(user_id)
+        user_session.topic = session.get('topic', '')
+        user_session.learning_outcomes = session.get('learning_outcomes', '')
+        
+        # Set user-specific directory if not already set
+        if not user_session.user_directory:
+            user_folder = get_user_output_folder()
+            user_session.user_directory = user_folder
         
         # Add the formatting rules for slides
         rules = '''
@@ -949,17 +1044,8 @@ def generate_ai_response_only(prompt):
         '''
         full_prompt = prompt + "\n" + rules
         
-        # Get AI response
-        ai_response = lg.ai_agent(full_prompt)
-        
-        # Save to file in user's folder
-        user_folder = get_user_output_folder()
-        output_dir = os.path.join(user_folder, 'HTML')
-        os.makedirs(output_dir, exist_ok=True)
-        
-        output_file = os.path.join(output_dir, 'AIresponse.txt')
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(ai_response)
+        # Get AI response using the user session system
+        ai_response = lg.get_ai_response(full_prompt, user_id=user_id)
         
         return ai_response
     except Exception as e:
@@ -1277,6 +1363,71 @@ def get_folder_files():
 def escape_html_filter(text):
     return escape_learning_outcomes(text)
 
+@app.route('/api/process_topic_file', methods=['POST'])
+@login_required
+def api_process_topic_file():
+    """Process uploaded file and extract topic and learning outcomes"""
+    if 'file' not in request.files:
+        return jsonify({
+            'status': 'error',
+            'message': 'No file uploaded'
+        }), 400
+    
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({
+            'status': 'error',
+            'message': 'No file selected'
+        }), 400
+    
+    try:
+        # Extract content from uploaded file
+        file_content = lg.extract_content(file)
+        
+        # Get user session and store file content
+        user_session = lg.get_user_session(current_user.id)
+        user_session.fileContent = file_content
+        
+        # Generate topic and learning outcomes from file content
+        topic_prompt = f"""Based on the following information, suggest a concise and specific educational topic or lesson title:
+        \n\n{file_content[:2000]}
+        Important notes:
+            - Respond with ONLY the topic/title. Keep it short (under 10 words), specific, and appropriate for an educational setting.
+            - Do not include any explanations or additional text."""
+        topic = lg.ai_agent(topic_prompt).strip().strip('"').strip("'")
+        
+        outcomes_prompt = f"""Generate 3-5 clear and concise learning outcomes based on the following information:
+                \n\n{file_content[:2000]}\n
+            Important notes:
+                Each learning outcome should:
+                - Start with an action verb
+                - Be specific and measurable
+                - Focus on student understanding or skills
+                - Be appropriate for a classroom setting
+                
+                Format the response as a simple list with one learning outcome per line.
+                Do not include any explanations, introductions, or other text."""
+        learning_outcomes = lg.ai_agent(outcomes_prompt).strip()
+        learning_outcomes = learning_outcomes.replace('<','&lt;').replace('>','&gt;')
+        
+        # Update session
+        session['topic'] = topic
+        session['learning_outcomes'] = learning_outcomes
+        user_session.topic = topic
+        user_session.learning_outcomes = learning_outcomes
+        
+        return jsonify({
+            'status': 'success',
+            'topic': topic,
+            'learning_outcomes': learning_outcomes
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': f'Failed to process file: {str(e)}'
+        }), 500
+
 if __name__ == '__main__':
     try:
         # Create the database tables if they don't already exist
@@ -1300,3 +1451,11 @@ if __name__ == '__main__':
         import traceback
         traceback.print_exc()
         input("Press Enter to exit...")
+        app.run(debug=True, host='0.0.0.0', port=5000)
+    except Exception as e:
+        print(f"Error starting the application: {str(e)}")
+        print(f"Exception details: {type(e).__name__}")
+        import traceback
+        traceback.print_exc()
+        input("Press Enter to exit...")
+

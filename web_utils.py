@@ -56,23 +56,26 @@ def generate_learning_outcomes_from_topic(topic):
     if not topic:
         return ""
     
-    prompt = f"""Generate 3-5 clear and concise learning outcomes for a lesson about "{topic}".
-    Each learning outcome should:
-    - Start with an action verb
-    - Be specific and measurable
-    - Focus on student understanding or skills
-    - Be appropriate for a classroom setting
-    
-    Format the response as a simple list with one learning outcome per line.
-    Do not include any explanations, introductions, or other text."""
+    prompt = f"""Generate 3–5 specific and measurable learning outcomes for a lesson on "{topic}".
+    Important notes:
+                Each learning outcome should:
+                - Start with an action verb
+                - Be specific and measurable
+                - Focus on student understanding or skills
+                - Be appropriate for a classroom setting
+
+                Format the response as a simple list with one learning outcome per line.
+                Do not include any explanations, introductions, or other text.
+    """
     
     try:
         ai_outcomes = lg.ai_agent(prompt)
         
         # Clean up the response
         # Remove bullet points, numbering, etc.
-        ai_outcomes = re.sub(r'^\s*[\d\.\-\*]+\s*', '', ai_outcomes, flags=re.MULTILINE)
+        #ai_outcomes = re.sub(r'^\s*[\d\.\-\*]+\s*', '', ai_outcomes, flags=re.MULTILINE)
         ai_outcomes = ai_outcomes.strip()
+        ai_outcomes = ai_outcomes.replace('<','&lt;').replace('>','&gt;')
         
         return ai_outcomes
     except Exception as e:
