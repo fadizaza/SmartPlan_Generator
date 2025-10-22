@@ -14,6 +14,8 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from utils import read_file_contents, clean_text, extract_important_lines
 from google import genai
+import PyPDF2
+import io
 
 # Constants
 #GEMINI_API_KEY = "AIzaSyBvyETScRxR7F_LTV1-i0WGOJGtziQ-OBc"
@@ -21,6 +23,8 @@ from google import genai
 # Class to store per-user session data
 class UserSession:
     def __init__(self):
+        self.user_id = None
+        self.fileContent = None
         self.topic = None
         self.learning_outcomes = None
         self.user_directory = None
@@ -72,7 +76,7 @@ def add_row(version, time, topic, ip, computer_name):
 def ai_agent(prompt):
     print("Calling AI agent...")
     # Use Gemini API via HTTP requests
-    
+    print(prompt)
 
     os.environ['GEMINI_API_KEY'] = "AIzaSyBvyETScRxR7F_LTV1-i0WGOJGtziQ-OBc"
 
@@ -81,8 +85,9 @@ def ai_agent(prompt):
     model="gemini-2.0-flash", 
     contents=prompt
   )
-    print(response.text)
+    
     return response.text
+    print("AI agent call completed.")
 
 
 def generate_topic_from_outcomes(outcomes):
@@ -100,37 +105,54 @@ def get_timestamp():
     """Generate a timestamp string for filenames."""
     return datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
-def get_ai_response(prompt=None):
+def get_ai_response(prompt=None, user_id=None):
     """Get AI response for the main content."""
-    global topic, sections
+    global topic, sections, topic_directory, user_directory
     
-    # If we already have the sections, return them
-    if sections is not None:
-        return sections
-        
-    if not topic:
-        raise ValueError("Topic cannot be empty")
-        
-    print(f"Generating Information about ({topic})...")
-    rules = '''
-            - each slide should start with a "!!!" format.
-            - give me the slides directly without explination at the begining of your response.
-            
-            '''
-    prompt += str(rules)
-    
-    
-    
-    try:
-        # Store response in global sections variable
-        print(prompt)
-        sections = ai_agent(prompt)
-        
-        # Determine output directory
+    if user_id is None:
+        # Fallback to global variables for backward compatibility
+        current_topic = topic
+        current_sections = sections
         output_dir = Path("outputFiles")
         if topic_directory:
             output_dir = topic_directory
-            
+        elif user_directory and current_topic:
+            sanitized_topic = re.sub(r'[^\w\s-]', '', current_topic).strip().replace(' ', '_')
+            output_dir = Path(user_directory) / sanitized_topic
+    else:
+        # Use user session data
+        user_session = get_user_session(user_id)
+        current_topic = user_session.topic
+        current_sections = user_session.sections
+        user_directory = user_session.user_directory
+        
+        # Determine output directory using user session
+        output_dir = Path("outputFiles")
+        if user_directory and current_topic:
+            sanitized_topic = re.sub(r'[^\w\s-]', '', current_topic).strip().replace(' ', '_')
+            output_dir = Path(user_directory) / sanitized_topic
+            # Ensure directory exists
+            output_dir.mkdir(parents=True, exist_ok=True)
+    
+    # If we already have the sections, return them
+   
+        
+    if not current_topic:
+        raise ValueError("Topic cannot be empty")
+        
+    try:
+        # Store response in sections variable
+        response = ai_agent(prompt)
+        
+        # Update the appropriate sections storage
+        if user_id is not None:
+            user_session.sections = response
+            current_sections = response
+        else:
+            # Update global sections for backward compatibility
+            sections = response
+            current_sections = response
+        
         # Ensure directory exists
         os.makedirs(output_dir, exist_ok=True)
         
@@ -138,16 +160,16 @@ def get_ai_response(prompt=None):
         timestamp = get_timestamp()
         output_file = output_dir / f"Slides_{timestamp}.txt"
         with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(sections)
+            f.write(current_sections)
         
         print(f"AI response saved to {output_file}")
-    
+        return current_sections
     
     except Exception as e:
         print(f"Error in get_AI_response: {str(e)}")
         raise
 
-def create_questions(custom_prompt=None, output_formats=None, user_id=None):
+def create_questions(custom_prompt, output_formats, user_id):
     """Generate questions document and webpage.
     
     Args:
@@ -243,9 +265,17 @@ def create_questions(custom_prompt=None, output_formats=None, user_id=None):
     return result
 
 
-def create_worksheet(custom_prompt=None, output_formats=None):
+def create_worksheet(custom_prompt=None, output_formats=None, user_id=None):
     """Generate worksheet document and webpage based on specified output formats."""
-    global topic, topic_directory, user_directory
+    if user_id is None:
+        raise ValueError("user_id is required")
+        
+    # Get user-specific session
+    user_session = get_user_session(user_id)
+    topic = user_session.topic
+    learning_outcomes = user_session.learning_outcomes
+    user_directory = user_session.user_directory
+    
     print(f"Generating worksheet about ({topic})...")
     
     # Default to DOCX only if no formats specified
@@ -255,38 +285,38 @@ def create_worksheet(custom_prompt=None, output_formats=None):
     if custom_prompt:
         prompt = custom_prompt
     else:
-        prompt = read_file_contents("worksheet.txt") + f" about: {topic}"
-        global learning_outcomes
-        if learning_outcomes:
-            prompt += f" considering these learning outcomes: {learning_outcomes}"
-        prompt += " give me the worksheet directly without explination at the begining of your response."
+        try:
+            prompt = read_file_contents("worksheet.txt") + f" about: {topic}"
+            if learning_outcomes:
+                prompt += f" considering these learning outcomes: {learning_outcomes}"
+            prompt += " give me the worksheet directly without explination at the begining of your response."
+        except Exception as e:
+            print(f"Warning: Could not read from worksheet.txt: {str(e)}")
+            # Fallback to a basic prompt if file can't be read
+            prompt = f"Create a comprehensive worksheet about {topic}"
+            if learning_outcomes:
+                prompt += f" considering these learning outcomes: {learning_outcomes}"
     
     worksheet = ai_agent(prompt)
     worksheet = worksheet.replace("**", "")
     
-    # Determine output directory
+    # Determine output directory using user session
     output_dir = Path("outputFiles")
     
-    # Use the user_directory and topic_directory if they exist
+    # Use the user_directory and topic if they exist
     if user_directory and topic:
         sanitized_topic = re.sub(r'[^\w\s-]', '', topic).strip().replace(' ', '_')
         output_dir = Path(user_directory) / sanitized_topic
         # Ensure directory exists
         output_dir.mkdir(parents=True, exist_ok=True)
-        # Update topic_directory global variable
-        topic_directory = output_dir
-    elif topic_directory:
-        output_dir = topic_directory
-    
-    # Ensure directory exists
-    os.makedirs(output_dir, exist_ok=True)
     
     # Dictionary to store results
     result = {"content": worksheet}
     
     # Generate ONE timestamp for ALL filenames to avoid duplicates
     timestamp = get_timestamp()
-      # Create document if DOCX format is selected
+    
+    # Create document if DOCX format is selected
     if output_formats.get('docx', True):
         doc = Document()
         doc.add_heading('Worksheet', level=1)
@@ -419,18 +449,27 @@ def create_homework(custom_prompt=None):
     print(f"Homework saved to {output_file}")
 
 
-def create_revision(custom_prompt=None, output_formats=None):
+def create_revision(custom_prompt=None, output_formats=None, user_id=None):
     """Generate revision document and webpage.
     
     Args:
         custom_prompt (str, optional): Custom prompt to generate content.
         output_formats (dict, optional): Dictionary with keys 'docx', 'html' and boolean values.
                                         Defaults to {'docx': True, 'html': True}.
+        user_id: The ID of the current user.
     
     Returns:
         dict: Dictionary with paths to generated files
     """
-    global topic, topic_directory, user_directory
+    if user_id is None:
+        raise ValueError("user_id is required")
+        
+    # Get user-specific session
+    user_session = get_user_session(user_id)
+    topic = user_session.topic
+    learning_outcomes = user_session.learning_outcomes
+    user_directory = user_session.user_directory
+    
     print(f"Generating revision about ({topic})...")
     
     # Set default output formats if not specified
@@ -441,7 +480,6 @@ def create_revision(custom_prompt=None, output_formats=None):
         prompt = custom_prompt
     else:
         prompt = read_file_contents("revision.txt")
-        global learning_outcomes
         if learning_outcomes:
             prompt += f" considering these learning outcomes: {learning_outcomes}"
     
@@ -458,6 +496,7 @@ def create_revision(custom_prompt=None, output_formats=None):
         # Ensure directory exists
         output_dir.mkdir(parents=True, exist_ok=True)
         # Update topic_directory global variable
+        global topic_directory
         topic_directory = output_dir
     elif topic_directory:
         output_dir = topic_directory
@@ -498,10 +537,18 @@ def create_revision(custom_prompt=None, output_formats=None):
     return result
 
 
-def create_lesson_plan(custom_prompt=None, output_formats=None):
+def create_lesson_plan(custom_prompt=None, output_formats=None, user_id=None):
     """Generate a comprehensive lesson plan based on the topic and learning outcomes.
     This function handles both the document creation and HTML generation."""
-    global topic, topic_directory, learning_outcomes, user_directory
+    
+    if user_id is None:
+        raise ValueError("user_id is required")
+        
+    # Get user-specific session
+    user_session = get_user_session(user_id)
+    topic = user_session.topic
+    learning_outcomes = user_session.learning_outcomes
+    user_directory = user_session.user_directory
     
     # Set default output formats if not specified
     if output_formats is None:
@@ -541,6 +588,7 @@ def create_lesson_plan(custom_prompt=None, output_formats=None):
         # Ensure directory exists
         output_dir.mkdir(parents=True, exist_ok=True)
         # Update topic_directory global variable
+        global topic_directory
         topic_directory = output_dir
     elif topic_directory:
         output_dir = topic_directory
@@ -614,7 +662,7 @@ def create_lesson_plan(custom_prompt=None, output_formats=None):
                         
                         # Print the current section being processed
                        # print(f"\n=== SECTION: {section_title} ===")
-                        #print(section_content[:200] + "..." if len(section_content) > 200 else section_content)
+                        #print(section_content[:200] + "..." if len(section_content) > 200 : section_content)
                         
                         # Map section titles to template section names
                         if re.search(r'Learning Objectives|Learning Outcomes', section_title, re.IGNORECASE):
@@ -644,8 +692,8 @@ def create_lesson_plan(custom_prompt=None, output_formats=None):
                             sections_dict["Extension, Refinement, and Practice Activities"] = section_content
                         elif re.search(r'Use of Media & Technology', section_title, re.IGNORECASE):
                             sections_dict["Use of Media / Technology"] = section_content
-                        elif re.search(r'Cooperative Groupings', section_title, re.IGNORECASE):
-                            sections_dict["Cooperative Groupings"] = section_content
+                        elif re.search(r'Cooperative Grouping', section_title, re.IGNORECASE):
+                            sections_dict["Cooperative Grouping"] = section_content
                         elif re.search(r'Differentiation', section_title, re.IGNORECASE):
                             sections_dict["Differentiation"] = section_content
                         else:
@@ -682,7 +730,7 @@ def create_lesson_plan(custom_prompt=None, output_formats=None):
         output_file = output_dir / f"LessonPlan_{timestamp}.docx"
         doc.save(str(output_file))
         print(f"Comprehensive lesson plan saved to {output_file}")
-        result["file_path"] = str(output_file)
+        result["docx_path"] = str(output_file)
     
     # Format the same lesson plan content as HTML if HTML is selected
     if output_formats.get('html', True):
@@ -809,10 +857,10 @@ def populate_template_with_sections(template_path, sections_content, topic_title
                     cell.text = cell_text.replace("UOMT111", sections_content["Use of Media / Technology"])
                     print("Replaced UOMT111 with Use of Media / Technology content.")
                 
-                # check for Cooperative Groupings placeholder (CG111)
-                elif "CG111" in cell_text and "Cooperative Groupings" in sections_content:
-                    cell.text = cell_text.replace("CG111", sections_content["Cooperative Groupings"])
-                    print("Replaced CG111 with Cooperative Groupings content.")
+                # check for Cooperative Grouping placeholder (CG111)
+                elif "CG111" in cell_text and "Cooperative Grouping" in sections_content:
+                    cell.text = cell_text.replace("CG111", sections_content["Cooperative Grouping"])
+                    print("Replaced CG111 with Cooperative Grouping content.")
                 
                 # check for Differentiation placeholder (DIFF111)
                 elif "DIFF111" in cell_text and "Differentiation" in sections_content:
@@ -859,21 +907,32 @@ def apply_theme_to_slide(slide, theme_name):
     print(f"Skipping theme application due to no-formatting requirement")
     return True
 
-def create_presentation(custom_prompt, theme_name):
+def create_presentation(custom_prompt, theme_name, user_id=None):
     """Create PowerPoint presentation based on sections data.
     
     Args:
         custom_prompt (str, optional): Custom prompt to generate content if sections is None.
         theme_name (str, optional): Name of the PowerPoint theme to apply. Defaults to "Office".
+        user_id: The ID of the current user.
         
     Returns:
         str: Path to the saved PowerPoint file.
     """
-    global topic, sections, topic_directory, learning_outcomes, user_directory
+    if user_id is None:
+        raise ValueError("user_id is required")
+        
+    # Get user-specific session
+    user_session = get_user_session(user_id)
+    topic = user_session.topic
+    #sections = user_session.sections
+    learning_outcomes = user_session.learning_outcomes
+    user_directory = user_session.user_directory
     
     # Get AI response for content if not already available
-    if sections is None:
-        get_ai_response(custom_prompt)
+    
+    get_ai_response(custom_prompt, user_id=user_id)
+    # Update sections in user session (get_ai_response should have updated it)
+    sections = user_session.sections
     
     # Remove all asterisks from sections
     sections = sections.replace('*', '') if sections else None
@@ -929,7 +988,7 @@ def create_presentation(custom_prompt, theme_name):
             today = datetime.datetime.now().strftime("%B %d, %Y")
             subtitle_shape.text_frame.text = f"Created: {today}"
             # No font formatting applied
-        
+        print(f"Sections____: {sections}____________")
         # Process the sections from AI-generated content
         if sections:
             sections_list = [part.strip() for part in sections.split('!!!') if part.strip()]
@@ -937,9 +996,10 @@ def create_presentation(custom_prompt, theme_name):
             # Extract titles using the utility function
             titles_list = extract_important_lines(sections)
             titles_list = [title.replace("!!!", "").strip() for title in titles_list]
-            
+            print(f"Extracted {len(titles_list)} titles for slides.")
             # Create slides for each section
             for i, (section_content, title) in enumerate(zip(sections_list, titles_list)):
+                print(f"Processing slide {i+1} with title: {title}")
                 if not title or not section_content:
                     continue
                 
@@ -1021,11 +1081,11 @@ def create_presentation(custom_prompt, theme_name):
                         
                         for placeholder in image_placeholders:
                             notes_text_frame.text += placeholder + "\n"
-                
+        
         # Do not apply theme-specific styling to slides
         # Skip the theme application entirely
         
-        # Determine output directory
+        # Determine output directory - Fixed to use proper user directory structure
         output_dir = Path("outputFiles")
         
         # Use the user_directory and topic_directory if they exist
@@ -1034,10 +1094,9 @@ def create_presentation(custom_prompt, theme_name):
             output_dir = Path(user_directory) / sanitized_topic
             # Ensure directory exists
             output_dir.mkdir(parents=True, exist_ok=True)
-            # Update topic_directory global variable
-            topic_directory = output_dir
-        elif topic_directory:
-            output_dir = topic_directory
+            print(f"Using user-specific directory: {output_dir}")
+        else:
+            print(f"Warning: Using default outputFiles directory. user_directory={user_directory}, topic={topic}")
         
         # Ensure directory exists
         os.makedirs(output_dir, exist_ok=True)
@@ -1068,4 +1127,136 @@ def create_presentation(custom_prompt, theme_name):
         print(f"Error creating PowerPoint presentation: {e}")
         traceback.print_exc()
         return None
+
+def extract_content(file_path_or_stream):
+    """
+    Extract text content from various file formats (.txt, .docx, .pdf, .pptx).
+    
+    Args:
+        file_path_or_stream: Either a file path string or a file stream object
+    
+    Returns:
+        str: Extracted text content from the file
+    
+    Raises:
+        ValueError: If file format is not supported
+        Exception: If file cannot be read or processed
+    """
+    try:
+        # Determine if input is a file path or stream
+        if hasattr(file_path_or_stream, 'read'):
+            # It's a file stream
+            file_stream = file_path_or_stream
+            # Try to get filename from stream if available
+            filename = getattr(file_stream, 'filename', getattr(file_stream, 'name', 'unknown'))
+        else:
+            # It's a file path
+            file_path = Path(file_path_or_stream)
+            if not file_path.exists():
+                raise FileNotFoundError(f"File not found: {file_path}")
+            filename = file_path.name
+            file_stream = open(file_path, 'rb')
+        
+        # Determine file extension
+        file_extension = Path(filename).suffix.lower()
+        
+        try:
+            if file_extension == '.txt':
+                # Handle text files
+                if hasattr(file_path_or_stream, 'read'):
+                    content = file_stream.read()
+                    if isinstance(content, bytes):
+                        content = content.decode('utf-8', errors='ignore')
+                else:
+                    with open(file_path_or_stream, 'r', encoding='utf-8', errors='ignore') as f:
+                        content = f.read()
+                return content.strip()
+            
+            elif file_extension == '.docx':
+                # Handle Word documents
+                if hasattr(file_path_or_stream, 'read'):
+                    # Create a BytesIO object from the stream
+                    file_bytes = file_stream.read()
+                    doc_stream = io.BytesIO(file_bytes)
+                    doc = Document(doc_stream)
+                else:
+                    doc = Document(file_path_or_stream)
+                
+                # Extract text from all paragraphs
+                paragraphs = []
+                for paragraph in doc.paragraphs:
+                    if paragraph.text.strip():
+                        paragraphs.append(paragraph.text.strip())
+                
+                # Extract text from tables
+                for table in doc.tables:
+                    for row in table.rows:
+                        for cell in row.cells:
+                            if cell.text.strip():
+                                paragraphs.append(cell.text.strip())
+                
+                return '\n'.join(paragraphs)
+            
+            elif file_extension == '.pdf':
+                # Handle PDF files
+                if hasattr(file_path_or_stream, 'read'):
+                    pdf_reader = PyPDF2.PdfReader(file_stream)
+                else:
+                    with open(file_path_or_stream, 'rb') as f:
+                        pdf_reader = PyPDF2.PdfReader(f)
+                
+                text_content = []
+                for page in pdf_reader.pages:
+                    try:
+                        page_text = page.extract_text()
+                        if page_text.strip():
+                            text_content.append(page_text.strip())
+                    except Exception as e:
+                        print(f"Warning: Could not extract text from a PDF page: {e}")
+                        continue
+                
+                return '\n'.join(text_content)
+            
+            elif file_extension == '.pptx':
+                # Handle PowerPoint files
+                if hasattr(file_path_or_stream, 'read'):
+                    file_bytes = file_stream.read()
+                    ppt_stream = io.BytesIO(file_bytes)
+                    prs = Presentation(ppt_stream)
+                else:
+                    prs = Presentation(file_path_or_stream)
+                
+                text_content = []
+                for slide in prs.slides:
+                    # Extract text from shapes
+                    for shape in slide.shapes:
+                        if hasattr(shape, 'text') and shape.text.strip():
+                            text_content.append(shape.text.strip())
+                        
+                        # Extract text from tables in slides
+                        if shape.has_table:
+                            for row in shape.table.rows:
+                                for cell in row.cells:
+                                    if cell.text.strip():
+                                        text_content.append(cell.text.strip())
+                    
+                    # Extract notes from slide
+                    if hasattr(slide, 'notes_slide'):
+                        notes_text = slide.notes_slide.notes_text_frame.text
+                        if notes_text.strip():
+                            text_content.append(f"Notes: {notes_text.strip()}")
+                
+                return '\n'.join(text_content)
+            
+            else:
+                raise ValueError(f"Unsupported file format: {file_extension}. Supported formats: .txt, .docx, .pdf, .pptx")
+        
+        finally:
+            # Close file stream if we opened it
+            if not hasattr(file_path_or_stream, 'read'):
+                file_stream.close()
+    
+    except Exception as e:
+        print(f"Error extracting content from file: {str(e)}")
+        raise Exception(f"Failed to extract content from file: {str(e)}")
 
