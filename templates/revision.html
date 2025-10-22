@@ -131,28 +131,19 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                      <!-- Revised Prompt -->
-                    <div class="card mb-4">
-                        <div class="card-header bg-light">
-                            <div class="d-flex align-items-center">
-                                <span class="badge rounded-circle bg-accent me-2"><i class="fas fa-edit"></i></span>
-                                <h5 class="mb-0">Revised Prompt</h5>
-                            </div>
-                        </div>                        <div class="card-body">
-                            <div>
-                                <label for="generated_prompt" class="form-label fw-bold">Prompt:</label>
-                                <textarea class="form-control" id="generated_prompt" name="generated_prompt" rows="8"></textarea>
-                                <div class="form-text">
-                                    This prompt will automatically update based on your selections above. You can also modify it directly.
-                                    <button type="button" id="update-prompt-btn" class="btn btn-sm btn-outline-secondary ms-2">
-                                        <i class="fas fa-sync-alt me-1"></i> Refresh
-                                    </button>
+                            
+                            <div class="mt-3">
+                                <label class="form-label fw-bold text-primary">Additional Notes:</label>
+                                <textarea class="form-control" id="additional_notes" name="additional_notes" rows="4" 
+                                          placeholder="Add any specific instructions or requirements for the AI model (e.g., focus on practical applications, include real-world examples, avoid certain topics, etc.)"></textarea>
+                                <div class="form-text mt-2">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    These notes will be included in the AI prompt to customize the revision materials according to your specific needs.
                                 </div>
                             </div>
                         </div>
                     </div>
+                    
                       <!-- Action Buttons -->
                     <div class="d-grid gap-2">
                         <button type="button" id="generateBtn" class="btn btn-accent btn-lg">
@@ -245,6 +236,9 @@
 
 <!-- JavaScript for Revision Materials Generation -->
 <script>
+    // Declare prompt as a global variable
+    let prompt = "";
+
     // Initialize elements once DOM is loaded
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('revisionForm');
@@ -257,7 +251,7 @@
         const downloadLinks = document.getElementById('download-links');
         const retryButton = document.getElementById('retry-button');
         const progressBar = document.getElementById('progress-bar');
-        const updatePromptBtn = document.getElementById('update-prompt-btn');
+        //const updatePromptBtn = document.getElementById('update-prompt-btn');
           // Learning outcomes and topic from hidden fields
         const learningOutcomes = document.getElementById('hidden-learning-outcomes').value;
         const topic = document.getElementById('hidden-topic').value;
@@ -277,10 +271,8 @@
             checkbox.addEventListener('change', generatePrompt);
         });
         
-        // Update the prompt when the button is clicked (keeping this for manual refresh)
-        updatePromptBtn.addEventListener('click', function() {
-            generatePrompt();
-        });
+        // Add event listener for additional notes textarea
+        document.getElementById('additional_notes').addEventListener('input', generatePrompt);
         
         // Generate initial prompt on page load
         generatePrompt();
@@ -310,7 +302,7 @@
             }
             
             // Build the main prompt
-            let prompt = promptPrefix + `Create ${difficulty.toLowerCase()} level revision materials for the topic: ${topic}.\n\n`;
+            prompt = promptPrefix + `Create ${difficulty.toLowerCase()} level revision materials for the topic: ${topic}.\n\n`;
             
             // Add length requirement
             if (length === "Short") {
@@ -340,8 +332,11 @@
                 prompt += `\nThe revision materials should address the following learning outcomes:\n${learningOutcomes}\n`;
             }
             
-            // Update the prompt text area
-            document.getElementById('generated_prompt').value = prompt;
+            // Add additional notes if provided
+            const additionalNotes = document.getElementById('additional_notes').value.trim();
+            if (additionalNotes) {
+                prompt += `\nAdditional Instructions:\n${additionalNotes}\n`;
+            }
         }
         
         // Function to show loading state
@@ -401,13 +396,8 @@
         }
           // Handler for the generate button
         generateBtn.addEventListener('click', function() {
-            // Get the user-edited or generated prompt
-            const instructions = document.getElementById('generated_prompt').value;
-            
-            if (!instructions.trim()) {
-                alert('Please generate a prompt for the revision materials.');
-                return;
-            }
+            // Use global prompt directly
+            //alert(prompt);
             
             // Show loading indicator
             showLoading();
@@ -425,7 +415,7 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    instructions: instructions,
+                    instructions: prompt,  // Use global prompt here
                     output_formats: outputFormats
                 })
             })
@@ -450,3 +440,4 @@
     });
 </script>
 {% endblock %}
+

@@ -89,14 +89,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-md-4 mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="instructional_steps" name="sections[]" value="instructional_steps" checked>
-                                        <label class="form-check-label" for="instructional_steps">
-                                            Instructional Steps / Procedure
-                                        </label>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-md-4 mb-3">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="assessment" name="sections[]" value="assessment" checked >
@@ -205,25 +198,7 @@
                         </div>
                     </div>
 
-                    <!-- Instructions -->
-                    <div class="card mb-4">
-                        <div class="card-header bg-light">                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="badge rounded-circle bg-secondary me-2"><i class="fas fa-info-circle"></i></span>
-                                    <h5 class="mb-0 d-inline">Prompt to be sent to the AI</h5>
-                                </div>
-                                <span class="badge bg-success" id="prompt-update-badge" style="display: none;">Updated!</span>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="instructions" class="form-label">Customize your lesson plan generation:</label>
-                                <textarea class="form-control" id="instructions" name="instructions" rows="5" placeholder="Add any specific requirements for your lesson plan...">
-                                </textarea>
-                                <div class="form-text mt-2">Leave the default instructions or customize for your specific needs.</div>
-                            </div>
-                        </div>
-                    </div>
+                    
                       <!-- Output Formats -->
                     <div class="card mb-4" id="outputFormatsCard">
                         <div class="card-header bg-light">
@@ -253,6 +228,24 @@
                                         <label class="form-check-label" for="format_html">HTML</label>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Notes -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-info me-2"><i class="fas fa-sticky-note"></i></span>
+                                <h5 class="mb-0">Additional Notes:</h5>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <textarea class="form-control" id="additional_notes" name="additional_notes" rows="4" 
+                                      placeholder="Add any specific instructions or requirements for the AI model (e.g., focus on hands-on activities, include group work, emphasize real-world applications, etc.)"></textarea>
+                            <div class="form-text mt-2">
+                                <i class="fas fa-info-circle me-1"></i>
+                                These notes will be included in the AI prompt to customize the lesson plan according to your specific needs.
                             </div>
                         </div>
                     </div>
@@ -319,6 +312,9 @@
 
 {% block extra_js %}
 <script>
+// Global variable for prompt
+var prompt = "";
+
 $(document).ready(function() {
         // Initialize tooltips if needed
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -360,7 +356,6 @@ $(document).ready(function() {
             selectedSections.forEach(function(section) {
                 const sectionNames = {
                     "materials_resources": "Materials / Resources Needed",
-                    "instructional_steps": "Instructional Steps / Procedure",
                     "assessment": "Assessment / Evaluation",
                     "vocabulary": "Vocabulary",
                     "guided_practice": "Guided Practice (10-15 minutes)",
@@ -372,7 +367,7 @@ $(document).ready(function() {
                     "student_directed": "Student Directed Activities",
                     "extension_activities": "Extension, Refinement, and Practice Activities",
                     "media_technology": "Use of Media & Technology",
-                    "cooperative_groupings": "Cooperative Groupings"
+                    "cooperative_groupings": "Cooperative Grouping",
                 };
                 
                 if (section in sectionNames) {
@@ -382,6 +377,16 @@ $(document).ready(function() {
             
             // Update the custom instructions field
             $('#instructions').val(instructions);
+            
+            // Add additional notes if provided
+            const additionalNotes = $('#additional_notes').val().trim();
+            if (additionalNotes) {
+                instructions += "\nAdditional Instructions:\n" + additionalNotes + "\n";
+            }
+            
+            // Update global prompt variable
+            prompt = instructions;
+            
             
             // Show a brief "Updated" message
             $('#prompt-update-badge').fadeIn(200).delay(1000).fadeOut(500);
@@ -395,6 +400,9 @@ $(document).ready(function() {
         $('#include_objectives').change(updateCustomInstructions);
         $('input[name="sections[]"]').change(updateCustomInstructions);
         
+        // Add handler for additional notes textarea
+        $('#additional_notes').on('input', updateCustomInstructions);
+
         // Form submission
         $('#lessonPlanForm').submit(function(event) {
             event.preventDefault();
@@ -435,6 +443,7 @@ $(document).ready(function() {
                 $('#format_docx').prop('checked', true);
             }   type: 'POST',
               // Submit data via AJAX
+            
             $.ajax({
                 url: '/lesson_plan',
                 type: 'POST',
@@ -442,7 +451,8 @@ $(document).ready(function() {
                     subject: subject,
                     student_level: studentLevel,
                     learning_objectives: learningObjectives,
-                    instructions: instructionsText,
+                    instructions: prompt,
+                    additional_notes: $('#additional_notes').val(),
                     include_objectives: includeObjectives,
                     selected_sections: JSON.stringify(selectedSections),
                     output_formats: JSON.stringify(outputFormats) // This now includes the template selection

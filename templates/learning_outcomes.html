@@ -10,7 +10,19 @@
                 <h4>Learning Outcomes / Topic</h4>
             </div>
             <div class="card-body">
-                <p class="text-muted mb-4">Define your topic and learning outcomes to begin generating materials. Enter content in one field and click the generate button to auto-fill the other.</p>
+                <p class="text-muted mb-4">Define your topic and learning outcomes to begin generating materials. Enter content in one field and click the generate button to auto-fill the other, or upload a file containing topic information.</p>
+                
+                <!-- File Upload Section -->
+                <div class="mb-4">
+                    <label for="topicFile" class="form-label fw-bold">Upload Topic File</label>
+                    <div class="input-group">
+                        <input type="file" class="form-control" id="topicFile" name="topicFile" accept=".txt,.pdf,.docx,.doc">
+                        <button class="btn btn-outline-secondary" type="button" id="processFileBtn" title="Process uploaded file to extract topic and learning outcomes">
+                            <i class="fas fa-file-upload"></i> Process File
+                        </button>
+                    </div>
+                    <div class="form-text">Upload a text file, PDF, or Word document containing information about your topic. The system will extract the topic and suggest learning outcomes.</div>
+                </div>
                 
                 <form method="POST" action="/learning_outcomes" id="learningOutcomesForm">
                     <div class="mb-4">
@@ -169,6 +181,63 @@
                     // Hide progress spinner and re-enable buttons
                     $('#generationProgress').hide();
                     $('#generateOutcomesBtn, #generateTopicBtn').prop('disabled', false);
+                }
+            });
+        });
+        
+        // Process uploaded file
+        $('#processFileBtn').on('click', function() {
+            const fileInput = $('#topicFile')[0];
+            if (!fileInput.files || fileInput.files.length === 0) {
+                showAlert('Please select a file to upload.', 'warning');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            
+            // Show progress spinner
+            $('#generationProgress').show();
+            $('#progressMessage').text('Processing uploaded file...');
+            
+            // Disable buttons during processing
+            $('#generateOutcomesBtn, #generateTopicBtn, #processFileBtn').prop('disabled', true);
+            
+            // Make AJAX call to process file
+            $.ajax({
+                url: '/api/process_topic_file',
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.status === 'success') {
+                        // Update the topic and learning outcomes fields
+                        if (response.topic) {
+                            $('#topic').val(response.topic);
+                        }
+                        if (response.learning_outcomes) {
+                            $('#learning_outcomes').val(response.learning_outcomes);
+                        }
+                        showAlert('File processed successfully! Topic and learning outcomes have been extracted.', 'success');
+                    } else {
+                        showAlert('Failed to process file: ' + (response.message || 'Unknown error'), 'danger');
+                    }
+                },
+                error: function(xhr) {
+                    let errorMsg = 'Failed to process file.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                    showAlert(errorMsg, 'danger');
+                },
+                complete: function() {
+                    // Hide progress spinner and re-enable buttons
+                    $('#generationProgress').hide();
+                    $('#generateOutcomesBtn, #generateTopicBtn, #processFileBtn').prop('disabled', false);
+                    // Clear the file input
+                    $('#topicFile').val('');
                 }
             });
         });

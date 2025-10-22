@@ -301,25 +301,25 @@
                         </div>
                     </div>
                     
-                    <!-- AI Prompt -->
+                    <!-- Additional Notes -->
                     <div class="card mb-4">
                         <div class="card-header bg-light">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="mb-0">AI Prompt (This is what will be sent to the AI model):</h5>
-                                <span class="badge bg-success" id="prompt-update-badge" style="display: none;">Updated</span>
+                            <div class="d-flex align-items-center">
+                                <span class="badge rounded-circle bg-info me-2"><i class="fas fa-sticky-note"></i></span>
+                                <h5 class="mb-0">Additional Notes:</h5>
                             </div>
                         </div>
                         <div class="card-body">
-                            <textarea class="form-control" id="prompt" name="prompt" rows="8" placeholder="AI prompt will be generated based on your selections above">Your goal is to evaluate their understanding of the following learning outcome:
-{{ learning_outcomes }}</textarea>
-                            <div class="d-flex justify-content-between mt-2">
-                                <div class="form-text">The prompt is automatically updated based on your selections. You can also modify it directly.</div>
-                                <button type="button" id="update-prompt-btn" class="btn btn-sm btn-outline-secondary">
-                                    <i class="fas fa-sync-alt"></i> Update Prompt
-                                </button>
+                            <textarea class="form-control" id="additional_notes" name="additional_notes" rows="4" 
+                                      placeholder="Add any specific instructions or requirements for the AI model (e.g., focus on practical applications, include real-world examples, avoid certain topics, etc.)"></textarea>
+                            <div class="form-text mt-2">
+                                <i class="fas fa-info-circle me-1"></i>
+                                These notes will be included in the AI prompt to customize the question generation according to your specific needs.
                             </div>
                         </div>
                     </div>
+                    
+                   
                     
                     <!-- Buttons -->
                     <div class="d-grid gap-2">
@@ -458,6 +458,12 @@
                 updatePrompt();
             });
             
+            // Add handler for additional notes textarea
+            $(document).on('input', '#additional_notes', function() {
+                console.log("Additional notes changed");
+                updatePrompt();
+            });
+            
             // Add handler for the manual update button
             $('#update-prompt-btn').on('click', function() {
                 console.log("Manual prompt update requested");
@@ -480,8 +486,38 @@
             setTimeout(updatePrompt, 1000);
         }  // End of initializeEventHandlers function
         
+        // Check if file content is available
+        let hasFileContent = false;
+        let fileContent = '';
+        
+        // Check for file content by making an AJAX call to see if it exists
+        $.ajax({
+            url: '/api/check_file_content',
+            type: 'GET',
+            success: function(response) {
+                if (response.status === 'success' && response.hasFileContent) {
+                    hasFileContent = true;
+                    fileContent = response.fileContent || '';
+                    $('#file-content-badge').show();
+                    $('#file-content-notice').show();
+                    // Update prompt with file content immediately
+                    updatePromptWithFileContent();
+                }
+            },
+            error: function() {
+                // If the endpoint doesn't exist, continue with normal behavior
+                hasFileContent = false;
+            }
+        });
+        
         function updatePrompt() {
             console.log("updatePrompt function called");
+            
+            // If we have file content, use a different update function
+            if (hasFileContent) {
+                updatePromptWithFileContent();
+                return;
+            }
             
             // Start building the prompt
             let promptParts = [];
@@ -578,11 +614,19 @@
                     promptParts.push(selectedQuestionTypes.join("\n"));
                 }
                 
+                // Add additional notes if provided
+                const additionalNotes = $('#additional_notes').val().trim();
+                if (additionalNotes) {
+                    promptParts.push("");
+                    promptParts.push("Additional Instructions:");
+                    promptParts.push(additionalNotes);
+                }
+                
                 // Create initial prompt even if no options are selected yet
                 if (promptParts.length === 0) {
                     promptParts.push("Please select subject, student level, and/or question types to customize the AI prompt.");
                 }
-                
+
                 // Combine all parts into the final prompt
                 const finalPrompt = promptParts.join("\n");
                 console.log("Final prompt:", finalPrompt);
@@ -594,7 +638,7 @@
                     if ($promptTextarea.length) {
                         console.log("Setting prompt via jQuery");
                         $promptTextarea.val(finalPrompt);
-                    } else {
+                      } else {
                         // Fallback to direct DOM manipulation
                         const promptTextarea = document.getElementById('prompt');
                         if (promptTextarea) {
@@ -621,6 +665,88 @@
                 // Set a fallback prompt
                 $('#prompt').val("Error generating prompt. Please try refreshing the page.");
             }
+        }
+        
+        function updatePromptWithFileContent() {
+            console.log("updatePromptWithFileContent function called");
+            
+            // Get the learning outcomes and topic from hidden fields
+            const learningOutcomes = $('#hidden-learning-outcomes').val();
+            const topic = $('#hidden-topic').val();
+            
+            // Create a prompt that includes the actual file content
+            let promptParts = [];
+            
+            // Add the actual file content first
+            if (fileContent) {
+                promptParts.push("Based on the following content, generate questions:");
+                promptParts.push("");
+                promptParts.push("=== FILE CONTENT ===");
+                promptParts.push(fileContent);
+                promptParts.push("=== END FILE CONTENT ===");
+                promptParts.push("");
+            }
+            
+            // Add learning outcomes context
+            promptParts.push("Learning Outcomes to evaluate:");
+            promptParts.push(learningOutcomes);
+            promptParts.push("");
+            
+            if (topic && topic.trim() !== "") {
+                promptParts.push("Topic: " + topic);
+                promptParts.push("");
+            }
+            
+            // Add selected question type instructions if any are selected
+            const checkedTypes = $('.question-type-check:checked');
+            if (checkedTypes.length > 0) {
+                promptParts.push("Question Requirements:");
+                
+                checkedTypes.each(function() {
+                    const typeValue = $(this).val();
+                    const count = $(`select[name="count_${typeValue}"]`).val() || "5";
+                    const difficulty = $(`select[name="difficulty_${typeValue}"]`).val() || "Easy";
+                    
+                    let instruction = '';
+                    if (typeValue === "mcq") {
+                        instruction = `- Create ${count} multiple choice questions at ${difficulty.toLowerCase()} difficulty level`;
+                    } else if (typeValue === "short_answer") {
+                        instruction = `- Create ${count} short answer questions at ${difficulty.toLowerCase()} difficulty level`;
+                    } else if (typeValue === "true_false") {
+                        instruction = `- Create ${count} True/False questions at ${difficulty.toLowerCase()} difficulty level`;
+                    } else if (typeValue === "fill_blanks") {
+                        instruction = `- Create ${count} fill-in-the-blanks questions at ${difficulty.toLowerCase()} difficulty level`;
+                    } else if (typeValue === "matching") {
+                        instruction = `- Create ${count} matching questions at ${difficulty.toLowerCase()} difficulty level`;
+                    }
+                    
+                    if (instruction) {
+                        promptParts.push(instruction);
+                    }
+                });
+                promptParts.push("");
+            }
+            
+            promptParts.push("Generate questions primarily based on the file content above, ensuring they align with the learning outcomes.");
+            
+            // Add additional notes if provided
+            const additionalNotes = $('#additional_notes').val().trim();
+            if (additionalNotes) {
+                promptParts.push("");
+                promptParts.push("Additional Instructions:");
+                promptParts.push(additionalNotes);
+            }
+            
+            const finalPrompt = promptParts.join("\n");
+            
+            // Update the prompt textarea with the actual content
+            $('#prompt').val(finalPrompt);
+            
+            // Show "Updated" badge
+            $('#prompt-update-badge').show().fadeIn(200);
+            setTimeout(function() {
+                $('#prompt-update-badge').fadeOut(1000);
+            }, 1500);
         }
         
         // Form submission
