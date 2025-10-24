@@ -1061,9 +1061,18 @@ def create_presentation(custom_prompt, theme_name, user_id=None):
                     clean_content = clean_content.replace('**', '')
                     
                     # Split the content by lines to handle line breaks properly
-                    if len(clean_content) > 1000:  # Limit content length
+                    content_length = len(clean_content)
+                    if content_length > 1000:  # Limit content length
                         clean_content = clean_content[:1000] + "..."
                     
+                    if content_length < 200:  # Short content
+                        font_size = 24
+                    elif content_length < 500:  # Medium content
+                        font_size = 18
+                    elif content_length < 800:  # Long content
+                        font_size = 14
+                    else:  # Very long content
+                        font_size = 12
                     # Add the content paragraph by paragraph
                     paragraphs = clean_content.split('\n')
                     for j, paragraph_text in enumerate(paragraphs):
@@ -1072,6 +1081,9 @@ def create_presentation(custom_prompt, theme_name, user_id=None):
                         
                         p = content_text_frame.add_paragraph() if j > 0 else content_text_frame.paragraphs[0]
                         p.text = paragraph_text.strip()
+                        p.font.size = Pt(font_size)
+                        p.font.name = 'Arial'
+                        p.font.bold = True
                         # No font formatting applied
                     
                     # Add image placeholders and other notes to the notes section
