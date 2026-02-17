@@ -17,8 +17,7 @@ from google import genai
 import PyPDF2
 import io
 
-# Constants
-#GEMINI_API_KEY = "AIzaSyBvyETScRxR7F_LTV1-i0WGOJGtziQ-OBc"
+
 
 # Class to store per-user session data
 class UserSession:
@@ -1271,5 +1270,6 @@ def extract_content(file_path_or_stream):
     except Exception as e:
         print(f"Error extracting content from file: {str(e)}")
         raise Exception(f"Failed to extract content from file: {str(e)}")
+
 
 
