@@ -78,7 +78,7 @@ def ai_agent(prompt):
     # Use Gemini API via HTTP requests
     print(prompt)
 
-    os.environ['GEMINI_API_KEY'] = "AIzaSyBvyETScRxR7F_LTV1-i0WGOJGtziQ-OBc"
+    os.environ['GEMINI_API_KEY'] = "AIzaSyDhx0WpKGTXcBshALjnDA8lq0Wkk5kmrfM"
 
     client = genai.Client()
     response = client.models.generate_content(
@@ -1271,4 +1271,5 @@ def extract_content(file_path_or_stream):
     except Exception as e:
         print(f"Error extracting content from file: {str(e)}")
         raise Exception(f"Failed to extract content from file: {str(e)}")
+
 
