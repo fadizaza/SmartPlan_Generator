@@ -17,7 +17,7 @@ from google import genai
 import PyPDF2
 import io
 
-
+# Constants
 
 # Class to store per-user session data
 class UserSession:
@@ -72,17 +72,50 @@ def add_row(version, time, topic, ip, computer_name):
     data = [version, time, topic, ip, computer_name]
     sheet.append_row(data)
 
+##############
+import requests
+
 def ai_agent(prompt):
+    try:
+        print("Calling Mistral AI agent...")
+
+        api_key = "kHYthe4HKWwaXNnsXDrMHc7TMEtXyUoD"
+        url = "https://api.mistral.ai/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "model": "mistral-tiny",
+            "messages": [{"role": "user", "content": prompt}]
+        }
+
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
+
+        return response.json()["choices"][0]["message"]["content"]
+
+    except Exception as e:
+        print(f"Error calling Mistral API: {e}")
+        return None
+###############
+
+
+
+def ai_agent_google(prompt):
     print("Calling AI agent...")
     # Use Gemini API via HTTP requests
     print(prompt)
 
     os.environ['GEMINI_API_KEY'] = "AIzaSyDhx0WpKGTXcBshALjnDA8lq0Wkk5kmrfM"
 
+    
+
     client = genai.Client()
     response = client.models.generate_content(
     model="gemini-2.0-flash", 
     contents=prompt
+    
   )
     
     return response.text
@@ -1270,6 +1303,4 @@ def extract_content(file_path_or_stream):
     except Exception as e:
         print(f"Error extracting content from file: {str(e)}")
         raise Exception(f"Failed to extract content from file: {str(e)}")
-
-
 
