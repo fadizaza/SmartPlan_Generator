@@ -3,6 +3,7 @@ import re
 import datetime
 import socket
 from pathlib import Path
+from dotenv import load_dotenv
 from docx import Document
 from pptx import Presentation
 from pptx.util import Pt, Inches
@@ -17,8 +18,9 @@ from google import genai
 import PyPDF2
 import io
 
+load_dotenv()
+
 # Constants
-#GEMINI_API_KEY = "AIzaSyBvyETScRxR7F_LTV1-i0WGOJGtziQ-OBc"
 
 # Class to store per-user session data
 class UserSession:
@@ -73,17 +75,55 @@ def add_row(version, time, topic, ip, computer_name):
     data = [version, time, topic, ip, computer_name]
     sheet.append_row(data)
 
+##############
+import requests
+
 def ai_agent(prompt):
+    try:
+        print("Calling Mistral AI agent...")
+
+        api_key = os.getenv("MISTRAL_API_KEY")
+        if not api_key:
+            raise ValueError("MISTRAL_API_KEY environment variable is not set")
+        url = "https://api.mistral.ai/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "model": "mistral-tiny",
+            "messages": [{"role": "user", "content": prompt}]
+        }
+
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
+
+        return response.json()["choices"][0]["message"]["content"]
+
+    except Exception as e:
+        print(f"Error calling Mistral API: {e}")
+        return None
+###############
+
+
+
+def ai_agent_google(prompt):
     print("Calling AI agent...")
     # Use Gemini API via HTTP requests
     print(prompt)
 
-    os.environ['GEMINI_API_KEY'] = "AIzaSyBvyETScRxR7F_LTV1-i0WGOJGtziQ-OBc"
+    gemini_key = os.getenv("GEMINI_API_KEY")
+    if not gemini_key:
+        raise ValueError("GEMINI_API_KEY environment variable is not set")
+    os.environ['GEMINI_API_KEY'] = gemini_key
+
+    
 
     client = genai.Client()
     response = client.models.generate_content(
     model="gemini-2.0-flash", 
     contents=prompt
+    
   )
     
     return response.text
@@ -1061,9 +1101,18 @@ def create_presentation(custom_prompt, theme_name, user_id=None):
                     clean_content = clean_content.replace('**', '')
                     
                     # Split the content by lines to handle line breaks properly
-                    if len(clean_content) > 1000:  # Limit content length
+                    content_length = len(clean_content)
+                    if content_length > 1000:  # Limit content length
                         clean_content = clean_content[:1000] + "..."
                     
+                    if content_length < 200:  # Short content
+                        font_size = 24
+                    elif content_length < 500:  # Medium content
+                        font_size = 18
+                    elif content_length < 800:  # Long content
+                        font_size = 14
+                    else:  # Very long content
+                        font_size = 12
                     # Add the content paragraph by paragraph
                     paragraphs = clean_content.split('\n')
                     for j, paragraph_text in enumerate(paragraphs):
@@ -1072,6 +1121,9 @@ def create_presentation(custom_prompt, theme_name, user_id=None):
                         
                         p = content_text_frame.add_paragraph() if j > 0 else content_text_frame.paragraphs[0]
                         p.text = paragraph_text.strip()
+                        p.font.size = Pt(font_size)
+                        p.font.name = 'Arial'
+                        p.font.bold = True
                         # No font formatting applied
                     
                     # Add image placeholders and other notes to the notes section
