@@ -1,0 +1,79 @@
+!!! Course Overview and Assessment
+*   **Course Name:** Apply Microsoft Office 365 ICT Applications
+*   **Course Code:** ICT03038NU25-N
+*   **NQA Code:** ENG04004NU17
+*   **Term:** Term 1, 2 5/26
+*   **Program:** Level 3 Qualification in Electromechanical Maintenance
+*   **Certificate Code:** ENG03013NQ25-N
+*   **Assessment Name:** Summative Assessment
+*   **Start Week:** Week-9
+*   **This assessment constitutes 60% of the total course grade.**
+*   **Elements Assessed (See Next Slides):** Covering core Office 365 applications and cloud concepts.
+
+!!! Elements Assessed - Core Skills
+*   **E1: Microsoft Office 365 Fundamentals**
+    *   1.1: Describe the core concepts of cloud computing (What is the cloud?)
+        *Think of it like a shared hard drive online instead of just on your computer.*
+    *   1.2: Describe capabilities of Microsoft Office 365 (What can it do?)
+        *Access files anywhere, collaborate easily, automatic updates.*
+    *   1.3: Identify the applications of Microsoft Office 365 (Which apps are included?)
+        *Word, Excel, PowerPoint, Outlook, OneDrive, Teams, etc.*
+*   **E2: OneDrive - Cloud Storage**
+    *   2.1: Identify the key features of OneDrive (What makes OneDrive useful?)
+        *File storage, sharing, synchronization across devices.*
+    *   2.2: Create OneDrive application on a local computer (Setting up OneDrive)
+        *Installing OneDrive on your computer for easy access.*
+    *   2.3: Create files and folders in OneDrive (Organizing your files)
+        *Structuring your OneDrive like you would on your computer.*
+    *   2.4: Review files and folders as per the assigned criteria and provide feedback (Collaboration)
+
+!!! Elements Assessed - Application Proficiency
+*   **E3: Microsoft Word**
+    *   3.1: Create Microsoft Word document on a local computer (Starting a document)
+    *   3.2: Format text and paragraphs to enhance readability (Making it look good)
+        *Font size, bolding, spacing.*
+    *   3.3: Perform repetitive operations efficiently using tools (Saving time)
+        *Find and Replace.*
+    *   3.4: Create tables and bulleted lists to organize information clearly (Structuring data)
+
+*   **E4: Microsoft Excel**
+    *   4.1: Create Microsoft Excel document on a local computer (Starting a spreadsheet)
+    *   4.2: Manage worksheets within Microsoft Excel (Organizing your data)
+    *   4.3: Use common Excel functions and formulas for calculations and data manipulation (Analyzing data)
+        *SUM, AVERAGE, etc.*
+    *   4.4: Generate charts to represent the data (Visualizing data)
+
+*   **E5: Microsoft PowerPoint**
+    *   5.1: Create Microsoft PowerPoint document on a local computer (Starting a presentation)
+    *   5.2: Use features of Microsoft PowerPoint to edit and save the document (Managing your presentation)
+    *   5.3: Perform text formatting tasks within Microsoft PowerPoint document (Making it readable)
+    *   5.4: Apply designs and animation for Microsoft PowerPoint document (Making it engaging)
+
+!!! Elements Assessed - Communication
+*   **E6: Microsoft Outlook**
+    *   6.1: Manage Microsoft Outlook to read emails (Checking your inbox)
+    *   6.2: Send emails with attachments (Sharing files)
+    *   6.3: Manage emails to ensure clear communication (Keeping your inbox organized)
+        *Folders and rules.*
+    *   6.4: Use Message Organization Features of Microsoft Outlook (Prioritizing messages)
+        *Flags and categories.*
+
+!!! Assessment Instructions and Student Declaration
+*   **Assessment Type:** Individual Summative Assessment.
+*   **Submission:** Blackboard Only (CA Folder).
+*   **Feedback:** Provided via Blackboard.
+*   **Assessment Environment:** Controlled environment under assessor's observation.
+*   **Grading:**
+    *   C (60%): Competent - Meets requirements.
+    *   NYC (0%): Not Yet Competent - Does not meet requirements.
+*    **Coco** Fadi
+*   **Team Teaching Members:** Fadi
+*   **Important Notes:**
+    *   Copying is a serious offense.
+    *   Professional discussion may be conducted.
+    *   Use the marking criteria to ensure you meet the requirements.
+
+*   **Student Declaration:**
+    *   "I certify that the work presented is my own. It does not contain any material that is subject to copyright or has been submitted previously for assessment (Unless specifically requested by teacher)."
+    *   **Student Signature:** Required upon submission.
+    *   **Date:** Required upon submission.

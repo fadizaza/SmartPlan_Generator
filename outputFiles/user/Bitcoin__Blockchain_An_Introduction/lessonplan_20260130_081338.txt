@@ -1,0 +1,73 @@
+!!!Materials / Resources Needed
+   Whiteboard or projector
+   Markers or pens
+   Construction paper or index cards (various colors)
+   Toy blocks (like LEGOs or Duplo)
+   Visual aids (pictures of coins, chains, computers)
+   Worksheet with simple questions about Bitcoin and Blockchain
+   Optional: Computer or tablet for showing short videos
+
+!!!Assessment / Evaluation
+   Observation of student participation in discussions and activities.
+   Review of completed worksheets.
+   Informal questioning throughout the lesson.
+   Collect toy block chain to assess understanding of chain construction.
+
+!!!Vocabulary
+   Bitcoin: A special kind of digital money.
+   Blockchain: A way to keep track of information in a safe and secure way, like a special digital notebook.
+   Digital: Existing or stored on a computer.
+   Transaction: When someone sends or receives something.
+   Block: A container of information in the blockchain.
+   Chain: A series of blocks linked together.
+
+!!!Guided Practice (10-15 minutes)
+1.  Blockchain Construction: As a class, build a physical blockchain using toy blocks. Each block represents a transaction. Write a simple "transaction" on a piece of paper and tape it to a block (e.g., "Alice gives Bob 1 cookie"). Link the blocks together to create the chain. Emphasize that each block is connected to the previous one.
+2.  Role-Playing: Act out a simple transaction. One student is Alice, one is Bob. Alice gives Bob a pretend "Bitcoin". Explain that this transaction is written down in a "block" on the blockchain.
+
+!!!Closure (5 minutes)
+   Review the key concepts of Bitcoin and Blockchain.
+   Ask students to summarize what they learned in one sentence.
+   Briefly discuss how blockchain technology can be used for other things besides money (e.g., tracking toys, verifying art).
+
+!!!Introduction / Warm-Up (5-10 minutes)
+1.  Show pictures of different kinds of money (coins, paper money, credit cards). Ask: "What is money used for?" "How do we know who has money?"
+2.  Introduce Bitcoin as a special kind of digital money. "Bitcoin is like a digital coin – it lives on computers!"
+3.  Ask: "How do we keep track of who has Bitcoin?" Transition to the concept of the blockchain.
+
+!!!Independent Practice (10-15 minutes)
+   Worksheet: Students complete a simple worksheet with questions about Bitcoin and Blockchain. Examples: "What is Bitcoin?" "What is a Blockchain?" "Draw a picture of a Blockchain with three blocks."
+   Coloring Activity: Provide a coloring page featuring Bitcoin symbols or a simplified diagram of a blockchain.
+
+!!!Differentiation
+   For students who need more support: Provide simplified explanations and one-on-one assistance. Pre-written notes with definitions can be given.
+   For students who are ready for a challenge: Encourage them to research other uses of blockchain technology (e.g., tracking food from farm to table). They can draw a picture illustrating this.
+
+!!!Teacher Directed Activities
+   Introduce the concepts of Bitcoin and Blockchain using clear and simple language.
+   Lead the guided practice activity, demonstrating how to build a blockchain with toy blocks.
+   Facilitate class discussions and answer student questions.
+   Explain the instructions for the independent practice activity.
+   Show short videos demonstrating the blockchain and Bitcoin (if technology allows).
+
+!!!Student Directed Activities
+   Participate in class discussions and answer questions.
+   Build a blockchain with toy blocks during the guided practice activity.
+   Role-play a simple transaction.
+   Complete the worksheet or coloring activity independently.
+   Optional: Research other uses of blockchain technology (if assigned).
+
+!!!Extension, Refinement, and Practice Activities
+   Create a Story: Students write a short story about using Bitcoin in the future.
+   Build a More Complex Blockchain: Create a larger blockchain with more blocks and complex transactions.
+   Research Blockchain Applications: Investigate how blockchain technology is used in different industries.
+   Design a Digital Coin: Students design their own digital coin and create a description of its features.
+
+!!!Use of Media & Technology
+   Short videos explaining Bitcoin and Blockchain in a kid-friendly way (if available and age appropriate). Examples: Animated explainer videos.
+   Visual aids: Display images of Bitcoins, blockchains, and computers.
+   Interactive Whiteboard can be used to draw and illustrate the concepts.
+
+!!!Cooperative Grouping
+   Blockchain Building Teams: Divide students into small groups to build blockchains using toy blocks. Each group can focus on a different type of transaction (e.g., food, toys, books).
+   Think-Pair-Share: Students think about a question related to Bitcoin or Blockchain, then share their ideas with a partner, and finally share with the whole class.

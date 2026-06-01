@@ -1,0 +1,141 @@
+!!! Materials / Resources Needed
+- Computers/tablets with Microsoft PowerPoint installed (or PowerPoint Online for digital classrooms)
+- Projector and screen for demonstration
+- Printed handouts: Theme design rubric, brand guideline examples, vocabulary flashcards
+- Pre-made PowerPoint templates (e.g., "School Field Trip," "Under the Sea," "Space Adventure")
+- Sample presentations with intentional theme flaws (for peer evaluation)
+- Sticky notes or digital feedback tools (e.g., Mentimeter for live polls)
+- Printed color swatches and font samples for visual reference
+- Laptops for small-group work (if 1:1 devices not available)
+
+---
+
+!!! Assessment / Evaluation
+- Formative:
+  - Live rubric check (teacher circulates with printed rubrics during independent practice).
+  - Peer feedback slips with 2–3 theme-related suggestions (self-graded).
+  - Exit ticket: Students write one theme element they’ll use in their next project (e.g., "I’ll use a blue/green color scheme for my ocean topic").
+- Summative:
+  - Theme Design Portfolio: Submit a 5-slide presentation with:
+    1. Screenshot of the slide master with theme applied.
+    2. One slide showing font pairings and color scheme.
+    3. Peer evaluation feedback incorporated (if time allows).
+  - Written Reflection (3–5 sentences): Explain how themes improve clarity (e.g., "Using a consistent background helps the audience focus on the text").
+- Rubric Criteria (shared with students):
+  | Criteria               | Excellent (4)       | Good (3)          | Needs Work (1–2)       |
+  |------------------------|--------------------|-------------------|------------------------|
+  | Theme Consistency  | All slides match   | 2–3 slides match | Inconsistent colors/fonts|
+  | Brand Guidelines   | Fully adhered      | Mostly adhered    | Ignored key elements    |
+  | Visual Hierarchy   | Clear focus        | Some clarity      | Overwhelming           |
+  | Peer Feedback      | 2+ improvements    | 1 improvement     | No changes             |
+
+---
+
+!!! Vocabulary
+- Theme: A pre-designed set of colors, fonts, and effects in PowerPoint.
+- Slide Master: The "blueprint" for all slides in a presentation (where themes are applied).
+- Color Scheme: A coordinated set of colors (e.g., primary, secondary, accent).
+- Font Pairing: Two complementary fonts (e.g., serif + sans-serif).
+- Placeholder: Pre-formatted areas on slides for text, images, or charts.
+- Contrast: Difference in color/brightness to improve readability (e.g., dark text on light background).
+- Brand Guidelines: Rules for colors, fonts, and logos used by a company/organization.
+- Visual Hierarchy: Ordering elements to guide the audience’s attention (e.g., title > subtext > images).
+
+---
+!!! Introduction / Warm-Up (5–10 minutes)
+Activity: "Theme Detective" (Whole Group)
+1. Show 3 slides (one with a strong theme, one weak, one neutral) projected on screen.
+2. Ask: "Which slide is easiest to read? Why?" (Guide to contrast, colors, font size.)
+3. Introduce vocabulary: "Today, we’ll design themes like these—using colors, fonts, and backgrounds to tell a story!"
+4. Quick Poll (Mentimeter or sticky notes):
+   - "What’s one theme you’d use for a school project?" (Examples: "Space," "Dinosaurs," "Sports Day").
+5. Demo: Open a blank PowerPoint and show the Design tab (themes, colors, fonts). Highlight the Slide Master button.
+
+---
+
+!!! Guided Practice (10–15 minutes)
+Activity: "Theme Makeover" (Small Groups)
+1. Groups of 3–4: Each group gets a pre-made messy presentation (e.g., "Lost and Found Day" with mismatched colors/fonts).
+2. Steps:
+   - Step 1: Apply a built-in theme (e.g., "Aqua," "Corporate").
+   - Step 2: Change 2 elements (e.g., slide background to "Solid fill," title font to "Calibri").
+   - Step 3: Adjust one placeholder (e.g., resize text box, add a border).
+3. Teacher Circulates: Provide scaffolded prompts:
+   - "How did the theme change the mood?"
+   - "Which font is easier to read?"
+   - "Does the background distract from the text?"
+4. Gallery Walk: Groups present their "before/after" slides. Class votes on the most improved theme.
+
+---
+!!! Teacher Directed Activities
+- Mini-Lesson (5 min): Explain Slide Master using a live demo:
+  - Click View > Slide Master to show how themes apply to all slides.
+  - Demonstrate adding a logo or date placeholder to the master.
+- Think-Pair-Share:
+  - Prompt: "Why is it important to keep fonts consistent?"
+  - Pairs discuss, then share with the class (expect answers like "so it looks professional").
+
+---
+!!! Student Directed Activities
+- Independent Practice (10–15 minutes):
+  - Task: Create a 5-slide presentation on a provided topic (e.g., "My Favorite Animal," "A Day at School") using:
+    1. A built-in theme (e.g., "Nature," "Orbit").
+    2. Brand guidelines (e.g., "Use blue and green for water themes; add a wave logo").
+  - Constraints:
+    - Include: Title slide, 2 content slides, 1 data slide (e.g., bar chart of animal facts).
+    - No clipart (use only shapes/text).
+- Peer Evaluation (Last 5 min):
+  - Swap presentations with a partner. Use the rubric to give 2 theme-related suggestions (e.g., "Your title font is too small—try 44pt").
+
+---
+!!! Extension, Refinement, and Practice Activities
+- For Advanced Students:
+  - Custom Theme Challenge: Use the Design > Customize Colors tool to create a new color scheme from a photo (e.g., extract colors from a sunset image).
+  - Animation Task: Add a subtle theme-aligned animation (e.g., fade-in for text in a "space" theme).
+- For Struggling Students:
+  - Template Guide: Provide a half-completed slide with a theme applied; students add 2 slides following the same theme.
+  - Color Palette Cheat Sheet: Handout with pre-approved color combinations (e.g., "Red + White for Fire Safety").
+- Homework/Extension:
+  - Theme Research: Find one real-world example of a brand’s theme (e.g., McDonald’s colors) and write one sentence about why it works.
+
+---
+!!! Use of Media & Technology
+- Interactive Tools:
+  - Canva for Education: Let students preview themes before applying them in PowerPoint.
+  - ColorZilla (browser extension): Extract colors from images to use in PowerPoint.
+- Digital Feedback:
+  - Use Kami or Google Docs comments to annotate peer presentations.
+- Multimedia:
+  - Show 30-second clips of TED Talks with strong themes (e.g., [Hans Rosling’s color-coded data](https://www.youtube.com/watch?v=jbkSQNYxX4M)).
+  - Play "Theme Bingo" (students mark off themes they spot in ads/movies during a 2-minute clip).
+
+---
+!!! Cooperative Grouping
+- Heterogeneous Groups: Mix students by skill level (e.g., 1 advanced, 2 on-level, 1 struggling).
+- Roles:
+  1. Theme Designer (applies colors/fonts).
+  2. Content Writer (ensures text is clear).
+  3. Feedback Checker (uses rubric to spot inconsistencies).
+  4. Timekeeper (ensures group stays on task).
+- Rotation Activity:
+  - Groups rotate every 10 minutes to "adopt" a new presentation and apply a new theme (e.g., "Turn a school theme into a beach theme").
+
+---
+!!! Closure (5 minutes)
+Activity: "Theme Showcase & Exit Ticket"
+1. Quick Gallery: 3 students share one slide from their presentation. Class gives a thumbs-up/thumbs-down for theme consistency.
+2. Exit Question (Verbal or Digital):
+   - "What’s one way you’ll use themes in your next project?"
+   - Collect responses on a Padlet wall or have students write on sticky notes.
+3. Homework Reminder:
+   - "Tomorrow, we’ll learn how to save themes to reuse them!"
+
+---
+!!! Differentiation
+| Strategy               | For Struggling Learners               | For Advanced Learners                  |
+|----------------------------|------------------------------------------|--------------------------------------------|
+| Scaffolding            | Provide a pre-selected theme and color palette. | Allow choice of any built-in theme.    |
+| Task Complexity        | 3-slide minimum; no data visualization. | 7-slide max; custom color extraction.   |
+| Support                | Pair with a peer for theme application.  | Research and present on accessibility (e.g., color blindness). |
+| Assessment             | Oral explanation of one theme element. | Write a paragraph comparing two themes. |
+| Materials              | Highlighted Slide Master steps.       | Access to PowerPoint templates from other subjects. |

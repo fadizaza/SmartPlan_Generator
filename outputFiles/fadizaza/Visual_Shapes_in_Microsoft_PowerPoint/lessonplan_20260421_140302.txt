@@ -1,0 +1,92 @@
+!!! Materials / Resources Needed
+- Computers/tablets with Microsoft PowerPoint installed
+- Projector and screen (for demonstration)
+- Printed step-by-step guide (optional for struggling students)
+- Colored markers or stickers (for labeling shapes on paper)
+- Whiteboard and markers
+
+!!! Assessment / Evaluation
+- Observe students as they:
+  - Locate the "Shapes" menu (1 point)
+  - Draw a square and circle correctly (2 points each)
+  - Move shapes by clicking and dragging (1 point)
+- Quick verbal check: "Show me how you move a shape!"
+- Exit ticket: Students draw one shape on paper and label it (e.g., "square").
+
+!!! Vocabulary
+- Shape: A 2D figure (e.g., square, circle).
+- Menu: A list of options (like a dropdown list).
+- Click: Press and release the mouse button.
+- Drag: Click and hold to move something.
+- PowerPoint: A program for creating slideshows.
+
+!!! Introduction / Warm-Up (5-10 minutes)
+1. Show pictures of squares, circles, and other shapes on the board.
+2. Ask: "What shapes do you see? Can you name them?"
+3. Explain: "Today, we’ll draw these shapes using PowerPoint!"
+4. Demonstrate opening PowerPoint and showing the blank slide.
+
+!!! Guided Practice (10-15 minutes)
+1. Step 1: Find the Shapes Menu
+   - Click the "Insert" tab (point to it on screen).
+   - Show the "Shapes" dropdown arrow (click it to reveal options).
+2. Step 2: Draw a Shape
+   - Click "Rectangle" (for square) or "Oval" (for circle).
+   - Drag on the slide to create a shape.
+3. Step 3: Move a Shape
+   - Click anywhere on the shape, then drag it to a new spot.
+4. Repeat with 2–3 students at the front, guiding their clicks.
+
+!!! Independent Practice (10-15 minutes)
+- Task: Each student opens PowerPoint and:
+  1. Draw one square and one circle (use different colors if possible).
+  2. Move each shape to a different spot on the slide.
+- Hint Cards: Provide visual reminders (e.g., a screenshot of the "Insert" tab).
+- Support: Pair struggling students with a peer or use the printed guide.
+
+!!! Teacher Directed Activities
+- Whole Group: Live demo of drawing/moving shapes while explaining steps.
+- Small Groups: Rotate to help students who need assistance with the menu or dragging.
+
+!!! Student Directed Activities
+- Individual: Complete the independent task independently.
+- Choice: Let students pick a shape color or size (e.g., "Make your square big!").
+
+!!! Differentiation
+- Struggling Learners:
+  - Pre-highlight the "Insert" tab on their screens.
+  - Use a mouse with a larger button or a trackpad with visual guides.
+  - Provide a one-page cheat sheet with icons (e.g., 🖱️ click + 👉 drag).
+- Advanced Learners:
+  - Challenge: "Draw a shape, then resize it by clicking the corners."
+  - Extend: "Add a second shape and stack them like blocks."
+
+!!! Extension, Refinement, and Practice Activities
+- Refinement:
+  - "Can you make your circle turn into a square by dragging the corners?" (Show how to resize.)
+- Practice:
+  - Shape Hunt: Print shapes on paper; students find the matching PowerPoint tool.
+  - Storytime: "Draw a shape for your favorite animal!" (e.g., circle for a ball, square for a house).
+- Homework: Draw 3 shapes and describe them in a sentence (e.g., "I drew a big blue square.").
+
+!!! Use of Media & Technology
+- Interactive Demo: Use [PowerPoint’s built-in tutorials](https://support.microsoft.com/en-us/office) (show a short video clip).
+- Visual Aids: Annotate the screen with arrows to highlight the "Insert" tab and shapes menu.
+- Gamification: Time students to see who can draw and move a shape fastest (fun, not graded).
+
+!!! Cooperative Grouping
+- Pairs: Buddy system—one student finds the shapes menu while the other draws.
+- Groups of 4: Assign roles:
+  1. Shape Artist (draws shapes).
+  2. Drag Expert (moves shapes).
+  3. Color Chooser (picks colors).
+  4. Recorder (writes down steps on paper).
+- Gallery Walk: Groups present their slides to the class (1 slide per group).
+
+!!! Closure (5 minutes)
+1. Review: Ask 3–4 students to share:
+   - "How did you find the Shapes menu?"
+   - "What shape did you draw first?"
+2. Exit Question: "Show me how you’d move a shape using your finger (air-drag gesture)."
+3. Home Connection: "Next time, try drawing a shape and telling a friend about it!"
+4. High-Five Line: Students line up to high-five the teacher while saying, "I can draw shapes in PowerPoint!"

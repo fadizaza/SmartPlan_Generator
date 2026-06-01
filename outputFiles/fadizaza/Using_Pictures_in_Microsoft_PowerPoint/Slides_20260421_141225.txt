@@ -1,0 +1,80 @@
+Here are your 5 engaging PowerPoint slides for beginner students:
+
+---
+
+**Slide 1: !!! Welcome to Using Pictures in PowerPoint**
+- **Why use pictures?**
+  - Pictures make slides more interesting (like adding a photo to a poster).
+  - They help explain ideas faster than words alone.
+  - Example: Instead of writing "sunset," show a sunset picture!
+
+- **Where to start?**
+  - Open PowerPoint → You’ll see a blank slide (like a clean canvas).
+  - Look for the **"Insert"** tab at the top (it’s like the "Add" button on a toolbox).
+
+---
+
+**Slide 2: !!! Finding the "Insert" Tab**
+- **Where is it?**
+  - At the top of PowerPoint, you’ll see tabs like **Home**, **Insert**, **Design**, etc.
+  - Click **"Insert"** to add pictures, shapes, or videos.
+
+- **What’s inside the "Insert" tab?**
+  - **Pictures**: To add images from your computer.
+  - **Shapes**: For arrows, boxes, or stars.
+  - **Icons**: Small symbols (like a 📁 for "folder").
+
+- **Try it!**
+  - Click "Insert" → Hover over "Pictures" to see options.
+  - *Analogy*: Think of "Insert" as a magic door to add cool stuff!
+
+---
+
+**Slide 3: !!! Inserting a Picture from Your Computer**
+- **Step 1: Click "Insert" → "Pictures"**
+  - A window will pop up (like opening a photo album).
+
+- **Step 2: Find your picture**
+  - Navigate to where you saved it (e.g., "Downloads" or "Pictures").
+  - *Tip*: Use the search bar if you’re unsure!
+
+- **Step 3: Click "Insert"**
+  - The picture will appear on your slide (like placing a sticker).
+
+- **Example:**
+  - Want to show a cat? Click "Insert" → "Pictures" → Find a cat photo → Insert!
+
+---
+
+**Slide 4: !!! Resizing Pictures (Dragging Corners)**
+- **Why resize?**
+  - Big pictures take up too much space (like a giant poster blocking your view).
+  - Small pictures might be hard to see.
+
+- **How to resize:**
+  1. Click the picture → **4 corner handles** (small squares) will appear.
+  2. Drag any corner **inward** to shrink or **outward** to grow.
+  3. *Tip*: Hold **Shift** while dragging to keep the picture square (like a perfect square photo).
+
+- **Try it!**
+  - Insert a picture → Drag a corner to make it tiny or huge.
+  - *Analogy*: Resizing is like stretching or shrinking a rubber band!
+
+---
+
+**Slide 5: !!! Quick Recap & Practice**
+- **What you learned:**
+  - Find the **"Insert"** tab (top menu).
+  - Add pictures from your computer (like adding a photo to a scrapbook).
+  - Resize by dragging corners (like adjusting a poster size).
+
+- **Your turn!**
+  1. Open PowerPoint → Click "Insert" → Add a picture.
+  2. Drag a corner to make it small or big.
+  3. *Bonus*: Try moving the picture by clicking and dragging!
+
+- **Remember:**
+  - Pictures make slides **fun and clear**!
+  - Practice makes perfect—keep experimenting! 🎨
+
+---

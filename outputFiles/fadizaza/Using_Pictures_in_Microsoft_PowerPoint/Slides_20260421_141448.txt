@@ -1,0 +1,102 @@
+**!!! Inserting Pictures in PowerPoint: Step-by-Step Guide**
+
+- **Why use pictures?**
+  - Pictures make your slides **more interesting** and easier to understand.
+  - Think of it like adding a **photo to a poster**—it grabs attention!
+  - Example: Instead of writing *"This is a dog,"* show a picture of a dog.
+
+- **Where to find the "Insert" tab?**
+  - At the **top of PowerPoint**, you’ll see tabs like *Home*, *Insert*, *Design*, etc.
+  - Click the **"Insert"** tab—it’s like opening a **menu** where you add new things.
+  - *Tip:* Hover your mouse over it to see options like *Pictures*, *Shapes*, and *Icons*.
+
+- **How to insert a picture from your computer?**
+  1. Click **"Pictures"** in the Insert tab (looks like a photo frame).
+  2. A window will open—**browse** to where your picture is saved (like a photo album).
+  3. Select your picture and click **"Insert"**.
+  4. *Example:* If your picture is on the *Desktop*, just click it and insert!
+
+---
+
+**!!! Resizing Pictures: Drag and Drop Magic**
+
+- **Why resize pictures?**
+  - Too big? It **crowds** your slide like a giant poster in a tiny room.
+  - Too small? It’s hard to see—like reading a tiny text on a billboard!
+  - *Rule:* Keep pictures **filling ⅓ to ½ of the slide** for best effect.
+
+- **How to resize with your mouse:**
+  1. Click the picture to **select** it (a blue border appears).
+  2. Look for **small squares** (handles) at the **corners** of the picture.
+  3. **Drag** any corner **inward** to shrink or **outward** to grow.
+  - *Tip:* Hold **Shift** while dragging to keep the picture **square** (like a perfect photo frame).
+
+- **Pro Tip:**
+  - If the picture is **blurry** after resizing, try:
+    - Right-click → **"Resize"** → Check *"Maintain Aspect Ratio"* (keeps it from stretching like taffy!).
+
+---
+
+**!!! The "Insert" Tab: Your Picture Toolbox**
+
+- **What’s inside the "Insert" tab?**
+  - **Pictures:** Add photos from your computer or online.
+  - **Shapes:** Draw arrows, boxes, or stars (like coloring with digital crayons).
+  - **Icons:** Use small symbols (like a 🔍 for "search" or ⚡ for "energy").
+  - *Analogy:* It’s like a **toolbox**—each tool does a different job!
+
+- **Quick Practice:**
+  1. Open PowerPoint.
+  2. Go to the **Insert tab**.
+  3. Try clicking **"Pictures"**—what happens? (A window opens to find your files!)
+  4. Click **"Shapes"**—can you draw a circle? (Great for diagrams!)
+
+- **Common Mistake to Avoid:**
+  - **Double-clicking** a picture instead of dragging—this **selects** it but doesn’t resize it.
+  - *Fix:* Always **click once** to select, then **drag the corner** to resize.
+
+---
+
+**!!! Picture Perfection: Tips for Pro Slides**
+
+- **Where to place pictures?**
+  - **Not in the middle!** Think of a slide like a **road**:
+    - Left side: Text or key points.
+    - Right side: Picture (like a signpost guiding the viewer).
+  - *Example:* If your slide is about *"Beaches"*, place a beach photo on the right.
+
+- **Adjusting brightness/contrast:**
+  1. Right-click the picture → **"Format Picture"**.
+  2. Under **"Adjust"**, slide the **brightness** or **contrast** bars.
+  - *Why?* A dark picture is hard to see—like reading a shadowy movie!
+
+- **Adding borders or shadows:**
+  - Right-click → **"Format Picture"** → **"Picture Effects"**.
+  - Try a **subtle shadow** (like a lamp casting light) or a **thin border** (like a picture frame).
+
+- **Fun Challenge:**
+  - Insert a picture, resize it to fit **half the slide**, and add a **light shadow**.
+  - *Bonus:* Can you make the picture **disappear** when you hover over it? (Use *"Animation"* tab!)
+
+---
+
+**!!! Your Turn: Practice Makes Perfect!**
+
+- **Step 1: Insert a Picture**
+  - Go to **Insert tab** → **"Pictures"** → Find a photo on your computer (e.g., a favorite pet or landscape).
+  - Insert it onto a blank slide.
+
+- **Step 2: Resize Like a Pro**
+  - Click the picture → Drag a **corner handle** to make it **smaller** (fit in a 3x3 inch box).
+  - Now drag it to **double its size**—watch how it fills more space!
+
+- **Step 3: Add a Border (Optional)**
+  - Right-click → **"Format Picture"** → **"Picture Border"** → Choose a **thin line** (like a pencil sketch).
+
+- **Reflection Questions:**
+  1. How did resizing change how your slide looked?
+  2. Would your slide be better with a **bigger** or **smaller** picture? Why?
+  3. *Creative Task:* Insert a picture of something **unexpected** (like a banana or a cloud) and explain why you chose it!
+
+---
+*(End of Slides)*

@@ -1,0 +1,42 @@
+**Slide 1: !!! Welcome to Using Pictures in PowerPoint**
+- Adding pictures makes your slides **more interesting** like adding a poster to a bulletin board!
+- Today, you’ll learn how to **insert, resize, and place** pictures easily.
+- **Why use pictures?**
+  - Helps explain ideas faster (like a visual story).
+  - Keeps your audience engaged (like a movie poster).
+
+---
+
+**Slide 2: !!! Finding the "Insert" Tab**
+- The **"Insert" tab** is your **picture toolbox**—it’s where you add images, shapes, and more!
+- **Where to find it:**
+  - Look at the top of PowerPoint (like a menu).
+  - Click the **"Insert"** tab (it has icons like a picture, shape, and chart).
+- **Example:** Think of it like a **toolbox**—you open it to pick the right tool (here, the "Picture" tool).
+
+---
+
+**Slide 3: !!! Inserting a Picture from Your Computer**
+- **Step 1:** Click the **"Insert"** tab → Find the **"Pictures"** icon (looks like a photo).
+- **Step 2:** A window will open—**browse** your computer like searching for a file.
+- **Step 3:** Select your picture (e.g., a photo of a cat) → Click **"Insert"**.
+- **Tip:** Save pictures in a **folder** (like a "Pictures for School" folder) to find them fast!
+
+---
+
+**Slide 4: !!! Resizing a Picture (Drag the Corners!)**
+- **Why resize?** To make your picture fit the slide (like trimming a poster to fit a wall).
+- **How to do it:**
+  1. Click the picture to **select** it (it gets a blue border).
+  2. Look at the **four corners**—they have small **black squares**.
+  3. **Drag** (click and hold) a corner to **stretch** the picture bigger or smaller.
+- **Pro Tip:** Hold **Shift** while dragging to keep the picture **square** (like a perfect photo frame).
+
+---
+**Slide 5: !!! Practice Time! (Try It Yourself!)**
+- **Your Turn!**
+  1. Open PowerPoint → Click **"Insert"** tab.
+  2. Insert a picture (use one from your "Pictures" folder).
+  3. Resize it by dragging the corners—make it **smaller** or **bigger**!
+- **Challenge:** Can you resize it to fit **half the slide**?
+- **Remember:** Mistakes are okay—just **undo** (Ctrl+Z) if needed! 😊

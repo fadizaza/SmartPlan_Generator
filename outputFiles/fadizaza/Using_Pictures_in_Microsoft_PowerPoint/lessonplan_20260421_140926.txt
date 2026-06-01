@@ -1,0 +1,127 @@
+!!! Materials / Resources Needed
+- Computers/tablets with Microsoft PowerPoint installed
+- Pre-downloaded pictures (e.g., animals, nature, or student-drawn images) saved on the computer
+- Printed step-by-step guide (visuals only, no text)
+- Whiteboard and markers
+- Sticky notes (for vocabulary)
+- Lined paper for notes
+
+---
+
+!!! Assessment / Evaluation
+- Formative: Observe students as they insert pictures and resize them. Check if they:
+  - Locate the "Insert" tab correctly.
+  - Drag corners to resize without distorting.
+  - Follow verbal instructions without prompts.
+- Exit Ticket: Each student saves a slide with one picture inserted and resized. Teacher reviews 3–5 slides to confirm understanding.
+
+---
+
+!!! Vocabulary
+- Insert: To add something (like a picture) into a document.
+- Tab: A clickable section at the top of a program (e.g., "Insert," "Design").
+- Resize: To change the size of an object (like dragging corners).
+- Drag: To click and move an object with the mouse.
+- Picture: An image (e.g., a photo or drawing).
+
+(Write words on sticky notes and place them around the room for students to find and discuss.)
+
+---
+
+!!! Introduction / Warm-Up (5–10 minutes)
+1. Show a Slide: Display a blank PowerPoint slide with a big question mark.
+2. Think-Pair-Share:
+   - "What do you think we’ll do today with this slide?" (Let students guess: "Add pictures!")
+3. Demo: Show a 30-second clip of inserting a picture (no sound). Ask: "Where did I click first?" (Answer: "Insert tab!")
+4. Vocabulary Review: Point to sticky notes and have students repeat words aloud.
+
+---
+
+!!! Guided Practice (10–15 minutes)
+1. Step-by-Step Demo:
+   - Open a new PowerPoint slide.
+   - Click the "Insert" tab (point to it and say: "This is our magic tab!").
+   - Click "Pictures" > "This Device" > Select a pre-downloaded image.
+   - Drag the bottom-right corner to resize (say: "Like stretching a balloon!").
+2. Think-Aloud: Explain mistakes aloud (e.g., "Oops! I clicked the wrong corner—now it’s squished!").
+3. Guided Attempt:
+   - Students follow along on their computers while teacher circulates to help.
+   - Use a visual guide (printed steps) for non-readers.
+
+---
+
+!!! Teacher Directed Activities
+- Mini-Lesson: Directly model inserting a picture and resizing it 2–3 times with exaggerated gestures.
+- Choral Response: After each step, have students repeat: "Click Insert tab!" or "Drag the corner!"
+- Error Correction: If a student struggles, ask: "Where do we go first?" (Guide them to the "Insert" tab.)
+
+---
+
+!!! Student Directed Activities
+- Independent Practice: Students insert one picture of their choice and resize it to fit a specific space (e.g., "Make it as big as your hand").
+- Choice Board: Provide 3 options:
+  1. Insert a picture of their favorite animal.
+  2. Insert a picture and resize it to match a given size (e.g., "Like a quarter sheet of paper").
+  3. Insert a picture and resize it to fill half the slide.
+
+---
+
+!!! Independent Practice (10–15 minutes)
+- Task: Each student creates one slide with:
+  - A picture inserted from the pre-downloaded folder.
+  - The picture resized (no distortion).
+- Scaffold: Provide a checklist with pictures:
+  ![ ] Found the Insert tab
+  ![ ] Added a picture
+  ![ ] Resized it properly
+- Support: Offer a "Help Button" (a printed card with step-by-step icons) for students who need it.
+
+---
+
+!!! Cooperative Grouping
+- Pairs: Students work in buddy pairs to:
+  1. Take turns inserting a picture.
+  2. Take turns resizing it.
+  3. High-five when both steps are done!
+- Roles: Assign roles to avoid confusion:
+  - "You’re the Clicker!" (Finds the Insert tab.)
+  - "You’re the Draggler!" (Resizes the picture.)
+
+---
+
+!!! Use of Media & Technology
+- Interactive Demo: Use a document camera to show the teacher’s screen while guiding students.
+- Video Clip: Show a 1-minute silent video of inserting a picture (no sound) for visual learners.
+- Accessibility: Allow students to use trackpad gestures (drag with two fingers) if needed.
+
+---
+
+!!! Extension, Refinement, and Practice Activities
+- Challenge: Add a second picture and resize both to fit side by side.
+- Creativity: Insert a picture and "turn it into a story" by adding 1–2 words below it (e.g., "My dog’s name is...").
+- Game: "Picture Rescue" – Teacher calls out an object (e.g., "a tree"), and students race to insert a picture of it.
+
+---
+!!! Closure (5 minutes)
+1. Gallery Walk: Students hold up their slides and say: "I inserted a picture of [X] and made it [big/small]!"
+2. Exit Question: "Where do you go to add a picture in PowerPoint?" (Collect responses on sticky notes for the board.)
+3. Exit Ticket: Each student saves their slide and hands in a printed screenshot (or shows the teacher their screen).
+
+---
+!!! Differentiation
+- For Struggling Learners:
+  - Provide a picture-only step-by-step guide (no text).
+  - Pair with a peer who is confident.
+  - Allow them to insert a pre-selected picture (e.g., only animals).
+- For Advanced Learners:
+  - Challenge them to crop the picture (remove extra edges).
+  - Have them insert a picture and rotate it (extra step).
+  - Let them add a border to their picture.
+
+---
+!!! Teacher Notes
+- Common Misconceptions:
+  - Students might click the wrong corner to resize (e.g., top-left instead of bottom-right). Remind them: "Only the bottom-right corner stretches it nicely!"
+  - They may forget to save their work. Set a timer for 2 minutes before closing.
+- Time-Saver: Pre-download pictures onto each student’s desktop with a folder labeled "PowerPoint Pictures."
+- Engagement Tip: Play upbeat music during independent practice to keep energy high.

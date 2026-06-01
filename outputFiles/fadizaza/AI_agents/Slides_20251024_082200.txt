@@ -1,0 +1,51 @@
+!!! Slide 1: Introduction to AI Agents
+*   **What is an AI Agent?** An AI agent is an entity that perceives its environment through sensors and acts upon that environment through actuators. Think of it as an intelligent robot or software program capable of making decisions.
+*   **Key Components of an AI Agent Architecture:**
+    *   **Sensors:** Gather information from the environment (e.g., cameras, microphones, thermometers).
+    *   **Actuators:** Allow the agent to act on the environment (e.g., motors, displays, speakers).
+    *   **Percepts:** The agent's input at any given moment.
+    *   **Agent Function:** Maps percept sequences to actions.  This is the core logic.
+    *   **Environment:** The world the agent operates in.
+*   **Rationality:** A rational agent acts to maximize its expected performance measure, based on its percept sequence and built-in knowledge. It aims to do the "right thing."
+*   **Example:** A self-driving car uses cameras (sensors) to "see" the road and steering wheel/accelerator (actuators) to control its movement.
+
+!!! Slide 2: Types of AI Agents: Simple Reflex Agents
+*   **Simple Reflex Agents:** The simplest type of agent. They choose actions based only on the *current* percept. They have direct condition-action rules.
+*   **How They Work:** "If condition, then action." No memory or internal state is involved.
+*   **Example:** A thermostat. IF temperature is below set point, THEN turn on heater.
+*   **Limitations:**
+    *   Limited intelligence. They can't handle partial observability (when they can't see the whole picture).
+    *   Difficulty dealing with situations not explicitly programmed. Can't learn or adapt.
+*   **Analogy:** Like a simple light switch – it only responds to whether it’s pushed or not.
+
+!!! Slide 3: Types of AI Agents: Model-Based & Goal-Based Agents
+*   **Model-Based Agents:** Maintain an internal "model" of the world. They use this model to predict what will happen if they perform a certain action.
+*   **How They Work:** Updates its internal state based on percepts and uses the model to decide on the best action.  Handles partial observability better than simple reflex agents.
+*   **Example:** A robot vacuum cleaner that creates a map of your house. It uses the map to plan its cleaning route.
+*   **Goal-Based Agents:**  These agents have a goal they're trying to achieve. Their actions are chosen to reach that goal.
+*   **How They Work:** Use search and planning algorithms to find sequences of actions that lead to the desired goal state.  They need a "goal test" to know when they've achieved the goal.
+*   **Example:** A navigation app like Google Maps. Your goal is to reach a specific destination, and the app calculates the best route. Model of the road network is used to determine the best route
+
+!!! Slide 4: Scenario Design: Building Your Own AI Agent
+*   **Let's design an AI agent for a specific task: Cleaning a room.**
+*   **1. Define the Environment:** A room with furniture, dust, and obstacles.
+*   **2. Identify Sensors:**
+    *   Camera (to identify objects and dust)
+    *   Dust sensor (to measure dust levels)
+    *   Proximity sensors (to avoid obstacles)
+*   **3. Determine Actuators:**
+    *   Vacuum cleaner
+    *   Wheels (for movement)
+*   **4. Set the Goal:** "The room is clean (dust level below a threshold)."
+*   **5. Choose Agent Type:**  A goal-based agent with a model of the room would be effective. It can plan a route to cover the entire room and achieve the goal of minimizing dust.
+*   **Discussion:** How would you implement the agent function? What challenges might arise?
+
+!!! Slide 5: Evaluating Agent Effectiveness
+*   **Scenario:** Consider a task of sorting emails into "Important" and "Spam" folders.
+*   **Agent Type 1: Simple Reflex Agent (Rule-Based Filter):** Uses pre-defined keywords (e.g., "Viagra," "Lottery") to classify emails.
+*   **Agent Type 2: Goal-Based Agent (Machine Learning Classifier):** Learns from a training dataset of labeled emails to predict whether a new email is spam.  Goal is to maximize accuracy of classification.
+*   **Performance Metrics:**
+    *   **Accuracy:** Percentage of correctly classified emails.
+    *   **Precision:** Of the emails classified as "Important," what percentage are actually important?
+    *   **Recall:** Of all the truly important emails, what percentage were correctly classified as "Important?"
+*   **Evaluation:** The machine learning classifier (goal-based agent) would likely outperform the rule-based filter (simple reflex agent) because it can adapt to new spam techniques and identify subtle patterns. However, it requires a training dataset and may be computationally more expensive. The trade-off between performance, complexity, and data availability influences the choice of agent.

@@ -1,0 +1,43 @@
+**!!! Inserting Pictures in PowerPoint**
+- **Why use pictures?**
+  - Makes slides more interesting (like adding a photo to a storybook!).
+  - Helps explain ideas faster than words alone.
+- **Where to find the "Insert" tab?**
+  - Look at the top of PowerPoint—it’s the **first tab** (like the start of a race!).
+  - Click it to find the **"Pictures"** button (📷).
+
+---
+
+**!!! Finding & Inserting a Picture**
+- **How to insert a picture from your computer:**
+  1. Click **"Insert"** → **"Pictures"** (📷).
+  2. A window opens—**browse** to where your picture is saved (like finding a toy in a box).
+  3. **Double-click** the picture to insert it!
+- **Tip:** Save pictures in a **folder** (e.g., "My PowerPoint Pics") to find them easily.
+
+---
+
+**!!! Resizing a Picture (Drag & Drop)**
+- **Why resize?**
+  - Too big? Too small? Adjust it to fit your slide (like trimming a photo to fit a frame!).
+- **How to resize:**
+  1. Click the picture to **select** it (small squares appear at corners).
+  2. **Drag** any corner **inward** (to shrink) or **outward** (to grow).
+  - **Pro Tip:** Hold **Shift** while dragging to keep the picture **square** (like a perfect square cookie!).
+
+---
+
+**!!! Picture Placement Tips**
+- **Where to place?**
+  - Center it (like a poster on a wall) or align it with text for clarity.
+- **Quick fixes:**
+  - **Rotate:** Click the picture → drag the **circular arrow** (↻) to turn it.
+  - **Move:** Click and **drag** the picture like a puzzle piece.
+
+---
+**!!! Practice Time! (Try It Yourself!)**
+- **Your turn!**
+  1. Open PowerPoint → Click **"Insert"** → Find a picture on your computer.
+  2. Insert it → **Resize** it to fit your slide (drag corners!).
+  3. **Bonus:** Try rotating it or moving it to the side!
+- **Remember:** Mistakes are okay—PowerPoint lets you **undo** (Ctrl+Z) anytime! 🎯

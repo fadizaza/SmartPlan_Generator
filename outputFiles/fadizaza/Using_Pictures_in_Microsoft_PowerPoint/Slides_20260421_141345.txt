@@ -1,0 +1,65 @@
+**Slide 1: !!! Introduction to Using Pictures in PowerPoint**
+---
+**Title:** *Why Use Pictures in PowerPoint?*
+- Pictures make your slides **more interesting**—like adding a colorful poster to a boring textbook!
+- They help **explain ideas faster** than words alone (e.g., a photo of a volcano instead of describing it).
+- **Rule:** Use pictures that are **clear, relevant, and not too busy** (like a crowded street vs. a clean road sign).
+
+**Example:**
+✅ *Good:* A simple diagram of a computer’s parts.
+❌ *Bad:* A blurry photo of a crowded market (hard to focus on the main idea).
+
+---
+**Slide 2: !!! Finding the "Insert" Tab**
+---
+**Title:** *Where to Start: The "Insert" Tab*
+- The **"Insert" tab** is your **toolbox** for adding pictures, shapes, and more.
+- **Location:** Look at the top ribbon (the gray bar with buttons). It’s usually **2nd from the left** (after "Home").
+- **Tip:** If you don’t see it, click the **"View"** tab → Check **"Ribbon"** is set to **"Normal"** (like turning on a light switch).
+
+**Analogy:**
+Think of PowerPoint like a **kitchen**:
+- The "Insert" tab is the **pantry**—where you grab ingredients (pictures) to cook up your slide!
+
+---
+**Slide 3: !!! Inserting a Picture from Your Computer**
+---
+**Title:** *Step-by-Step: Adding a Picture*
+1. **Click "Insert"** → Find the **"Pictures"** button (it looks like a **clipboard with a mountain**).
+2. A window will open—**browse** to where your picture is saved (e.g., "Downloads" or "Pictures" folder).
+3. **Select** your picture → Click **"Insert"** (like choosing a toy from a box).
+4. **Done!** Your picture appears on the slide.
+
+**Pro Tip:**
+- To **find a picture faster**, type its name in the search bar (e.g., "sunset" or "dog").
+- **Example:** Insert a screenshot of your favorite game to explain a concept.
+
+---
+**Slide 4: !!! Resizing Pictures: Drag the Corners!**
+---
+**Title:** *Make It Fit: Resizing Your Picture*
+- To **change size**, place your **mouse cursor** on a **corner** of the picture (you’ll see a **double-headed arrow** appear).
+- **Click and drag** inward (to shrink) or outward (to grow)—like **stretching a rubber band**!
+- **Shortcut:** Hold **Shift** while dragging to keep the picture from getting **stretched** (like a square becoming a rectangle).
+
+**Why It Matters:**
+- Too big? It **blocks text** (like a giant poster covering your homework).
+- Too small? It’s **hard to see** (like reading a tiny menu).
+
+**Try It!**
+- Insert a picture → Drag a corner to make it **half its size** → Drag again to **restore it**.
+
+---
+**Slide 5: !!! Quick Recap & Practice Time!**
+---
+**Title:** *You’re Ready! Let’s Review*
+- **Insert Tab:** Your **toolbox** (2nd from the left).
+- **Insert Picture:** Click **"Pictures"** → Browse → **"Insert"**.
+- **Resize:** Click a **corner** → Drag (hold **Shift** for perfect shapes).
+
+**Interactive Challenge:**
+1. Open PowerPoint → Insert a **selfie** or a **clipart** (search "smiley face").
+2. Resize it to **fit inside a 3x3 inch square** (use the ruler tool if needed).
+3. **Bonus:** Try dragging it to a new spot—like moving a puzzle piece!
+
+**Remember:** Practice makes perfect—**your slides will look amazing!** 🎨

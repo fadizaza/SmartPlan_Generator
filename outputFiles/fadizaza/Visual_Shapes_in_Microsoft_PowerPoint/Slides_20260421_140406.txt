@@ -1,0 +1,80 @@
+---
+**Slide 1: !!! Introduction to Visual Shapes in PowerPoint**
+- **What are shapes?**
+  - Shapes are like digital drawing tools—think of them as colored blocks, circles, or arrows you can add to your slides.
+  - They help organize ideas, highlight key points, or make your presentation more visual (like a map or flowchart).
+
+- **Why use shapes?**
+  - Makes your slides **more interesting** (like adding stickers to a notebook).
+  - Helps **guide your audience’s eyes** (e.g., a circle around important text).
+  - Great for **diagrams** (e.g., a square for "Start" in a process).
+
+- **Today’s goal:**
+  - Learn to find shapes, draw them, and move them easily.
+
+---
+**Slide 2: !!! Finding the "Shapes" Menu**
+- **Where is the Shapes tool?**
+  - Open PowerPoint → Look at the **top toolbar** (the menu bar).
+  - Click the **"Insert"** tab (it’s like the "Add" button for new things).
+  - In the **"Illustrations"** group, click the **"Shapes"** button (it looks like a dotted square).
+
+- **Pro tip:**
+  - If you don’t see it, check if you’re on the **"Insert"** tab—it’s hidden if you’re on another tab (like "Home").
+
+- **Example:**
+  - Imagine shapes are like tools in a toolbox. The "Insert" tab is the box, and "Shapes" is the drawer with all your colored pencils!
+
+---
+**Slide 3: !!! Drawing a Square or Circle**
+- **Drawing a square:**
+  1. Click the **"Rectangle"** shape (it’s the first icon in the Shapes menu).
+  2. **Click and drag** your mouse on the slide—like drawing with a pencil.
+     - *Tip:* Hold **Shift** while dragging to make it a **perfect square** (not stretched).
+
+- **Drawing a circle:**
+  1. Click the **"Oval"** shape (next to the rectangle).
+  2. **Click and drag**—hold **Shift** to make it a **perfect circle**.
+
+- **Practice:**
+  - Try drawing a square and a circle on a blank slide. Can you make them different sizes?
+
+- **Analogy:**
+  - Drawing shapes is like coloring with a crayon—press down lightly for small shapes, harder for bigger ones!
+
+---
+**Slide 4: !!! Moving Shapes with Click and Drag**
+- **How to move a shape:**
+  1. Click **once** on the shape (you’ll see small squares/handles appear).
+  2. **Click and drag** the shape to a new spot—like moving a toy on a table.
+
+- **What if it doesn’t move?**
+  - Make sure you clicked **inside the shape** (not on a handle).
+  - If it’s locked, right-click → **"Group"** (if grouped) → **"Ungroup"** first.
+
+- **Shortcuts:**
+  - **Arrow keys** (↑/↓/←/→) move shapes **1 pixel at a time**.
+  - **Ctrl + Click + Drag** (Windows) or **Cmd + Click + Drag** (Mac) copies the shape!
+
+- **Example:**
+  - Move your square next to the circle. Now you have a "square and circle" pair—like a puzzle!
+
+---
+**Slide 5: !!! Quick Recap & Try It Yourself**
+- **What you learned:**
+  1. **Find shapes:** Insert → Shapes menu.
+  2. **Draw:** Click and drag (hold **Shift** for perfect shapes).
+  3. **Move:** Click + drag (or use arrow keys).
+
+- **Your turn!**
+  - Open a new slide and:
+    1. Draw a **red square** and a **blue circle**.
+    2. Move them to form a **"sun"** (circle in the middle, squares around it).
+  - *Bonus:* Try changing colors (right-click → **"Format Shape"**).
+
+- **Remember:**
+  - Shapes are **flexible**—resize, rotate, or delete them anytime!
+  - Practice makes perfect—experiment with different shapes!
+
+---
+**End of Presentation** *(Optional: Add a fun image of colorful shapes or a "You Did It!" stamp.)*

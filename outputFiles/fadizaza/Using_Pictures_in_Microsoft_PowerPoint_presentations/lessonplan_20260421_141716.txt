@@ -1,0 +1,135 @@
+!!!
+Lesson Plan: Using Pictures in Microsoft PowerPoint Presentations
+
+!!!
+Lesson Title: Adding Pictures to PowerPoint Slides
+Grade Level: Elementary (Ages 6-9)
+Duration: 45 minutes
+
+---
+
+!!!
+Materials / Resources Needed:
+- Computers with Microsoft PowerPoint installed
+- Pre-downloaded pictures (animals, objects, or simple scenes) saved on the desktop
+- Printed step-by-step guide (visuals for visual learners)
+- Whiteboard & markers
+- Sticky notes (for quick feedback)
+- Sample PowerPoint file with a blank slide
+
+---
+
+!!!
+Assessment / Evaluation:
+- Formative: Observe students as they complete tasks (e.g., locating the "Insert" tab, resizing pictures).
+- Checklist: Students mark off steps as they complete them (e.g., "I inserted a picture ✔️").
+- Exit Ticket: Students show the teacher their slide with a picture resized correctly to exit.
+- Task 6 Completion: All students finish inserting and resizing a picture by the end of the lesson.
+
+---
+
+!!!
+Vocabulary:
+- Picture: An image or drawing.
+- Insert: To add something (like a picture) into a document.
+- Resize: To change the size of something (e.g., dragging corners).
+- Tab: A section or button in a program (e.g., "Insert" tab).
+- Slide: A single page in a PowerPoint presentation.
+
+---
+
+!!!
+Introduction / Warm-Up (5-10 minutes):
+- Engage: Ask, "What’s one thing you’d like to show in a slideshow?" (e.g., a pet, favorite toy).
+- Demo: Show a simple PowerPoint slide with a picture. Ask, "How do you think we got this picture here?"
+- Explain: "Today, we’ll learn how to add pictures to our slides and make them bigger or smaller!"
+- Preview: Show the 3 steps for today: 1) Find the "Insert" tab, 2) Add a picture, 3) Resize it.
+
+---
+
+!!!
+Guided Practice (10-15 minutes):
+1. Locate the "Insert" Tab:
+   - Open a blank PowerPoint slide.
+   - Point to the top ribbon and say, "This is the ‘Insert’ tab—it’s where we add pictures!"
+   - Click it together as a class.
+
+2. Insert a Picture:
+   - Click the "Pictures" button (camera icon).
+   - Browse to the desktop and select a pre-downloaded picture (e.g., a cat).
+   - Click "Insert" and watch it appear on the slide.
+
+3. Resize the Picture:
+   - Place fingers on the bottom-right corner of the picture.
+   - Drag outward to make it bigger (or inward to make it smaller).
+   - Praise: "Great job stretching the picture!"
+
+4. Troubleshooting:
+   - If a picture is too big/small, demonstrate clicking "Crop" (scissors icon) to adjust edges.
+
+---
+Teacher Directed Activities:
+- Model each step slowly with think-alouds ("First, I click ‘Insert’ because…").
+- Use a document camera to show the screen for all students.
+
+---
+
+!!!
+Independent Practice (10-15 minutes):
+- Task 6 (Goal): Each student will:
+  1. Open a new PowerPoint slide.
+  2. Insert one picture from the desktop (e.g., a flower, dinosaur).
+  3. Resize it to fit the slide (e.g., make it as big as their hand).
+- Support: Provide a checklist:
+  - [ ] Found the "Insert" tab.
+  - [ ] Clicked "Pictures."
+  - [ ] Dragged corners to resize.
+- Differentiation: Give advanced students a second picture to insert and resize.
+
+---
+Differentiation:
+- Struggling Learners: Pair with a peer or use a pre-selected picture (e.g., "Insert the red apple").
+- Advanced Learners: Add a second picture and align them (e.g., side by side).
+- Visual Learners: Provide a color-coded step guide (e.g., red for "Insert," blue for "Resize").
+
+---
+
+!!!
+Cooperative Grouping:
+- Pairs: Students work with a partner to insert one picture each and take turns resizing.
+- Roles: One clicks "Insert," the other resizes (switch roles after one task).
+- Share: Groups show their slides and say, "We added a [picture] and made it [size]!"
+
+---
+
+!!!
+Use of Media & Technology:
+- Interactive Demo: Use a tool like [PowerPoint’s "Tell Me What You Want to Do"](https://support.microsoft.com/en-us/office/tell-me-what-you-want-to-do-in-powerpoint-6270382f-1a3d-4478-9f2f-499726d02a90) to show voice-guided steps.
+- Video Clip: Show a 1-minute video of resizing (e.g., [How to Resize in PowerPoint](https://www.youtube.com/watch?v=example)).
+- Screen Recording: Students record themselves inserting a picture (optional for review).
+
+---
+
+!!!
+Extension, Refinement, and Practice Activities:
+- Refinement: Add a border to the picture using the "Shape Outline" tool (for advanced).
+- Extension:
+  - Task 7: Insert 2 pictures and arrange them (e.g., a cat under a tree).
+  - Creative Task: Make a "My Favorite Things" slide with 3 pictures.
+- Practice: Play "Picture Detective"—teacher describes a picture (e.g., "a blue whale"), and students insert it.
+
+---
+
+!!!
+Closure (5 minutes):
+- Review: Ask, "What’s one thing you learned today?" (Call on 3-4 students.)
+- Exit Ticket: Hold up a thumb:
+  - Up: I inserted and resized a picture!
+  - Sideways: I need more help with resizing.
+- Homework: Practice inserting a picture at home (e.g., a family photo).
+
+---
+Teacher Notes:
+- Time Check: If independent practice runs long, shorten closure to 3 minutes.
+- Task 6 Focus: Ensure all students complete inserting and resizing by the end.
+- Tech Tip: Save files as "StudentName_Pictures.pptx" to track progress.

@@ -1,0 +1,35 @@
+!!! What are AI Agents?
+*   AI Agents are like robots with brains!
+*   They can perceive (see), reason (think), and act (do).
+*   Key parts:
+    *   **Sensors:** How they see the world (like eyes).
+    *   **Actuators:** How they do things (like hands).
+    *   **Brain (AI):** How they decide what to do.
+*   Example: A self-driving car uses cameras (sensors) to see the road and steering wheel (actuators) to drive. The AI decides what to do.
+
+!!! Types of AI Agents
+*   **Simple Reflex Agents:** Act based on the *current* situation only. (Like a thermostat - if too cold, turn on the heat.)
+*   **Model-Based Reflex Agents:** Remember past experiences to make better decisions. (Like driving - remember that a red light means stop even if you can't see any cars.)
+*   **Goal-Based Agents:** Try to achieve a specific goal. (Like a robot vacuum cleaning a room.)
+*   **Utility-Based Agents:** Try to achieve the *best* result possible. (Like a chess-playing AI trying to win, not just avoid losing.)
+
+!!! Design Your Own Agent!
+*   Task: Make an AI agent that waters your plants.
+*   Sensors: Soil moisture sensor (measures how wet the soil is).
+*   Actuators: Water pump.
+*   Decision-making: IF soil is dry, THEN turn on water pump. ELSE turn off water pump. (Simple Reflex Agent).
+*   Bonus: What if we wanted a Model-Based Agent? (Remember past watering times to avoid overwatering).
+
+!!! Agent Architectures: Simple vs. Complex
+*   **Simple (Reflex):**
+    *   Strength: Easy to build and fast.
+    *   Weakness: Can't handle complex situations. (Example: Can't adapt to different plant types).
+*   **Complex (Utility-Based):**
+    *   Strength: Can handle very complex situations and optimize for the best outcome. (Example: Can consider weather, plant type, and water availability).
+    *   Weakness: Harder to build and slower.
+
+!!! Review Time!
+*   What are the 3 key parts of an AI agent? (Sensors, Actuators, AI)
+*   Name two types of AI agents and give an example of each. (e.g., Reflex Agent - Thermostat)
+*   What's one strength and one weakness of a simple AI agent? (Easy to build, but can't handle complex situations)
+*   AI agents are all around us, helping us with tasks big and small! Keep exploring!

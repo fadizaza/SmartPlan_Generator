@@ -1,0 +1,53 @@
+!!! What are AI Agents?
+
+*   Imagine a robot that can see, think, and act on its own. That's similar to an AI agent!
+*   **Definition:** An AI agent is a computer program or system that can perceive its environment, make decisions, and take actions to achieve a specific goal.
+*   **Key Components:**
+    *   **Percepts:** What the agent "sees" or senses from the environment (like using sensors). Think of it like your eyes and ears.
+    *   **Environment:** The world the agent lives in and interacts with.
+    *   **Actions:** What the agent can do to the environment (like moving or speaking).
+    *   **Goal:** What the agent is trying to achieve (like cleaning a room or winning a game).
+*   Think of a self-driving car: it perceives the road and other cars, its environment is the road, its actions are steering and accelerating, and its goal is to reach a destination safely.
+
+!!! Types of AI Agents
+
+*   AI agents come in different flavors, depending on how they make decisions:
+    *   **Simple Reflex Agents:** Act based only on the current situation. Like a thermostat that turns on the heat when it's cold. (If X then Y)
+    *   **Model-Based Reflex Agents:** Use a "model" of the world to make decisions. They remember the past and consider how their actions might change the world. Think of a robot vacuum cleaner avoiding areas it already cleaned.
+    *   **Goal-Based Agents:** Have a specific goal and try to achieve it. They might use search algorithms to find the best path to their goal. Example: A GPS navigation system trying to find the fastest route.
+
+!!! Designing a Simple AI Agent
+
+*   Let's design an AI agent for a vending machine!
+*   **Task:** Dispense a snack when the correct amount of money is inserted.
+*   **Percepts:** Amount of money inserted, button pressed.
+*   **Actions:** Dispense snack, return change.
+*   **Decision-Making:**
+    *   If (money inserted >= snack price) AND (button pressed == snack code) Then
+        *   Dispense snack
+        *   Return change (if any)
+    *   Else
+        *   Display "Insufficient Funds" or "Invalid Selection"
+
+!!! AI Agent Architectures: Strengths and Weaknesses
+
+*   Different ways to build AI agents have their pros and cons:
+    *   **Simple Reflex Agents:**
+        *   **Strengths:** Easy to implement, fast.
+        *   **Weaknesses:** Can't handle complex situations, no memory.
+    *   **Model-Based Reflex Agents:**
+        *   **Strengths:** Can handle more complex situations, use past knowledge.
+        *   **Weaknesses:** More complex to implement, rely on the accuracy of the model.
+*   **Example:** A simple reflex agent controlling a robot arm in a factory might be very fast, but will fail if something unexpected happens. A model-based agent in the same factory is slower, but might be able to adapt to changes in the environment if its internal model is accurate.
+
+!!! Real-World Examples and Ethical Considerations
+
+*   AI agents are everywhere!
+    *   **Spam Filters:** Classify emails as spam or not spam.
+    *   **Recommendation Systems:** Suggest movies or products you might like.
+    *   **Chatbots:** Answer your questions online.
+*   **Ethical Considerations:**
+    *   **Bias:** AI agents can learn biases from the data they are trained on.
+    *   **Privacy:** AI agents can collect and use your personal data.
+    *   **Responsibility:** Who is responsible when an AI agent makes a mistake?
+*   As AI becomes more powerful, it's important to think about these ethical issues!

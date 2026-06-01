@@ -1,0 +1,57 @@
+**!!! Inserting Pictures in PowerPoint**
+
+- **Why use pictures?**
+  - Pictures make slides **more interesting** than just text.
+  - Example: Instead of saying *"This is a dog,"* show a picture of a dog!
+  - Helps your audience **remember** what you’re teaching.
+
+---
+
+**!!! Finding the "Insert" Tab**
+
+- **Where is it?**
+  - At the top of PowerPoint, look for a tab labeled **"Insert"** (it has a plus sign ✚).
+  - Think of it like a **"toolbox"** for adding things to your slide.
+
+- **What’s inside?**
+  - Pictures, shapes, charts, and more!
+  - Example: Want to add a photo? Click **"Pictures"** here.
+
+---
+
+**!!! How to Insert a Picture from Your Computer**
+
+- **Step 1:** Click **"Insert"** → **"Pictures"** (or press *Ctrl+G*).
+- **Step 2:** A window opens—**browse** your computer like a treasure hunt!
+  - Find the picture you want (e.g., a family photo or a fun meme).
+- **Step 3:** Click **"Insert"** to add it to your slide.
+
+- **Tip:** If the picture is too big, **don’t panic**—we’ll resize it next!
+
+---
+
+**!!! Resizing a Picture (Drag the Corners!)**
+
+- **How to make it bigger/smaller:**
+  - Click the picture to **select** it (it gets a blue border).
+  - Look at the **four corners**—they have little **black squares**.
+  - **Drag** any corner (like pulling a rubber band) to resize!
+
+- **Example:**
+  - Too big? Drag inward (like shrinking a balloon).
+  - Too small? Drag outward (like blowing up a balloon).
+
+- **Pro Tip:** Hold *Shift* while dragging to keep it **square** (no stretching!).
+
+---
+**!!! Quick Check: Try It Yourself!**
+
+- **Your turn!**
+  1. Open PowerPoint and go to the **"Insert"** tab.
+  2. Find a picture on your computer (even a screenshot works!).
+  3. Insert it and **resize** it by dragging the corners.
+  4. Share with a partner: *"What picture did you add?"*
+
+- **Remember:**
+  - Pictures make slides **fun and clear**!
+  - Always **resize** to fit your slide like a puzzle piece.

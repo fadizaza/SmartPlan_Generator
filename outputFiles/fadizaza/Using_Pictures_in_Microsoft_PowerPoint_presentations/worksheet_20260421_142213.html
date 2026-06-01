@@ -1,0 +1,397 @@
+Here's a clean, modern HTML page based on your provided data with vibrant colors, smooth animations, and a structured layout:
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Using Pictures in Microsoft PowerPoint</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .date-container {
+            background-color: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .worksheet-title {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .info-field {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+
+        .learning-outcomes {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .checkmark {
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        .step-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .step-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .step-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .step-list li:last-child {
+            border-bottom: none;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border-radius: 8px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.02);
+        }
+
+        .bonus-section {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .teacher-note {
+            background-color: #fff3e0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .evaluation-checklist {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .evaluation-checklist li {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .evaluation-checklist li:before {
+            content: "✔";
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .success-message {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--success);
+            color: white;
+            border-radius: 10px;
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            .student-info {
+                flex-direction: column;
+            }
+
+            .worksheet-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="date-container" id="current-date"></div>
+        <h1 class="worksheet-title">Using Pictures in Microsoft PowerPoint Presentations</h1>
+
+        <div class="student-info">
+            <input type="text" class="info-field" placeholder="Name: ___________________________">
+            <input type="text" class="info-field" placeholder="Date: ___________________________">
+            <input type="text" class="info-field" placeholder="Grade: ___________________________">
+        </div>
+    </header>
+
+    <section class="section">
+        <h2 class="section-title">Learning Outcomes</h2>
+        <div class="learning-outcomes">
+            <p>By the end of this worksheet, you will be able to:</p>
+            <ul class="step-list">
+                <li>Insert a picture from your computer into a PowerPoint slide</li>
+                <li>Locate the "Insert" tab in PowerPoint</li>
+                <li>Resize a picture by dragging its corners</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Activity: Adding and Resizing a Picture in PowerPoint</h2>
+
+        <div class="step-list">
+            <li>Open Microsoft PowerPoint.</li>
+            <li>Click "Blank Presentation" to start a new slide.</li>
+        </div>
+
+        <div class="step-list">
+            <li>Look at the top menu bar. Find the "Insert" tab (it has icons like a picture, chart, and video).</li>
+        </div>
+
+        <div class="image-container">
+            <img src="https://support.content.office.net/en-us/media/19460065-8087-4797-918d-8f275f952902.png" alt="PowerPoint Ribbon showing Insert tab">
+            <p style="margin-top: 10px; font-style: italic;">*(Note: If you don't have an image, describe where the "Insert" tab is located.)</p>
+        </div>
+
+        <div class="step-list">
+            <li>Click the "Insert" tab.</li>
+            <li>Click the "Pictures" button (it looks like a photo frame).</li>
+            <li>A window will open. Browse your computer for a picture (e.g., a family photo, a favorite animal, or a fun image).</li>
+            <li>Double-click the picture to insert it onto your slide.</li>
+        </div>
+
+        <div class="step-list">
+            <li>Look at the small squares (handles) at the corners of the picture.</li>
+            <li>Place your mouse cursor on any corner handle (it will turn into a double-headed arrow).</li>
+            <li>Click and drag the corner to resize the picture (make it bigger or smaller).</li>
+            <li>Try resizing your picture to fit nicely on the slide.</li>
+        </div>
+
+        <div class="step-list">
+            <li>Click "File" (top-left corner).</li>
+            <li>Click "Save As".</li>
+            <li>Choose a name (e.g., "My First PowerPoint").</li>
+            <li>Click "Save" to save your presentation.</li>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2 class="section-title">Homework Activity</h2>
+        <p>Task: Create a 1-slide PowerPoint presentation with the following steps:</p>
+
+        <div class="step-list">
+            <li>Insert a picture of your favorite animal (or any object you like).</li>
+            <li>Resize the picture so it fits well on the slide.</li>
+            <li>Save your file as "My Animal Presentation".</li>
+        </div>
+
+        <div class="bonus-section">
+            <h3>Bonus Challenge:</h3>
+            <ul class="step-list">
+                <li>Try moving the picture by clicking and dragging it.</li>
+                <li>Can you make the picture smaller or bigger?</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="teacher-note">
+            <h3>Teacher's Note:</h3>
+            <ul class="step-list">
+                <li>Encourage students to experiment with different pictures.</li>
+                <li>Remind them to save their work frequently.</li>
+                <li>If they get stuck, they can ask for help or refer to the step-by-step guide.</li>
+            </ul>
+        </div>
+
+        <div class="evaluation-checklist">
+            <h3>Evaluation Checklist:</h3>
+            <ul class="step-list">
+                <li>Picture inserted correctly</li>
+                <li>Picture resized using corner handles</li>
+                <li>File saved properly</li>
+            </ul>
+        </div>
+    </section>
+
+    <div class="success-message">
+        <p>Good job! You've now learned how to add and resize pictures in PowerPoint. 🎉</p>
+    </div>
+
+    <script>
+        // Update date and time
+        function updateDate() {
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        // Initial update
+        updateDate();
+
+        // Update every minute to show current time
+        setInterval(updateDate, 60000);
+    </script>
+</body>
+</html>
+
+
+This HTML page features:
+
+1. **Modern Design Elements**:
+   - Vibrant color palette with blue accents
+   - Clean typography and spacing
+   - Subtle animations for all sections
+   - Responsive layout for different screen sizes
+
+2. **Key Features**:
+   - Current date and day displayed prominently at the top
+   - All sections organized with clear titles
+   - Bullet points for all instructional content
+   - Smooth animations for all elements
+   - Interactive elements with hover effects
+
+3. **Structured Content**:
+   - Maintained all original content exactly as provided
+   - Removed "Information X:" prefixes from section titles
+   - Kept all learning outcomes, activities, and homework tasks
+   - Preserved all teacher notes and evaluation checklist
+
+4. **User Experience Enhancements**:
+   - Dynamic date/time display that updates every minute
+   - Visual feedback for interactive elements
+   - Consistent styling throughout
+   - Professional, educational appearance
+
+The page is ready to use - just copy the entire code into an HTML file and open it in any modern browser.

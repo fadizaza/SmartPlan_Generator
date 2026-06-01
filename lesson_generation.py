@@ -3,6 +3,7 @@ import re
 import datetime
 import socket
 from pathlib import Path
+from dotenv import load_dotenv
 from docx import Document
 from pptx import Presentation
 from pptx.util import Pt, Inches
@@ -16,6 +17,8 @@ from utils import read_file_contents, clean_text, extract_important_lines
 from google import genai
 import PyPDF2
 import io
+
+load_dotenv()
 
 # Constants
 
@@ -79,7 +82,9 @@ def ai_agent(prompt):
     try:
         print("Calling Mistral AI agent...")
 
-        api_key = "kHYthe4HKWwaXNnsXDrMHc7TMEtXyUoD"
+        api_key = os.getenv("MISTRAL_API_KEY")
+        if not api_key:
+            raise ValueError("MISTRAL_API_KEY environment variable is not set")
         url = "https://api.mistral.ai/v1/chat/completions"
         headers = {
             "Authorization": f"Bearer {api_key}",
@@ -107,7 +112,10 @@ def ai_agent_google(prompt):
     # Use Gemini API via HTTP requests
     print(prompt)
 
-    os.environ['GEMINI_API_KEY'] = "AIzaSyDhx0WpKGTXcBshALjnDA8lq0Wkk5kmrfM"
+    gemini_key = os.getenv("GEMINI_API_KEY")
+    if not gemini_key:
+        raise ValueError("GEMINI_API_KEY environment variable is not set")
+    os.environ['GEMINI_API_KEY'] = gemini_key
 
     
 
