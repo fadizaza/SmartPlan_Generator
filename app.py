@@ -7,16 +7,13 @@ import io
 import json
 import subprocess
 from pathlib import Path
-from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory, session, flash
-from markupsafe import Markup
+from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory, session, flash, Markup
+from werkzeug.utils import secure_filename
 import jinja2
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from models import db, User
 import os.path
 import html
-
-load_dotenv()
 
 # Import existing modules (adapting as needed).
 import lesson_generation as lg
