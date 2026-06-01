@@ -1,103 +1,124 @@
-# SmartPlan Web Application
+# SmartPlan — AI-Powered Lesson Planning
 
-SmartPlan is a web-based AI-powered lesson planning application that helps educators create comprehensive teaching materials including lesson plans, worksheets, presentations, and assessment questions.
+> Generate lesson plans, worksheets, quizzes, presentations, and revision materials in seconds — powered by AI.
 
-## Features
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)](https://python.org)
+[![Flask](https://img.shields.io/badge/Flask-2.2-black?logo=flask)](https://flask.palletsprojects.com)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/fadizaza/SmartPlan_Generator/pulls)
 
-- **Learning Outcomes**: Define learning objectives for your lessons
-- **Questions Generator**: Create various types of assessment questions
-- **Worksheet Generator**: Generate student worksheets
-- **Lesson Plan Creator**: Design comprehensive lesson plans
-- **Presentation Generator**: Create PowerPoint presentations
-- **Revision Materials**: Generate revision materials for students
+---
 
-## Technology Stack
+## What is SmartPlan?
 
-- **Backend**: Flask (Python)
-- **Frontend**: HTML, CSS, JavaScript, Bootstrap 5
-- **Document Generation**: python-docx, python-pptx
-- **APIs**: Google API integration for AI capabilities
+SmartPlan helps educators create comprehensive teaching materials in one click. Built by teachers, for teachers.
 
-## Installation and Setup
+- **Assessment Questions** — MCQs, short answer, true/false, fill-in-the-blank, matching
+- **Worksheets** — Custom activities at any difficulty level
+- **Lesson Plans** — Structured, outcome-aligned plans
+- **Presentations** — PowerPoint decks with auto-sized content
+- **Revision Materials** — Summaries and study guides
 
-### Prerequisites
+---
 
-- Python 3.8 or higher
-- pip (Python package installer)
+## Tech Stack
 
-### Installation Steps
+| Layer | Technology |
+|-------|-----------|
+| Backend | Python, Flask, SQLAlchemy |
+| Frontend | HTML, CSS, JavaScript, Bootstrap 5 |
+| AI | Google Gemini, Mistral AI |
+| Documents | python-docx, python-pptx |
+| Auth | Flask-Login |
 
-1. **Clone or download this repository**
+---
 
-2. **Navigate to the project directory**
-   ```
-   cd "lesson gen folder\Lesson Generator_with pptx_vedc_desktop"
-   ```
+## Quick Start
 
-3. **Create and activate a virtual environment (recommended)**
-   ```
-   python -m venv venv
-   venv\Scripts\activate
-   ```
+```bash
+# Clone
+git clone https://github.com/fadizaza/SmartPlan_Generator.git
+cd SmartPlan_Generator
 
-4. **Install the dependencies**
-   ```
-   pip install -r requirements.txt
-   ```
+# Virtual environment
+python -m venv venv
+source venv/bin/activate    # Linux/Mac
+venv\Scripts\activate       # Windows
 
-5. **Run the application**
-   ```
-   python app.py
-   ```
+# Install dependencies
+pip install -r requirements.txt
 
-6. **Access the web application**
-   Open your browser and go to: http://127.0.0.1:5000/
+# Set up your API keys
+cp .env.example .env        # Then edit .env with your keys
 
-## Usage
+# Initialize the database
+python init_db.py
 
-1. **Start by setting a topic and learning outcomes**
-   - Click on "Add Learning Outcomes / Topic" from the home page
-   - Enter your topic and learning outcomes
-   - Save and continue
+# Run
+python app.py
+```
 
-2. **Generate teaching materials**
-   - Choose the type of material you want to create (Questions, Worksheet, etc.)
-   - Customize the options as needed
-   - Click Generate
-   - Download the generated files
+Open **http://127.0.0.1:5000** — default login: `admin` / `password123`
 
-3. **Access your files**
-   - Click on "View Files" to see all generated materials
-   - Download or access files from this page
+---
+
+## Project Structure
+
+```
+├── app.py                  # Flask routes and logic
+├── lesson_generation.py    # AI integration & document generation
+├── models.py               # User model (SQLAlchemy)
+├── web_utils.py            # Helper utilities
+├── utils.py                # File/content utilities
+├── templates/              # Jinja2 HTML templates
+├── static/                 # JS, CSS assets
+├── outputFiles/            # Generated files (per user)
+├── .env.example            # Template for environment variables
+└── requirements.txt
+```
+
+---
+
+## Contributing
+
+All contributions welcome — docs, tests, features, bug fixes, UI/UX.
+
+### Ideas to get started
+
+- [ ] Add PDF export support
+- [ ] Add dark mode theme
+- [ ] Translate UI to other languages
+- [ ] Add image generation for slides
+- [ ] Add bulk import of student rosters
+- [ ] Improve worksheet activity variety
+- [ ] Write unit tests
+- [ ] Docker production setup
+- [ ] Add API rate limiting
+- [ ] Build a REST API for LMS integration
+
+### Guidelines
+
+1. Fork the repo and create a branch: `git checkout -b feature/your-idea`
+2. Make your changes
+3. Run the app and verify it works
+4. Open a pull request
+
+---
 
 ## Deployment
 
-This application can be deployed to various platforms:
+**PythonAnywhere** (easiest): upload files, configure WSGI to `app.py`.
 
-### Heroku
-```
-heroku create your-app-name
-git push heroku main
-```
+**Docker**: the included `Dockerfile` builds a container-ready image.
 
-### PythonAnywhere
-1. Upload the files to PythonAnywhere
-2. Create a new web app with Flask
-3. Configure the WSGI file to point to your app.py
+---
 
-### Docker
-A Dockerfile is included for containerized deployment.
+## License
 
-## Converting from Desktop to Web
+MIT — use it, modify it, share it.
 
-This application was converted from a desktop Tkinter application to a web application. The conversion involved:
-
-1. Replacing Tkinter UI with Flask routes and HTML templates
-2. Adapting file handling for web context
-3. Creating a responsive Bootstrap UI
-4. Implementing AJAX for asynchronous operations
-5. Adding server-side session management
+---
 
 ## Credits
 
-Original desktop application created for ACTVET (Abu Dhabi Center for Technical and Vocational Education and Training).
+Originally built for ACTVET (Abu Dhabi Center for Technical and Vocational Education and Training). Converted from a desktop Tkinter app to a web application.
