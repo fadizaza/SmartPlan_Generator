@@ -41,15 +41,9 @@ def get_user_session(user_id):
         user_sessions[user_id] = UserSession()
     return user_sessions[user_id]
 
-role = None
-main_prompt = None
-questions_prompt = None
-task_prompt = None
-homework_prompt = None
-revision_prompt = None
 sections = None
-topic_directory = None  # Path to the topic-specific directory
-user_directory = None   # Path to the user-specific directory
+topic_directory = None
+user_directory = None
 
 
 DESIGN = '''
@@ -68,15 +62,19 @@ Focus on creating a professional and user-friendly interface.
 
 def add_row(version, time, topic, ip, computer_name):
     """Add a row to the Google Sheets tracking document."""
-    scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("gen-lang-client-0422190211-1c28abc28438.json", scope)
-    client = gspread.authorize(creds)
-    sheet = client.open("Lesson Generator users tracker").sheet1
-    data = [version, time, topic, ip, computer_name]
-    sheet.append_row(data)
-
-##############
-import requests
+    try:
+        cred_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "gen-lang-client-0422190211-1c28abc28438.json")
+        if not os.path.isfile(cred_path):
+            print(f"Google credentials file not found: {cred_path}")
+            return
+        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
+        creds = ServiceAccountCredentials.from_json_keyfile_name(cred_path, scope)
+        client = gspread.authorize(creds)
+        sheet = client.open("Lesson Generator users tracker").sheet1
+        data = [version, time, topic, ip, computer_name]
+        sheet.append_row(data)
+    except Exception as e:
+        print(f"Error logging to Google Sheets: {e}")
 
 def ai_agent(prompt):
     try:
@@ -95,7 +93,7 @@ def ai_agent(prompt):
             "messages": [{"role": "user", "content": prompt}]
         }
 
-        response = requests.post(url, headers=headers, json=payload)
+        response = requests.post(url, headers=headers, json=payload, timeout=30)
         response.raise_for_status()
 
         return response.json()["choices"][0]["message"]["content"]
@@ -127,7 +125,6 @@ def ai_agent_google(prompt):
   )
     
     return response.text
-    print("AI agent call completed.")
 
 
 def generate_topic_from_outcomes(outcomes):
@@ -140,6 +137,20 @@ def generate_topic_from_outcomes(outcomes):
     # Sanitize the topic name to be suitable for folder names
     sanitized_topic = re.sub(r'[^\w\s-]', '', topic_name).strip()
     return sanitized_topic
+
+def sanitize_topic_name(topic):
+    return re.sub(r'[^\w\s-]', '', topic).strip().replace(' ', '_')
+
+def _resolve_output_dir(user_directory, topic, topic_directory=None):
+    if user_directory and topic:
+        d = Path(user_directory) / sanitize_topic_name(topic)
+        d.mkdir(parents=True, exist_ok=True)
+        return d
+    if topic_directory:
+        return Path(topic_directory) if isinstance(topic_directory, str) else topic_directory
+    d = Path("outputFiles")
+    d.mkdir(parents=True, exist_ok=True)
+    return d
 
 def get_timestamp():
     """Generate a timestamp string for filenames."""
@@ -388,102 +399,69 @@ def create_worksheet(custom_prompt=None, output_formats=None, user_id=None):
     return result
 
 
-def create_task():
+def create_task(user_id=None):
     """Generate task document and webpage."""
-    global topic, topic_directory, user_directory
-    print(f"Generating Task about ({topic})...")
-    prompt = read_file_contents("task.txt") + f" about: {topic}"
-    global learning_outcomes
-    if learning_outcomes:
-        prompt += f" considering these learning outcomes: {learning_outcomes}"
+    user_session = get_user_session(user_id) if user_id else None
+    t = user_session.topic if user_session else topic
+    u_dir = user_session.user_directory if user_session else user_directory
+    lo = user_session.learning_outcomes if user_session else ''
+    print(f"Generating Task about ({t})...")
+    prompt = f"Create a task about: {t}"
+    if lo:
+        prompt += f" considering these learning outcomes: {lo}"
     prompt += " give me the task directly without explination at the begining of your response."
     
     task = ai_agent(prompt)
+    if task is None:
+        raise ValueError("AI agent returned None for task generation")
     task = task.replace("**", "")
     
-    # Determine output directory
-    output_dir = Path("outputFiles")
-    
-    # Use the user_directory and topic_directory if they exist
-    if user_directory and topic:
-        sanitized_topic = re.sub(r'[^\w\s-]', '', topic).strip().replace(' ', '_')
-        output_dir = Path(user_directory) / sanitized_topic
-        # Ensure directory exists
-        output_dir.mkdir(parents=True, exist_ok=True)
-        # Update topic_directory global variable
-        topic_directory = output_dir
-    elif topic_directory:
-        output_dir = topic_directory
-    
-    # Ensure directory exists
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # Generate timestamp for filenames
+    output_dir = _resolve_output_dir(u_dir, t, topic_directory)
     timestamp = get_timestamp()
     
-    # Create document
     doc = Document()
     doc.add_heading('Task', level=1)
     doc.add_paragraph(task)
-    
-    # Save to the topic directory with timestamp
     output_file = output_dir / f"task_{timestamp}.docx"
     doc.save(str(output_file))
     print(f"Task document saved to {output_file}")
 
     print("Generating task webpage ...")
     html_content = ai_agent(DESIGN + "<data>" + task + "</data>. use the data as it is don't change any thing.")
-    html_content = html_content.replace('```html', '').replace('```', '')
-    
-    # Save HTML to the topic directory with timestamp
-    output_html = output_dir / f"task_{timestamp}.html"
-    output_html.write_text(html_content, encoding="utf-8")
-    print(f"Task webpage saved to {output_html}")
+    if html_content:
+        html_content = html_content.replace('```html', '').replace('```', '')
+        output_html = output_dir / f"task_{timestamp}.html"
+        output_html.write_text(html_content, encoding="utf-8")
+        print(f"Task webpage saved to {output_html}")
 
 
-def create_homework(custom_prompt=None):
+def create_homework(custom_prompt=None, user_id=None):
     """Generate homework document."""
-    global topic, topic_directory, user_directory
-    print(f"Generating homework about ({topic})...")
+    user_session = get_user_session(user_id) if user_id else None
+    t = user_session.topic if user_session else topic
+    u_dir = user_session.user_directory if user_session else user_directory
+    lo = user_session.learning_outcomes if user_session else ''
+    print(f"Generating homework about ({t})...")
     
     if custom_prompt:
         prompt = custom_prompt
     else:
-        prompt = read_file_contents("homework.txt") + f" about: {topic}"
-        global learning_outcomes
-        if learning_outcomes:
-            prompt += f" considering these learning outcomes: {learning_outcomes}"
+        prompt = f"Create homework about: {t}"
+        if lo:
+            prompt += f" considering these learning outcomes: {lo}"
         prompt += " give me the homework directly without explination at the begining of your response."
     
     hw = ai_agent(prompt)
+    if hw is None:
+        raise ValueError("AI agent returned None for homework generation")
     hw = hw.replace("**", "")
     
-    # Determine output directory
-    output_dir = Path("outputFiles")
-    
-    # Use the user_directory and topic_directory if they exist
-    if user_directory and topic:
-        sanitized_topic = re.sub(r'[^\w\s-]', '', topic).strip().replace(' ', '_')
-        output_dir = Path(user_directory) / sanitized_topic
-        # Ensure directory exists
-        output_dir.mkdir(parents=True, exist_ok=True)
-        # Update topic_directory global variable
-        topic_directory = output_dir
-    elif topic_directory:
-        output_dir = topic_directory
-    
-    # Ensure directory exists
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # Generate timestamp for filenames
+    output_dir = _resolve_output_dir(u_dir, t, topic_directory)
     timestamp = get_timestamp()
     
-    # Create document
     doc = Document()
     doc.add_heading('Homework', level=1)
     doc.add_paragraph(hw)
-    
-    # Save to the topic directory with timestamp
     output_file = output_dir / f"homework_{timestamp}.docx"
     doc.save(str(output_file))
     print(f"Homework saved to {output_file}")

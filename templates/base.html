@@ -225,6 +225,18 @@
     
     <!-- Common JavaScript -->
     <script>
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (settings.type === 'POST') {
+                    const match = document.cookie.match(/(?:^|;\s*)csrf_token=([^;]*)/);
+                    if (match) {
+                        xhr.setRequestHeader('X-CSRF-Token', match[1]);
+                    }
+                }
+            }
+        });
+    </script>
+    <script>
         function showAlert(message, type = 'success') {
             const alertsContainer = document.getElementById('alerts-container');
             const alertDiv = document.createElement('div');

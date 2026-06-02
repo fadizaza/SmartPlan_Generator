@@ -17,6 +17,7 @@
                 <input type="hidden" id="hidden-topic" value="{{ topic|e }}">
                 
                 <form id="questionsForm" method="POST">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                     <!-- Subject and Level Selection -->
                     <div class="card mb-4">
                         <div class="card-header bg-light">
@@ -905,22 +906,14 @@
             });
         }
         
-        // Helper function to show alerts
-        function showAlert(message, type) {
+        function showAlert(message, type = 'success') {
             const alertHTML = `
                 <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                    ${message}   $('#questionsForm').prepend(alertHTML);
+                    ${message}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>            // Auto-dismiss after 5 seconds
-
-
-
-
-
-
-
-
-            setTimeout(function() {            // Automatically close alerts after 3 seconds                        $('#success-message').before(alertHTML);            // Insert the alert at the top of the form                        `;            setTimeout(function() {
+                </div>`;
+            $('#questionsForm').prepend(alertHTML);
+            setTimeout(function() {
                 $('.alert').alert('close');
             }, 5000);
         }

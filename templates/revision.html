@@ -17,6 +17,7 @@
                 <input type="hidden" id="hidden-topic" value="{{ topic|e }}">
                 
                 <form id="revisionForm" method="POST">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                     <!-- Subject and Level Selection -->
                     <div class="card mb-4">
                         <div class="card-header bg-light">
@@ -234,6 +235,7 @@
     </div>
 </div>
 
+{% block extra_js %}
 <!-- JavaScript for Revision Materials Generation -->
 <script>
     // Declare prompt as a global variable
@@ -439,5 +441,6 @@
         });
     });
 </script>
+{% endblock %}
 {% endblock %}
 

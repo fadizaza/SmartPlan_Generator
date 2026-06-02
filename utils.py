@@ -17,7 +17,7 @@ def read_file_contents(file_name):
 def read_text_file_from_url(url):
     """Reads text content from a given URL"""
     try:
-        with urllib.request.urlopen(url) as response:
+        with urllib.request.urlopen(url, timeout=10) as response:
             return response.read().decode('utf-8')
     except Exception as e:
         print(f"Error reading from URL {url}: {e}")

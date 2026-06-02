@@ -11,6 +11,7 @@
             </div>
             <div class="card-body">                <p class="text-muted mb-4">Generate a presentation for: <strong>{{ topic }}</strong></p>
                   <form id="presentationForm" method="POST">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                     <!-- Presentation Options -->
                     <div class="card mb-4">
                         <div class="card-header bg-light">
@@ -226,6 +227,7 @@
     </div>
 </div>
 
+{% block extra_js %}
 <script>
     // Global variable for prompt
     var prompt = "";
@@ -736,4 +738,5 @@
         updatePrompt();
     });
 </script>
+{% endblock %}
 {% endblock %}

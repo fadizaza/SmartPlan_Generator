@@ -13,7 +13,9 @@ def init_db():
     with app.app_context():
         db.create_all()
 
-        admin_password = os.getenv("ADMIN_PASSWORD", "password123")
+        admin_password = os.environ.get("ADMIN_PASSWORD")
+        if not admin_password:
+            raise ValueError("ADMIN_PASSWORD environment variable must be set")
 
         admin = User.query.filter_by(username='admin').first()
         if not admin:

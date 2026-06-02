@@ -138,10 +138,8 @@
                 </div>
                 <div class="card-body">
                     <div class="learning-outcomes-list">
-                        {% if learning_outcomes %}
-                            {{ learning_outcomes|safe }}
-                        {% else %}
-                            <p></p>
+                        {% if escaped_learning_outcomes %}
+                            {{ escaped_learning_outcomes|nl2br }}
                         {% endif %}
                     </div>
                 </div>
@@ -159,7 +157,7 @@
 <script>
     $(document).ready(function() {
         // Format learning outcomes to display on separate lines
-        const learningOutcomes = "{{ learning_outcomes|safe }}";
+        const learningOutcomes = {{ learning_outcomes|tojson }};
         if (learningOutcomes) {
             const outcomes = learningOutcomes.split('\n').filter(item => item.trim() !== '');
             if (outcomes.length > 0) {

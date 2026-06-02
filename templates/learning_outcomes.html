@@ -25,6 +25,7 @@
                 </div>
                 
                 <form method="POST" action="/learning_outcomes" id="learningOutcomesForm">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                     <div class="mb-4">
                         <label for="topic" class="form-label fw-bold">Topic</label>
                         <div class="input-group">

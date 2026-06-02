@@ -7,6 +7,7 @@ import io
 import json
 import subprocess
 from pathlib import Path
+import secrets
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory, session, flash, Markup
 from werkzeug.utils import secure_filename
@@ -20,10 +21,10 @@ import html
 
 # Import existing modules (adapting as needed).
 import lesson_generation as lg
-from web_utils import create_topic_directory, download_file, generate_learning_outcomes_from_topic, generate_topic_from_outcomes
+import web_utils
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # Required for session
+app.secret_key = os.getenv("SECRET_KEY", os.urandom(24).hex())
 
 # Configure database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -46,13 +47,38 @@ def nl2br(value):
         return jinja2.utils.markupsafe.Markup(value.replace('\n', '<br>'))
     return ""
 
-# Add context processor to provide datetime to all templates
+# CSRF protection
+def generate_csrf_token():
+    if '_csrf_token' not in session:
+        session['_csrf_token'] = secrets.token_hex(32)
+    return session['_csrf_token']
+
+@app.before_request
+def csrf_check():
+    if request.method == 'POST' and request.path not in ('/login', '/signup'):
+        token = request.form.get('_csrf_token') or request.headers.get('X-CSRF-Token')
+        if not token or token != session.get('_csrf_token'):
+            if request.is_json:
+                return jsonify({'status': 'error', 'message': 'CSRF token missing or invalid'}), 403
+            flash('Session expired. Please try again.', 'danger')
+            return redirect(request.path)
+
+@app.after_request
+def set_csrf_cookie(response):
+    response.set_cookie('csrf_token', session.get('_csrf_token', ''), samesite='Strict')
+    return response
+
+# Add context processor to provide shared variables to all templates
 @app.context_processor
-def inject_now():
-    now = datetime.datetime.now()
+def inject_globals():
     return {
-        'now': now,
-        'current_date': now.strftime('%B %d, %Y')
+        'now': datetime.datetime.now(),
+        'current_date': datetime.datetime.now().strftime('%B %d, %Y'),
+        'topic': session.get('topic', ''),
+        'learning_outcomes': session.get('learning_outcomes', ''),
+        'escaped_learning_outcomes': escape_learning_outcomes(session.get('learning_outcomes', '')),
+        'colors': colors,
+        'csrf_token': generate_csrf_token
     }
 
 # Configure upload folder
@@ -105,11 +131,7 @@ def index():
     escaped_learning_outcomes = escape_learning_outcomes(session.get('learning_outcomes', ''))
     
     # Pass current topic to the template
-    return render_template('index.html', 
-                          topic=session.get('topic', ''),
-                          learning_outcomes=session.get('learning_outcomes', ''),
-                          escaped_learning_outcomes=escaped_learning_outcomes,
-                          colors=colors)
+    return render_template('index.html')
 
 @app.route('/learning_outcomes', methods=['GET', 'POST'])
 @login_required
@@ -144,10 +166,7 @@ def learning_outcomes():
     escaped_learning_outcomes = escape_learning_outcomes(session.get('learning_outcomes', ''))
     
     return render_template('learning_outcomes.html', 
-                          topic=session.get('topic', ''),
-                          learning_outcomes=session.get('learning_outcomes', ''),
-                          escaped_learning_outcomes=escaped_learning_outcomes,
-                          colors=colors)
+)
 
 @app.route('/api/check_file_content', methods=['GET'])
 @login_required
@@ -302,10 +321,7 @@ def questions():
     escaped_learning_outcomes = escape_learning_outcomes(session.get('learning_outcomes', ''))
     
     return render_template('questions.html',
-                          topic=session.get('topic', ''),
-                          learning_outcomes=session.get('learning_outcomes', ''),
-                          escaped_learning_outcomes=escaped_learning_outcomes,
-                          colors=colors)
+)
 
 @app.route('/worksheet', methods=['GET', 'POST'])
 @login_required
@@ -417,10 +433,7 @@ def worksheet():
     escaped_learning_outcomes = escape_learning_outcomes(session.get('learning_outcomes', ''))
     
     return render_template('worksheet.html',
-                          topic=session.get('topic', ''),
-                          learning_outcomes=session.get('learning_outcomes', ''),
-                          escaped_learning_outcomes=escaped_learning_outcomes,
-                          colors=colors)
+)
 
 @app.route('/lesson_plan', methods=['GET', 'POST'])
 @login_required
@@ -517,10 +530,7 @@ def lesson_plan():
     escaped_learning_outcomes = escape_learning_outcomes(session.get('learning_outcomes', ''))
     
     return render_template('lesson_plan.html',
-                          topic=session.get('topic', ''),
-                          learning_outcomes=session.get('learning_outcomes', ''),
-                          escaped_learning_outcomes=escaped_learning_outcomes,
-                          colors=colors)
+)
 
 @app.route('/presentation', methods=['GET', 'POST'])
 @login_required
@@ -538,26 +548,17 @@ def presentation():
         theme = request.form.get('theme', '')
         additional_notes = request.form.get('additional_notes', '')
        
-        try:
-            user_session = lg.get_user_session(current_user.id)
-            has_file_content = hasattr(user_session, 'fileContent') and user_session.fileContent
-            # Build enhanced instructions
-            enhanced_instructions = ""
-            # If custom prompt is provided, use it
-            enhanced_instructions += f"You are an expert {subject} teacher teaching {audience} students.\n"
-            enhanced_instructions += f"you have to create a {num_slides} slides for a presentation.\n"
-            enhanced_instructions += f"Each slide should have a {content_length.lower()} amount of text.\n"
-            if not has_file_content:
-                enhanced_instructions += f"the slides should cover the following topic:\n{session.get('topic', '')}\n"
-                enhanced_instructions += f"the slides should cover the following learning outcomes:\n{session.get('learning_outcomes', '')}\n"
-       
-            
-            if has_file_content:
-                enhanced_instructions += "\nUse the following content to create your presentation slides:\n"
-                enhanced_instructions += user_session.fileContent + "\n"
-        except Exception as e:
-            flash(f"Error reading directories: {str(e)}", "danger")
-        
+        user_session = lg.get_user_session(current_user.id)
+        has_file_content = hasattr(user_session, 'fileContent') and user_session.fileContent
+        enhanced_instructions = f"You are an expert {subject} teacher teaching {audience} students.\n"
+        enhanced_instructions += f"you have to create a {num_slides} slides for a presentation.\n"
+        enhanced_instructions += f"Each slide should have a {content_length.lower()} amount of text.\n"
+        if not has_file_content:
+            enhanced_instructions += f"the slides should cover the following topic:\n{session.get('topic', '')}\n"
+            enhanced_instructions += f"the slides should cover the following learning outcomes:\n{session.get('learning_outcomes', '')}\n"
+        if has_file_content:
+            enhanced_instructions += "\nUse the following content to create your presentation slides:\n"
+            enhanced_instructions += user_session.fileContent + "\n"
         enhanced_instructions += '''
         notes:
             - Begin every slide with the marker "!!!".
@@ -571,34 +572,30 @@ def presentation():
             '''
         if additional_notes:
             enhanced_instructions += f"- {additional_notes}\n"
-                
-                # Reset global sections variable before generating a new presentation
-            
         
-        
-        lg.sections = None  # Reset sections to ensure new generation
-                
-            # Print debug info
-            #
-            # Call the presentation generation function with user_id
-        result = lg.create_presentation(custom_prompt=enhanced_instructions, 
-                                          theme_name=theme,
-                                          user_id=current_user.id)
-            
-        return jsonify({
+        try:
+            session['generation_status'] = 'running'
+            result = lg.create_presentation(custom_prompt=enhanced_instructions, 
+                                            theme_name=theme,
+                                            user_id=current_user.id)
+            session['generation_status'] = 'completed'
+            return jsonify({
                 'status': 'success',
                 'message': 'Presentation generated successfully',
                 'file_url': url_for('download_file', filename=os.path.basename(result))
             })
+        except Exception as e:
+            session['generation_status'] = 'failed'
+            return jsonify({
+                'status': 'error',
+                'message': f'Failed to generate presentation: {str(e)}'
+            }), 500
         
     # Escape the learning outcomes for proper display
     escaped_learning_outcomes = escape_learning_outcomes(session.get('learning_outcomes', ''))
     
     return render_template('presentation.html',
-                          topic=session.get('topic', ''),
-                          learning_outcomes=session.get('learning_outcomes', ''),
-                          escaped_learning_outcomes=escaped_learning_outcomes,
-                          colors=colors)
+)
 
 @app.route('/revision', methods=['GET', 'POST'])
 @login_required
@@ -675,10 +672,7 @@ def revision():
     escaped_learning_outcomes = escape_learning_outcomes(session.get('learning_outcomes', ''))
     
     return render_template('revision.html',
-                          topic=session.get('topic', ''),
-                          learning_outcomes=session.get('learning_outcomes', ''),
-                          escaped_learning_outcomes=escaped_learning_outcomes,
-                          colors=colors)
+)
 
 @app.route('/files')
 @login_required
@@ -712,7 +706,7 @@ def files():
                           topic=session.get('topic', ''),
                           files=files,
                           escaped_learning_outcomes=escaped_learning_outcomes,
-                          colors=colors)
+)
 
 @app.route('/download/<path:filename>')
 def download_file(filename):
@@ -855,17 +849,20 @@ def api_generate_topic():
         }), 500
 
 @app.route('/status')
+@login_required
 def status():
-    # Return the current generation status
     return jsonify({
         'status': session.get('generation_status', 'idle')
     })
 
-@app.route('/install_pdf_support')
+@app.route('/install_pdf_support', methods=['POST'])
+@login_required
 def install_pdf_support():
     try:
-        # Run the install_pdf_support.bat file
-        subprocess.Popen([r'cmd.exe', '/c', 'install_pdf_support.bat'], shell=False)
+        batch_file = os.path.join(os.path.dirname(__file__), 'install_pdf_support.bat')
+        if not os.path.isfile(batch_file):
+            return jsonify({'status': 'error', 'message': 'install_pdf_support.bat not found'}), 404
+        subprocess.Popen([r'cmd.exe', '/c', batch_file], shell=False)
         return jsonify({
             'status': 'success',
             'message': 'PDF support installation initiated.'
@@ -1058,7 +1055,7 @@ def generate_ai_response_only(prompt, user_id):
 @app.route('/about')
 def about():
     """Display the About Us page"""
-    return render_template('about.html', colors=colors)
+    return render_template('about.html')
 
 # Routes for authentication
 @app.route('/login', methods=['GET', 'POST'])
@@ -1077,18 +1074,16 @@ def login():
         if not user or not user.check_password(password):
             error = 'Invalid username or password. Please try again.'
         else:
-            # Update last login time
-            user.last_login = datetime.datetime.utcnow()
+            user.last_login = datetime.datetime.now(datetime.timezone.utc)
             db.session.commit()
             
-            # Log in the user
+            session.clear()
             login_user(user, remember=remember)
             
-            # Redirect to the page they were trying to access or to the home page
             next_page = request.args.get('next')
             return redirect(next_page or url_for('index'))
     
-    return render_template('login.html', error=error, colors=colors)
+    return render_template('login.html', error=error)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -1135,7 +1130,7 @@ def signup():
                 
                 success = 'Account created successfully! You can now log in.'
     
-    return render_template('signup.html', error=error, success=success, colors=colors)
+    return render_template('signup.html', error=error, success=success)
 
 @app.route('/logout')
 @login_required
@@ -1180,7 +1175,7 @@ def home_view():
     # Sort folders by modified time (newest first)
     folders.sort(key=lambda x: x['modified'], reverse=True)
     
-    return render_template('home.html', folders=folders, colors=colors)
+    return render_template('home.html', folders=folders)
 
 # Modify the create_topic_directory function in web_utils.py from within app.py
 def create_topic_directory(topic):
@@ -1446,15 +1441,10 @@ if __name__ == '__main__':
         print("Press CTRL+C to quit")
         print("=" * 50)
         
-        # Run the Flask application
-        app.run(debug=True, host='0.0.0.0', port=5000)
-    except Exception as e:
-        print(f"Error starting the application: {str(e)}")
-        print(f"Exception details: {type(e).__name__}")
-        import traceback
-        traceback.print_exc()
-        input("Press Enter to exit...")
-        app.run(debug=True, host='0.0.0.0', port=5000)
+        debug_mode = os.getenv('FLASK_DEBUG', 'false').lower() == 'true'
+        host = os.getenv('FLASK_HOST', '127.0.0.1')
+        port = int(os.getenv('FLASK_PORT', '5000'))
+        app.run(debug=debug_mode, host=host, port=port)
     except Exception as e:
         print(f"Error starting the application: {str(e)}")
         print(f"Exception details: {type(e).__name__}")

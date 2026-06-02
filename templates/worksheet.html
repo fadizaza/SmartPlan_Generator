@@ -32,6 +32,7 @@
                 <input type="hidden" id="hidden-learning-outcomes" value="{{ learning_outcomes|e }}">
                 
                 <form id="worksheetForm" method="POST">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                     <!-- Worksheet Options -->
                     <input type="hidden" id="custom_prompt" name="custom_prompt" value="">
                     <div class="card mb-4">
@@ -466,47 +467,7 @@ $(document).ready(function() {
             console.log("Final prompt:", finalPrompt);
             console.log("PromptParts array:", promptParts);
             
-            // Update the hidden custom_prompt field immediately
             $('#custom_prompt').val(finalPrompt);
-            
-            // Update the prompt textarea
-            try {
-                // First try with jQuery
-                const $promptTextarea = $('#instructions');
-                if ($promptTextarea.length) {
-                    console.log("Setting prompt via jQuery");
-                    $promptTextarea.val(finalPrompt);
-                      // Visual feedback
-                    $promptTextarea.css({
-                        'background-color': '#e8f4ff',
-                        'border-color': '#0d6efd'
-                    });
-                    
-                    // Show "Updated" badge with animation
-                    $('#prompt-update-badge').show().fadeIn(200);
-                    setTimeout(function() {
-                        $('#prompt-update-badge').fadeOut(1000);
-                    }, 1500);
-                    
-                    setTimeout(function() {
-                        $promptTextarea.css({
-                            'background-color': '#f8f9fa',
-                            'border-color': ''
-                        });
-                    }, 500);
-                } else {
-                    // Fallback to direct DOM
-                    const promptTextarea = document.getElementById('instructions');
-                    if (promptTextarea) {
-                        console.log("Setting prompt via DOM");
-                        promptTextarea.value = finalPrompt;
-                    } else {
-                        console.error("Could not find instructions textarea");
-                    }
-                }
-            } catch (err) {
-                console.error("Error updating prompt textarea:", err);
-            }
         } catch (err) {
             console.error("Error in updatePrompt:", err);
             promptParts = ["Error generating prompt. Please try refreshing the page."];
@@ -663,7 +624,4 @@ $(document).ready(function() {
     });
 });
 </script>
-<script src="{{ url_for('static', filename='worksheet_loading_fix.js') }}"></script>
-<script src="{{ url_for('static', filename='worksheet_status_sidebar.js') }}"></script>
-<script src="{{ url_for('static', filename='worksheet_format_fix.js') }}"></script>
 {% endblock %}

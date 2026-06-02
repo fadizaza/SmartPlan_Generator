@@ -13,6 +13,7 @@
                 <p class="text-muted mb-4">Generate a comprehensive lesson plan for: <strong>{{ topic }}</strong></p>
                 
                 <form id="lessonPlanForm" method="POST">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
                     <!-- Subject and Level Selection -->
                     <div class="card mb-4">
                         <div class="card-header bg-light">
@@ -441,7 +442,7 @@ $(document).ready(function() {
                 // If nothing selected, default to DOCX
                 outputFormats.docx = true;
                 $('#format_docx').prop('checked', true);
-            }   type: 'POST',
+            }
               // Submit data via AJAX
             
             $.ajax({
