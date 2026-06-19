@@ -411,10 +411,12 @@
             };
             
             // Send POST request to server
+            const csrfMatch = document.cookie.match(/(?:^|;\s*)csrf_token=([^;]*)/);
             fetch('/revision', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrfMatch ? csrfMatch[1] : ''
                 },
                 body: JSON.stringify({ 
                     instructions: prompt,  // Use global prompt here

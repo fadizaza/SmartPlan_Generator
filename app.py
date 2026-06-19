@@ -9,8 +9,8 @@ import subprocess
 from pathlib import Path
 import secrets
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory, session, flash
 from markupsafe import Markup
+from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory, session, flash
 from werkzeug.utils import secure_filename
 import jinja2
 
@@ -783,7 +783,7 @@ def api_generate_outcomes():
         
     try:
         # Call the AI function to generate outcomes
-        learning_outcomes = generate_learning_outcomes_from_topic(topic)
+        learning_outcomes = web_utils.generate_learning_outcomes_from_topic(topic)
         
         # Update session variables
         session['topic'] = topic
@@ -825,7 +825,7 @@ def api_generate_topic():
         
     try:
         # Call the AI function to generate a topic
-        topic = generate_topic_from_outcomes(learning_outcomes)
+        topic = web_utils.generate_topic_from_outcomes(learning_outcomes)
         
         # Update session variables
         session['topic'] = topic

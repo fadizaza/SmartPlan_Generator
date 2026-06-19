@@ -2,9 +2,11 @@ import os
 import re
 import datetime
 import socket
+import time
 from pathlib import Path
 from dotenv import load_dotenv
 from docx import Document
+from docx.shared import Pt
 from pptx import Presentation
 from pptx.util import Pt, Inches
 from pptx.dml.color import RGBColor
@@ -12,7 +14,6 @@ from pptx.enum.text import PP_ALIGN
 import traceback
 import requests
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 from utils import read_file_contents, clean_text, extract_important_lines
 from google import genai
 import PyPDF2
@@ -67,16 +68,14 @@ def add_row(version, time, topic, ip, computer_name):
         if not os.path.isfile(cred_path):
             print(f"Google credentials file not found: {cred_path}")
             return
-        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        creds = ServiceAccountCredentials.from_json_keyfile_name(cred_path, scope)
-        client = gspread.authorize(creds)
+        client = gspread.service_account(filename=cred_path)
         sheet = client.open("Lesson Generator users tracker").sheet1
         data = [version, time, topic, ip, computer_name]
         sheet.append_row(data)
     except Exception as e:
         print(f"Error logging to Google Sheets: {e}")
 
-def ai_agent(prompt):
+def ai_agent_mistral(prompt):
     try:
         print("Calling Mistral AI agent...")
 
@@ -93,7 +92,7 @@ def ai_agent(prompt):
             "messages": [{"role": "user", "content": prompt}]
         }
 
-        response = requests.post(url, headers=headers, json=payload, timeout=30)
+        response = requests.post(url, headers=headers, json=payload, timeout=120)
         response.raise_for_status()
 
         return response.json()["choices"][0]["message"]["content"]
@@ -105,27 +104,43 @@ def ai_agent(prompt):
 
 
 
-def ai_agent_google(prompt):
-    print("Calling AI agent...")
-    # Use Gemini API via HTTP requests
-    print(prompt)
+_last_ai_call = 0.0
+
+def ai_agent(prompt):
+    print("Calling Google AI agent...")
 
     gemini_key = os.getenv("GEMINI_API_KEY")
     if not gemini_key:
         raise ValueError("GEMINI_API_KEY environment variable is not set")
-    os.environ['GEMINI_API_KEY'] = gemini_key
 
-    
+    # Throttle: ensure at least 3s between calls to avoid per-minute quota
+    global _last_ai_call
+    elapsed = time.time() - _last_ai_call
+    if elapsed < 3.0:
+        time.sleep(3.0 - elapsed)
 
     client = genai.Client()
-    response = client.models.generate_content(
-    model="gemini-2.0-flash", 
-    contents=prompt
-    
-  )
-    
-    return response.text
 
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            # Swapped target model to gemini-3.5-flash
+            response = client.models.generate_content(
+                model="gemini-3.5-flash",
+                contents=prompt
+            )
+            _last_ai_call = time.time()
+            return response.text
+        except Exception as e:
+            error_str = str(e)
+            if '429' in error_str or 'RESOURCE_EXHAUSTED' in error_str:
+                if attempt < max_retries - 1:
+                    match = re.search(r'retry in (\d+(?:\.\d+)?)s', error_str, re.IGNORECASE)
+                    delay = (float(match.group(1)) + 2) if match else 20
+                    print(f"Rate limited. Retrying in {delay:.0f}s (attempt {attempt+1}/{max_retries})...")
+                    time.sleep(delay)
+                    continue
+            raise
 
 def generate_topic_from_outcomes(outcomes):
     """Generate a topic based on learning outcomes."""
@@ -220,6 +235,47 @@ def get_ai_response(prompt=None, user_id=None):
         print(f"Error in get_AI_response: {str(e)}")
         raise
 
+def format_questions_docx(doc, questions_text):
+    """Parse plain-text questions output and format them nicely in a python-docx Document."""
+    import re
+    lines = questions_text.strip().split('\n')
+    for line in lines:
+        stripped = line.strip()
+        if not stripped:
+            # blank line → paragraph break
+            doc.add_paragraph('')
+            continue
+
+        # Detect "Answer:" or "Correct Answer:" lines → italic
+        if re.match(r'^(Correct\s+)?Answer\s*:', stripped, re.IGNORECASE):
+            p = doc.add_paragraph()
+            run = p.add_run(stripped)
+            run.italic = True
+            run.bold = True
+            continue
+
+        # Detect MCQ options like "A)", "B.", "a)", "b." etc.
+        if re.match(r'^[A-Za-z]\)\s', stripped) or re.match(r'^[A-Za-z]\.\s', stripped):
+            p = doc.add_paragraph(stripped, style='List Bullet')
+            continue
+
+        # Detect numbered question headers like "1.", "1)", "Question 1:", "Q1."
+        if re.match(r'^\d+[\.\)]\s', stripped) or re.match(r'^Question\s+\d+', stripped) or re.match(r'^Q\d+', stripped):
+            p = doc.add_paragraph()
+            run = p.add_run(stripped)
+            run.bold = True
+            run.font.size = Pt(11)
+            continue
+
+        # Everything else → normal paragraph
+        doc.add_paragraph(stripped)
+
+    # Remove the trailing blank paragraph added by the blank-line handler
+    if doc.paragraphs and doc.paragraphs[-1].text == '':
+        p = doc.paragraphs[-1]._element
+        p.getparent().remove(p)
+
+
 def create_questions(custom_prompt, output_formats, user_id):
     """Generate questions document and webpage.
     
@@ -289,7 +345,7 @@ def create_questions(custom_prompt, output_formats, user_id):
     if output_formats.get('docx', True):
         doc = Document()
         doc.add_heading('Questions', level=1)
-        doc.add_paragraph(questions)
+        format_questions_docx(doc, questions)
         
         # Save to the topic directory with timestamp
         output_file = output_dir / f"Questions_{timestamp}.docx"
