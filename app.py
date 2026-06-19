@@ -9,7 +9,8 @@ import subprocess
 from pathlib import Path
 import secrets
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory, session, flash, Markup
+from flask import Flask, render_template, request, redirect, url_for, jsonify, send_from_directory, session, flash
+from markupsafe import Markup
 from werkzeug.utils import secure_filename
 import jinja2
 
