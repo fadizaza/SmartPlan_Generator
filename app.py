@@ -1438,14 +1438,20 @@ if __name__ == '__main__':
         print("=" * 50)
         print("Starting Lesson Generator Web Application")
         print("=" * 50)
-        print(f"Server running at: http://127.0.0.1:5000")
+        #print(f"Server running at: http://127.0.0.1:5000")
         print("Press CTRL+C to quit")
         print("=" * 50)
         
         debug_mode = os.getenv('FLASK_DEBUG', 'false').lower() == 'true'
-        host = os.getenv('FLASK_HOST', '127.0.0.1')
-        port = int(os.getenv('FLASK_PORT', '5000'))
-        app.run(debug=debug_mode, host=host, port=port)
+        #host = os.getenv('FLASK_HOST', '127.0.0.1')
+        #port = int(os.getenv('FLASK_PORT', '5000'))
+        #app.run(debug=debug_mode, host=host, port=port)
+        
+        # Get the port from Render's environment, default to 5000 for local dev
+        port = int(os.environ.get("PORT", 5000))
+        # Bind to 0.0.0.0 so Render can route traffic to it
+        app.run(host='0.0.0.0', port=port)
+        
     except Exception as e:
         print(f"Error starting the application: {str(e)}")
         print(f"Exception details: {type(e).__name__}")
