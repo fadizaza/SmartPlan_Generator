@@ -75,7 +75,7 @@ def add_row(version, time, topic, ip, computer_name):
     except Exception as e:
         print(f"Error logging to Google Sheets: {e}")
 
-def ai_agent_mistral(prompt):
+def ai_agent(prompt):
     try:
         print("Calling Mistral AI agent...")
 
@@ -106,7 +106,7 @@ def ai_agent_mistral(prompt):
 
 _last_ai_call = 0.0
 
-def ai_agent(prompt):
+def ai_agent_google(prompt):
     print("Calling Google AI agent...")
 
     gemini_key = os.getenv("GEMINI_API_KEY")
